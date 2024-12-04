@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Run the docker container
-docker run --rm fishstock:latest
+docker run --rm officialjoshtaylor/fishstock:latest --attach --name fishstock
