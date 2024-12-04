@@ -14,3 +14,6 @@ CMakeUserPresets.json
 lib/
 include/
 bin/
+
+*.tcl
+*.cmake
