@@ -1,0 +1,2 @@
+# fishstock
+The anti-stockfish
