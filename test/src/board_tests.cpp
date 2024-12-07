@@ -111,3 +111,133 @@ TEST_F(BoardTest, PawnMoveTest)
     // Can't move forward two
     EXPECT_FALSE(board.isValidMove(1, 7, 3, 7));
 }
+
+//
+// ROOK
+//
+TEST_F(BoardTest, RookMoveTest)
+{
+    // Move forward
+    // Move backward
+    // Move left
+    // Move right
+
+    // Can't move diagonal
+    // Can't move over pieces
+    // Can't take own piece
+
+    // Can take
+}
+
+//
+// KNIGHT
+//
+TEST_F(BoardTest, KnightMoveTest)
+{
+    // Move up 2 left 1
+    // Move up 2 right 1
+    // Move down 2 left 1
+    // Move down 2 right 1
+    // Move left 2 up 1
+    // Move left 2 down 1
+    // Move right 2 up 1
+    // Move right 2 down 1
+
+    // Can't move in straight line
+    // Can move over pieces
+    // Can't take own piece
+    // Can take
+}
+
+//
+// BISHOP
+//
+TEST_F(BoardTest, BishopMoveTest)
+{
+    // Move NE
+    // Move NW
+    // Move SE
+    // Move SW
+
+    // Can't move straight
+    // Can't move over pieces
+    // Can't take own piece
+    // Can take
+}
+
+//
+// QUEEN
+//
+TEST_F(BoardTest, QueenMoveTest)
+{
+    // Move forward
+    // Move backward
+    // Move left
+    // Move right
+    // Move NE
+    // Move NW
+    // Move SE
+    // Move SW
+
+    // Can't move over pieces
+    // Can't take own piece
+    // Can take
+}
+
+//
+// KING
+//
+TEST_F(BoardTest, KingMoveTest)
+{
+    // Move forward
+    // Move backward
+    // Move left
+    // Move right
+    // Move NE
+    // Move NW
+    // Move SE
+    // Move SW
+
+    // Can't move more than 1 space
+    // Can't take own piece
+    // Can take
+}
+
+//
+// CASTLING
+//
+TEST_F(BoardTest, CastlingTest)
+{
+    // Can't castle if king has moved
+    // Can't castle left if left rook has moved
+    // Can't castle right if right rook has moved
+    // Can't castle if pieces in the way
+    // Can't castle if in check
+    // Can't castle if through check
+
+    // Can castle right or left if conditions are met
+}
+
+//
+// PROMOTION
+//
+TEST_F(BoardTest, PromotionTest)
+{
+    // Pawn reaches end of board
+    // Pawn can't promote if not at end of board
+    // Pawn can't promote to king
+    // Pawn can't promote to pawn
+
+    // Pawn can promote to queen, rook, knight, bishop
+}
+
+//
+// CHECK
+//
+TEST_F(BoardTest, CheckTest)
+{
+    // Can't move any piece except to get out of check
+
+    // Can't move king into check
+    // Can't move piece into reveal check
+}
