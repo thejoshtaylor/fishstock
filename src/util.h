@@ -14,7 +14,8 @@ class Util
 {
 public:
     static void printBoard(Board *board);
-    static Board::Position pos(std::string pos);
+    static Board::Position pos(std::string str);
+    static std::string str(Board::Position pos);
 };
 
 #endif

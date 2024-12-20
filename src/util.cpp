@@ -30,15 +30,26 @@ void Util::printBoard(Board *board)
     fmt::print("\n");
 }
 
-Board::Position Util::pos(std::string pos)
+Board::Position Util::pos(std::string str)
 {
-    if (pos.length() != 2)
+    if (str.length() != 2)
     {
         throw std::invalid_argument("Invalid position");
     }
-    if (pos[0] < 'a' || pos[0] > 'h' || pos[1] < '1' || pos[1] > '8')
+    if (str[0] < 'a' || str[0] > 'h' || str[1] < '1' || str[1] > '8')
     {
         throw std::invalid_argument("Position out of bounds");
     }
-    return (Board::Position){pos[1] - '1', pos[0] - 'a'};
+    return (Board::Position){str[1] - '1', str[0] - 'a'};
+}
+
+std::string Util::str(Board::Position pos)
+{
+    if (pos.row > 8 || pos.col > 8)
+    {
+        throw std::invalid_argument("Position out of bounds");
+    }
+    char c = pos.col + 'a';
+    char r = pos.row + '1';
+    return std::string() + c + r;
 }
