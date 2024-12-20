@@ -6,6 +6,7 @@
 
 #include <fmt/core.h>
 #include <fmt/color.h>
+#include <string>
 
 class Board;
 
@@ -13,6 +14,7 @@ class Util
 {
 public:
     static void printBoard(Board *board);
+    static Board::Position pos(std::string pos);
 };
 
 #endif
