@@ -31,6 +31,8 @@ FetchContent_Declare(fmt
 )
 FetchContent_MakeAvailable(fmt)
 
+include(CTest)
+
 include_directories(include)
 
 include_directories(${FISHSTOCK_INCLUDE_DIR})

@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.22)
 project(fishstock_tests)
 
 # Enable cmake testing
-include(CTest)
 enable_testing()
 
 include(GoogleTest)
