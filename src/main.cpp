@@ -10,11 +10,11 @@ int main() {
 
     Board board = Board();
     Util::printBoard(&board);
-    board.move(1, 1, 3, 1);
+    board.move((Board::Position){1, 1}, (Board::Position){3, 1});
     Util::printBoard(&board);
-    board.move(6, 2, 4, 2);
+    board.move((Board::Position){6, 2}, (Board::Position){4, 2});
     Util::printBoard(&board);
-    board.move(3, 1, 4, 2);
+    board.move((Board::Position){3, 1}, (Board::Position){4, 2});
     Util::printBoard(&board);
 
     return 0;
