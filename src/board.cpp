@@ -208,22 +208,26 @@ void Board::promotePawn(Position pos, PieceType pieceType)
 }
 
 // add a piece to a custom board
- void Board::addPiece(Position pos, PieceType pieceType)
+ void Board::addPiece(Position pos, uint8_t pieceID)
 {
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
     {
         throw invalid_argument("Invalid pos.row or column");
     }
-    board[pos.row][pos.col] = 32;
-
-
-
+    board[pos.row][pos.col] = pieceID;
 }
 
 
 
 
-void setTurn();
+void Board::setTurn(Color turnColor)
+{
+    if (turnColor == Color::EMPTY)
+    {
+        throw invalid_argument("bad color input");
+    } 
+    this->turn = turnColor;
+}
 
 
 
