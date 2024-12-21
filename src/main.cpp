@@ -8,14 +8,9 @@
 int main() {
     std::cout << "Hello, Fishstock!" << std::endl;
 
-    Board board = Board();
+    Board board = Board(true);
     Util::printBoard(&board);
-    board.move((Board::Position){1, 1}, (Board::Position){3, 1});
+    board.addPiece((Board::Position){3,3},0);
     Util::printBoard(&board);
-    board.move((Board::Position){6, 2}, (Board::Position){4, 2});
-    Util::printBoard(&board);
-    board.move((Board::Position){3, 1}, (Board::Position){4, 2});
-    Util::printBoard(&board);
-
     return 0;
 }

@@ -42,7 +42,7 @@ public:
     bool checkEnPassant(Position pos);
     void promotePawn(Position pos, PieceType pieceType);
     void addPiece(Position pos, uint8_t pieceID);
-    void setTurn(Color turnColor);
+    void setTurn(Color turnC);
     void removePiece(Position pos);
     bool isValidMove(Position from, Position to);
     void move(Position from, Position to);
