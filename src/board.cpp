@@ -5,41 +5,78 @@
 
 using namespace std;
 
-Board::Board()
+Board::Board(bool isblank)
 {
-    turn = Color::WHITE;
 
-    canCastle[0][0] = true;
-    canCastle[0][1] = true;
-    canCastle[1][0] = true;
-    canCastle[1][1] = true;
-    for (int i = 0; i < 8; i++)
+    if (!isblank)
     {
-        canEnPassant[0][i] = false;
-        canEnPassant[1][i] = false;
-    }
-    for (int i = 0; i < 8; i++)
-    {
-        pawnPromote[0][i] = PieceType::PAWN;
-        pawnPromote[1][i] = PieceType::PAWN;
-    }
+        turn = Color::WHITE;
 
-    // Board layout is from a1 to h8 and the value is the piece index
-    for (int i = 0; i < 8; i++)
-    {
-        // White pieces
-        board[0][i] = i;
-        board[1][i] = i + 8;
-
-        // Black pieces
-        board[7][i] = i + 16;
-        board[6][i] = i + 24;
-
-        // Empty spaces
-        for (int j = 2; j < 6; j++)
+        canCastle[0][0] = true;
+        canCastle[0][1] = true;
+        canCastle[1][0] = true;
+        canCastle[1][1] = true;
+        for (int i = 0; i < 8; i++)
         {
-            board[j][i] = 32;
+            canEnPassant[0][i] = false;
+            canEnPassant[1][i] = false;
         }
+        for (int i = 0; i < 8; i++)
+        {
+            pawnPromote[0][i] = PieceType::PAWN;
+            pawnPromote[1][i] = PieceType::PAWN;
+        }
+
+        // Board layout is from a1 to h8 and the value is the piece index
+        for (int i = 0; i < 8; i++)
+        {
+            // White pieces
+            board[0][i] = i;
+            board[1][i] = i + 8;
+
+            // Black pieces
+            board[7][i] = i + 16;
+            board[6][i] = i + 24;
+
+            // Empty spaces
+            for (int j = 2; j < 6; j++)
+            {
+                board[j][i] = 32;
+            }
+        }
+    }
+    else
+    {
+
+        turn = Color::WHITE;
+
+        canCastle[0][0] = false;
+        canCastle[0][1] = false;
+        canCastle[1][0] = false;
+        canCastle[1][1] = false;
+        for (int i = 0; i < 8; i++)
+        {
+            canEnPassant[0][i] = false;
+            canEnPassant[1][i] = false;
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            pawnPromote[0][i] = PieceType::PAWN;
+            pawnPromote[1][i] = PieceType::PAWN;
+        }
+
+        //making an empty array
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                board[j][i] = 32;
+            }
+        }
+
+
+
+
     }
 }
 
@@ -169,6 +206,28 @@ void Board::promotePawn(Position pos, PieceType pieceType)
     // Promote the pawn
     pawnPromote[piece < 16][piece % 8] = pieceType;
 }
+
+// add a piece to a custom board
+ void Board::addPiece(Position pos, PieceType pieceType)
+{
+    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    {
+        throw invalid_argument("Invalid pos.row or column");
+    }
+    board[pos.row][pos.col] = 32;
+
+
+
+}
+
+
+
+
+void setTurn();
+
+
+
+
 
 // Remove a piece from the board
 void Board::removePiece(Position pos)

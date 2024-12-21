@@ -134,6 +134,11 @@ TEST_F(BoardTest, RookMoveTest)
 //
 TEST_F(BoardTest, KnightMoveTest)
 {
+
+
+
+
+    
     // Move up 2 left 1
     // Move up 2 right 1
     // Move down 2 left 1

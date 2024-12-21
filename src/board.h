@@ -34,13 +34,15 @@ public:
         uint8_t col;
     };
 
-    Board();
+    Board(bool isblank = false);
 
     char getPieceLetter(Position pos);
     Color getPieceColor(Position pos);
     void setEnPassant(Position pos);
     bool checkEnPassant(Position pos);
     void promotePawn(Position pos, PieceType pieceType);
+    void addPiece(Position pos, PieceType pieceType);
+    void setTurn();
     void removePiece(Position pos);
     bool isValidMove(Position from, Position to);
     void move(Position from, Position to);
