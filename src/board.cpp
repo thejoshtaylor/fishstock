@@ -43,6 +43,47 @@ Board::Board()
     }
 }
 
+
+Board::Board( std::vector<Position> piecePosistions)
+{
+    turn = Color::WHITE;
+
+    canCastle[0][0] = true;
+    canCastle[0][1] = true;
+    canCastle[1][0] = true;
+    canCastle[1][1] = true;
+    for (int i = 0; i < 8; i++)
+    {
+        canEnPassant[0][i] = false;
+        canEnPassant[1][i] = false;
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        pawnPromote[0][i] = PieceType::PAWN;
+        pawnPromote[1][i] = PieceType::PAWN;
+    }
+
+    // Board layout is from a1 to h8 and the value is the piece index
+    for (int i = 0; i < 8; i++)
+    {
+        // White pieces
+        board[0][i] = i;
+        board[1][i] = i + 8;
+
+        // Black pieces
+        board[7][i] = i + 16;
+        board[6][i] = i + 24;
+
+        // Empty spaces
+        for (int j = 2; j < 6; j++)
+        {
+            board[j][i] = 32;
+        }
+    }
+}
+
+
+
 char Board::getPieceLetter(Position pos)
 {
     // Validate the pos.row and column
