@@ -35,6 +35,7 @@ public:
     };
 
     Board();
+    Board(std::vector<Position> piecePosistions);
 
     char getPieceLetter(Position pos);
     Color getPieceColor(Position pos);
