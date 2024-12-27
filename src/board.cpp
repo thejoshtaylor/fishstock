@@ -44,7 +44,7 @@ Board::Board()
 }
 
 
-Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[], bool canEnPassantMapping[], Color playerTurn)
+Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[], bool canEnPassantMapping[],  PieceType pawnPromoteMapping[], Color playerTurn)
 {
 
     if (playerTurn != Color::EMPTY)
@@ -55,13 +55,13 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     turn = playerTurn;
 
 
-    int startIndex = 0; 
+    int index = 0; 
     for (int row = 0; row < 2; ++row)
     {
         for (int col = 0; col < 2; ++col)
         {
-            canCastle[col][row] = canCastleMapping[startIndex];
-            ++startIndex;
+            canCastle[row][col] = canCastleMapping[index];
+            ++index;
 
         }
 
@@ -69,13 +69,13 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     }
     
 
-    int startIndex = 0; 
+    index = 0; 
     for (int row = 0; row < 2; ++row)
     {
-        for (int col = 0; col < 2; ++col)
+        for (int col = 0; col < 8; ++col)
         {
-            canEnPassant[col][row] = canEnPassantMapping[startIndex];
-            ++startIndex;
+            canEnPassant[row][col] = canEnPassantMapping[index];
+            ++index;
 
         }
 
@@ -83,13 +83,17 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     }
 
 
-
-
-    for (int i = 0; i < 8; i++)
+    for (int row = 0; row < 2; ++row)
     {
-        pawnPromote[0][i] = PieceType::PAWN;
-        pawnPromote[1][i] = PieceType::PAWN;
+        for (int col = 0; col < 8; ++col)
+       {
+            pawnPromote[row][col] = pawnPromoteMapping[index];
+            ++index;
+        
+       }
+
     }
+   
 
     // Board layout is from a1 to h8 and the value is the piece index
     for (int i = 0; i < 8; i++)
