@@ -44,19 +44,47 @@ Board::Board()
 }
 
 
-Board::Board( std::vector<Position> piecePosistions)
+Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[], bool canEnPassantMapping[], Color playerTurn)
 {
-    turn = Color::WHITE;
 
-    canCastle[0][0] = true;
-    canCastle[0][1] = true;
-    canCastle[1][0] = true;
-    canCastle[1][1] = true;
-    for (int i = 0; i < 8; i++)
+    if (playerTurn != Color::EMPTY)
     {
-        canEnPassant[0][i] = false;
-        canEnPassant[1][i] = false;
+        throw invalid_argument("Invalid player turn");
     }
+
+    turn = playerTurn;
+
+
+    int startIndex = 0; 
+    for (int row = 0; row < 2; ++row)
+    {
+        for (int col = 0; col < 2; ++col)
+        {
+            canCastle[col][row] = canCastleMapping[startIndex];
+            ++startIndex;
+
+        }
+
+
+    }
+    
+
+    int startIndex = 0; 
+    for (int row = 0; row < 2; ++row)
+    {
+        for (int col = 0; col < 2; ++col)
+        {
+            canEnPassant[col][row] = canEnPassantMapping[startIndex];
+            ++startIndex;
+
+        }
+
+
+    }
+
+
+
+
     for (int i = 0; i < 8; i++)
     {
         pawnPromote[0][i] = PieceType::PAWN;

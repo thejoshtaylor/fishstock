@@ -34,8 +34,17 @@ public:
         uint8_t col;
     };
 
+
+    struct pieceLocationInput
+    {
+        Position piecePos;
+        PieceType pieceKind;
+        Color PieceColor;
+    };
+
+
     Board();
-    Board(std::vector<Position> piecePosistions);
+    Board(const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[],bool canEnPassantMapping[], Color playerTurn);
 
     char getPieceLetter(Position pos);
     Color getPieceColor(Position pos);
