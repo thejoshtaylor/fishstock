@@ -101,10 +101,10 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     }
     else{
 
-        canCastle[0][0] = true;
-        canCastle[0][1] = true;
-        canCastle[1][0] = true;
-        canCastle[1][1] = true;
+        canCastle[0][0] = false;
+        canCastle[0][1] = false;
+        canCastle[1][0] = false;
+        canCastle[1][1] = false;
         for (int i = 0; i < 8; i++)
         {
             canEnPassant[0][i] = false;
