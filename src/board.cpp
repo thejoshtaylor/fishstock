@@ -49,7 +49,7 @@ Board::Board()
 Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[], bool canEnPassantMapping[],  PieceType pawnPromoteMapping[], Color playerTurn)
 {
 
-    if (playerTurn != Color::EMPTY)
+    if (playerTurn == Color::EMPTY)
     {
         throw invalid_argument("Invalid player turn");
     }
@@ -136,10 +136,8 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     {
 
         std::vector<uint8_t> possibleIDs = reversePieceLookup(currentPieceToAdd->pieceKind,currentPieceToAdd->PieceColor);
-
         for (auto i = possibleIDs.begin(); i != possibleIDs.end(); ++i)
         {
-            std::cout << *i << std::endl;
         }
 
 
@@ -297,7 +295,7 @@ void Board::removePiece(Position pos)
 // add a piece to the board, should only be used in the constructor for blank boards
  void Board::addPiece(const pieceLocationInput& inputPiece)
  {
-
+    //work to be done
  }
 
 
@@ -326,30 +324,32 @@ std::vector<uint8_t> Board::reversePieceLookup(PieceType PieceInput ,Color Piece
         output.push_back(7 + (16 * isBlackPiece));
     }
 
-if (PieceInput == PieceType::KNIGHT)
-    {
-        output.push_back(1 + (16 * isBlackPiece));
-        output.push_back(6 + (16 * isBlackPiece));
-    }
+    if (PieceInput == PieceType::KNIGHT)
+        {
+            output.push_back(1 + (16 * isBlackPiece));
+            output.push_back(6 + (16 * isBlackPiece));
+        }
 
-if (PieceInput == PieceType::BISHOP)
-    {
-        output.push_back(2 + (16 * isBlackPiece));
-        output.push_back(5 + (16 * isBlackPiece));
-    }
-   
+    if (PieceInput == PieceType::BISHOP)
+        {
+            output.push_back(2 + (16 * isBlackPiece));
+            output.push_back(5 + (16 * isBlackPiece));
+        }
+    
 
-if (PieceInput == PieceType::QUEEN)
-    {
-        output.push_back(3 + (16 * isBlackPiece));
-    }
+    if (PieceInput == PieceType::QUEEN)
+        {
+            output.push_back(3 + (16 * isBlackPiece));
+        }
 
 
 
-if (PieceInput == PieceType::KING)
-    {
-        output.push_back(4 + (16 * isBlackPiece));
-    }
+    if (PieceInput == PieceType::KING)
+        {
+            output.push_back(4 + (16 * isBlackPiece));
+        }
+
+return output;
 
 
 } 
