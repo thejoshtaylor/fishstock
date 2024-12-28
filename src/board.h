@@ -44,7 +44,7 @@ public:
 
 
     Board();
-    Board(const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[],bool canEnPassantMapping[], Color playerTurn);
+    Board(const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[],bool canEnPassantMapping[], PieceType pawnPromoteMapping[], Color playerTurn);
 
     char getPieceLetter(Position pos);
     Color getPieceColor(Position pos);
@@ -62,6 +62,8 @@ private:
     bool canEnPassant[2][8];
     PieceType pawnPromote[2][8];
 
+    void addPiece(const pieceLocationInput& inputPiece);
+    std::vector<uint8_t> reversePieceLookup(PieceType PieceInput, Color PieceColor); // does the opposite of getPieceType, takes a piece kind and gives possible id's  
     PieceType getPieceType(uint8_t piece);
 };
 

@@ -82,7 +82,7 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
 
     }
 
-
+    index = 0;
     for (int row = 0; row < 2; ++row)
     {
         for (int col = 0; col < 8; ++col)
@@ -95,23 +95,16 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     }
    
 
-    // Board layout is from a1 to h8 and the value is the piece index
-    for (int i = 0; i < 8; i++)
+    // making an empty board so we can populate it with pieces from our input vector
+    for (int row = 0; row < 8; row++)
     {
-        // White pieces
-        board[0][i] = i;
-        board[1][i] = i + 8;
-
-        // Black pieces
-        board[7][i] = i + 16;
-        board[6][i] = i + 24;
-
         // Empty spaces
-        for (int j = 2; j < 6; j++)
+        for (int col = 0; col < 8; col++)
         {
-            board[j][i] = 32;
+            board[row][col] = 32;
         }
     }
+
 }
 
 
@@ -255,6 +248,28 @@ void Board::removePiece(Position pos)
     // Remove the piece
     board[pos.row][pos.col] = 32;
 }
+
+
+
+// add a piece to the board, should only be used in the constructor for blank boards
+ void Board::addPiece(const pieceLocationInput& inputPiece)
+ {
+
+ }
+
+
+std::vector<uint8_t> Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor) // does the opposite of getPieceType, takes a piece kind and gives possible id's  
+{
+    std::vector <uint8_t> output;
+
+    
+
+
+
+
+
+} 
+
 
 // Get the type of a piece from its ID
 Board::PieceType Board::getPieceType(uint8_t pieceId)
