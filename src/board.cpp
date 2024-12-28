@@ -307,47 +307,47 @@ std::vector<uint8_t> Board::reversePieceLookup(PieceType PieceInput ,Color Piece
     } 
 
     std::vector <uint8_t> output;
-    bool isBlackPiece = (PieceColor == Color::BLACK);
+    bool isWhite = (PieceColor == Color::WHITE);
 
     if (PieceInput == PieceType::PAWN)
     {
         for (int i = 0; i < 8; ++i)
         {
-            output.push_back(i + (16 * isBlackPiece)); // if it is a black piece just add 16 to the id you would add if it was a white piece
+            output.push_back( isWhite ? i : i + 16); // if it is a black piece just add 16 to the id you would add if it was a white piece
 
         }
     }
 
     if (PieceInput == PieceType::ROOK)
     {
-        output.push_back(0 + (16 * isBlackPiece));
-        output.push_back(7 + (16 * isBlackPiece));
+        output.push_back(isWhite ? 0 : 16);
+        output.push_back(isWhite ? 7 : 23);
     }
 
     if (PieceInput == PieceType::KNIGHT)
-        {
-            output.push_back(1 + (16 * isBlackPiece));
-            output.push_back(6 + (16 * isBlackPiece));
-        }
+    {
+        output.push_back(isWhite ? 1 : 17);
+        output.push_back(isWhite ? 6 : 22);
+    }
 
     if (PieceInput == PieceType::BISHOP)
-        {
-            output.push_back(2 + (16 * isBlackPiece));
-            output.push_back(5 + (16 * isBlackPiece));
-        }
+    {
+        output.push_back(isWhite ? 2 : 17);
+        output.push_back(isWhite ? 5 : 21);
+    }
     
 
     if (PieceInput == PieceType::QUEEN)
-        {
-            output.push_back(3 + (16 * isBlackPiece));
-        }
+    {
+        output.push_back(isWhite ? 3 : 19);
+    }
 
 
 
     if (PieceInput == PieceType::KING)
-        {
-            output.push_back(4 + (16 * isBlackPiece));
-        }
+    {
+        output.push_back(isWhite ? 4 : 20);
+    }
 
 return output;
 
