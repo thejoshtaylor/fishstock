@@ -44,6 +44,8 @@ Board::Board()
 }
 
 
+
+
 Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[], bool canEnPassantMapping[],  PieceType pawnPromoteMapping[], Color playerTurn)
 {
 
@@ -104,6 +106,22 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
             board[row][col] = 32;
         }
     }
+
+    for (auto currentPieceToAdd = piecePosistions.begin(); currentPieceToAdd != piecePosistions.end(); ++currentPieceToAdd)
+    {
+
+        std::vector<uint8_t> possibleIDs = reversePieceLookup(currentPieceToAdd->pieceKind,currentPieceToAdd->PieceColor);
+
+        for (auto i = possibleIDs.begin(); i != possibleIDs.end(); ++i)
+        {
+            //std::cout << *i << std::endl;
+        }
+
+
+    }
+
+
+
 
 }
 

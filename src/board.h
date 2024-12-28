@@ -7,6 +7,8 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
+#include <iostream>
+
 
 class Board
 {
