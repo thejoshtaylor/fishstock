@@ -260,12 +260,53 @@ void Board::removePiece(Position pos)
 
 std::vector<uint8_t> Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor) // does the opposite of getPieceType, takes a piece kind and gives possible id's  
 {
+    if ( PieceColor == Color::EMPTY)
+    {
+        throw invalid_argument ("bad piece color!");
+    } 
+
     std::vector <uint8_t> output;
+    bool isBlackPiece = (PieceColor == Color::BLACK);
 
-    
+    if (PieceInput == PieceType::PAWN)
+    {
+        for (int i = 0; i < 8; ++i)
+        {
+            output.push_back(i + (16 * isBlackPiece)); // if it is a black piece just add 16 to the id you would add if it was a white piece
+
+        }
+    }
+
+    if (PieceInput == PieceType::ROOK)
+    {
+        output.push_back(0 + (16 * isBlackPiece));
+        output.push_back(7 + (16 * isBlackPiece));
+    }
+
+if (PieceInput == PieceType::KNIGHT)
+    {
+        output.push_back(1 + (16 * isBlackPiece));
+        output.push_back(6 + (16 * isBlackPiece));
+    }
+
+if (PieceInput == PieceType::BISHOP)
+    {
+        output.push_back(2 + (16 * isBlackPiece));
+        output.push_back(5 + (16 * isBlackPiece));
+    }
+   
+
+if (PieceInput == PieceType::QUEEN)
+    {
+        output.push_back(3 + (16 * isBlackPiece));
+    }
 
 
 
+if (PieceInput == PieceType::KING)
+    {
+        output.push_back(4 + (16 * isBlackPiece));
+    }
 
 
 } 
