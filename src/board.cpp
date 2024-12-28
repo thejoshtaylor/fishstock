@@ -57,7 +57,10 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     turn = playerTurn;
 
 
-    int index = 0; 
+    if (canCastleMapping != nullptr && canEnPassant != nullptr && pawnPromoteMapping != nullptr)
+    {
+
+        int index = 0; 
     for (int row = 0; row < 2; ++row)
     {
         for (int col = 0; col < 2; ++col)
@@ -95,6 +98,28 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
        }
 
     }
+    }
+    else{
+
+        canCastle[0][0] = true;
+        canCastle[0][1] = true;
+        canCastle[1][0] = true;
+        canCastle[1][1] = true;
+        for (int i = 0; i < 8; i++)
+        {
+            canEnPassant[0][i] = false;
+            canEnPassant[1][i] = false;
+        }
+        for (int i = 0; i < 8; i++)
+        {
+            pawnPromote[0][i] = PieceType::PAWN;
+            pawnPromote[1][i] = PieceType::PAWN;
+        }
+
+
+
+    }
+    
    
 
     // making an empty board so we can populate it with pieces from our input vector
@@ -114,7 +139,7 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
 
         for (auto i = possibleIDs.begin(); i != possibleIDs.end(); ++i)
         {
-            //std::cout << *i << std::endl;
+            std::cout << *i << std::endl;
         }
 
 
