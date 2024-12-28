@@ -46,7 +46,7 @@ Board::Board()
 
 
 
-Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[], bool canEnPassantMapping[],  PieceType pawnPromoteMapping[], Color playerTurn)
+Board::Board(const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[], bool canEnPassantMapping[],  PieceType pawnPromoteMapping[], Color playerTurn)
 {
 
     if (playerTurn == Color::EMPTY)
@@ -135,10 +135,6 @@ Board::Board( const std::vector<pieceLocationInput>& piecePosistions, bool canCa
     for (auto currentPieceToAdd = piecePosistions.begin(); currentPieceToAdd != piecePosistions.end(); ++currentPieceToAdd)
     {
 
-        std::vector<uint8_t> possibleIDs = reversePieceLookup(currentPieceToAdd->pieceKind,currentPieceToAdd->PieceColor);
-        for (auto i = possibleIDs.begin(); i != possibleIDs.end(); ++i)
-        {
-        }
 
 
     }
@@ -295,62 +291,82 @@ void Board::removePiece(Position pos)
 // add a piece to the board, should only be used in the constructor for blank boards
  void Board::addPiece(const pieceLocationInput& inputPiece)
  {
-    //work to be done
+    
+    
+    uint8_t idsArray[8] = {-1,-1,-1,-1,-1,-1,-1,-1};
+    
+    
+    reversePieceLookup(inputPiece.pieceKind, inputPiece.PieceColor,idsArray);
+
+
+
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+    {
+
+       
+    }
+    }
  }
 
 
-std::vector<uint8_t> Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor) // does the opposite of getPieceType, takes a piece kind and gives possible id's  
+void Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t outputArray[]) // does the opposite of getPieceType, takes a piece kind and gives possible id's  
 {
     if ( PieceColor == Color::EMPTY)
     {
         throw invalid_argument ("bad piece color!");
     } 
-
-    std::vector <uint8_t> output;
+    int index = 0;
     bool isWhite = (PieceColor == Color::WHITE);
 
     if (PieceInput == PieceType::PAWN)
     {
         for (int i = 0; i < 8; ++i)
         {
-            output.push_back( isWhite ? i : i + 16); // if it is a black piece just add 16 to the id you would add if it was a white piece
-
+            outputArray[index] = ( isWhite ? i : i + 16); // if it is a black piece just add 16 to the id you would add if it was a white piece
+            ++index;
         }
     }
 
     if (PieceInput == PieceType::ROOK)
     {
-        output.push_back(isWhite ? 0 : 16);
-        output.push_back(isWhite ? 7 : 23);
+        outputArray[index] = (isWhite ? 0 : 16);
+        ++index;
+        outputArray[index] = (isWhite ? 7 : 23);
+        ++index;
     }
 
     if (PieceInput == PieceType::KNIGHT)
     {
-        output.push_back(isWhite ? 1 : 17);
-        output.push_back(isWhite ? 6 : 22);
+        outputArray[index] = (isWhite ? 1 : 17);
+        ++index;
+        outputArray[index] = (isWhite ? 6 : 22);
+        ++index;
     }
 
     if (PieceInput == PieceType::BISHOP)
     {
-        output.push_back(isWhite ? 2 : 17);
-        output.push_back(isWhite ? 5 : 21);
+        outputArray[index] = (isWhite ? 2 : 17);
+        ++index;
+        outputArray[index] = (isWhite ? 5 : 21);
+        ++index;
     }
     
 
     if (PieceInput == PieceType::QUEEN)
     {
-        output.push_back(isWhite ? 3 : 19);
+        outputArray[index] = (isWhite ? 3 : 19);
+        ++index;
     }
 
 
 
     if (PieceInput == PieceType::KING)
     {
-        output.push_back(isWhite ? 4 : 20);
+        outputArray[index] = (isWhite ? 4 : 20);
+        ++index;
     }
-
-return output;
-
 
 } 
 
