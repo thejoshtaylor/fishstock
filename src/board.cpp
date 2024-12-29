@@ -132,10 +132,10 @@ Board::Board(const std::vector<pieceLocationInput>& piecePosistions, bool canCas
         }
     }
 
-    for (auto currentPieceToAdd = piecePosistions.begin(); currentPieceToAdd != piecePosistions.end(); ++currentPieceToAdd)
+    for (std::vector<pieceLocationInput>::const_iterator currentPieceToAdd = piecePosistions.begin(); currentPieceToAdd != piecePosistions.end(); ++currentPieceToAdd)
     {
 
-
+            addPiece(*currentPieceToAdd);
 
     }
 
@@ -291,8 +291,6 @@ void Board::removePiece(Position pos)
 // add a piece to the board, should only be used in the constructor for blank boards
  void Board::addPiece(const pieceLocationInput& inputPiece)
  {
-    
-
     if (inputPiece.PieceColor == Color::EMPTY)
         throw invalid_argument("bad color for added piece");
 
@@ -331,9 +329,6 @@ void Board::removePiece(Position pos)
 
 
     board[inputPiece.piecePos.row][inputPiece.piecePos.row] = idsArray[currentIDIndex];
-
-
-    
  }
 
 

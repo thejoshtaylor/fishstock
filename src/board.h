@@ -24,7 +24,7 @@ public:
         KING
     };
 
-    enum class Color    // shit nigger code
+    enum class Color    
     {
         EMPTY,
         WHITE,
