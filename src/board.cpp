@@ -292,26 +292,52 @@ void Board::removePiece(Position pos)
  void Board::addPiece(const pieceLocationInput& inputPiece)
  {
     
+
+    if (inputPiece.PieceColor == Color::EMPTY)
+        throw invalid_argument("bad color for added piece");
+
+    if (board[inputPiece.piecePos.row][inputPiece.piecePos.col] != 32)
+        throw invalid_argument("trying to add piece to a non empty square");
+
+    // array that will contain a list of all possible ids for a specific pieceKind/Color combination. I am giving it a size of nine so that if we get to the end it spits out a -1
+    uint8_t idsArray[9] = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
     
-    uint8_t idsArray[8] = {-1,-1,-1,-1,-1,-1,-1,-1};
     
-    
-    reversePieceLookup(inputPiece.pieceKind, inputPiece.PieceColor,idsArray);
+    int size = reversePieceLookup(inputPiece.pieceKind, inputPiece.PieceColor,idsArray);
+
+    int currentIDIndex = 0; // index pointing to the id we think is not taken
 
 
-
+    // going through the whole board array
     for (int row = 0; row < 8; ++row)
     {
         for (int col = 0; col < 8; ++col)
     {
 
-       
+        // checking if our possible id's array contains the id of this square
+        for (int loopCount = 0; loopCount < size; ++loopCount)
+        {
+            if (board[row][col] == idsArray[loopCount])
+            {
+                ++currentIDIndex;
+                break;
+            }
+        }
     }
     }
+
+    if (idsArray[currentIDIndex] == -1)
+        throw invalid_argument("no available id for added piece");
+
+
+    board[inputPiece.piecePos.row][inputPiece.piecePos.row] = idsArray[currentIDIndex];
+
+
+    
  }
 
 
-void Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t outputArray[]) // does the opposite of getPieceType, takes a piece kind and gives possible id's  
+int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t outputArray[]) // does the opposite of getPieceType, takes a piece kind and gives possible id's  
 {
     if ( PieceColor == Color::EMPTY)
     {
@@ -335,6 +361,7 @@ void Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t o
         ++index;
         outputArray[index] = (isWhite ? 7 : 23);
         ++index;
+
     }
 
     if (PieceInput == PieceType::KNIGHT)
@@ -343,6 +370,7 @@ void Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t o
         ++index;
         outputArray[index] = (isWhite ? 6 : 22);
         ++index;
+
     }
 
     if (PieceInput == PieceType::BISHOP)
@@ -351,6 +379,7 @@ void Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t o
         ++index;
         outputArray[index] = (isWhite ? 5 : 21);
         ++index;
+
     }
     
 
@@ -358,6 +387,7 @@ void Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t o
     {
         outputArray[index] = (isWhite ? 3 : 19);
         ++index;
+
     }
 
 
@@ -366,7 +396,10 @@ void Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t o
     {
         outputArray[index] = (isWhite ? 4 : 20);
         ++index;
+
     }
+
+    return index + 1; //returning the size of the array we added
 
 } 
 

@@ -79,7 +79,7 @@ private:
     /// @brief does the opposite of getPieceType, takes a PieceType enum and gives out a vector of possible id's
     /// @param PieceInput PieceType input
     /// @param PieceColor Color for the piece
-    void reversePieceLookup(PieceType PieceInput, Color PieceColor, uint8_t outputArray[]); // does the opposite of getPieceType, takes a piece kind and gives possible id's  
+    int reversePieceLookup(PieceType PieceInput, Color PieceColor, uint8_t outputArray[]); // does the opposite of getPieceType, takes a piece kind and gives possible id's  
     PieceType getPieceType(uint8_t piece);
 };
 
