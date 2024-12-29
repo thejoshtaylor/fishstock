@@ -50,11 +50,12 @@ public:
 
     
 /// @brief makes a blank board and adds a list of pieces described in a vector to it. It also sets all the different castling and passant flags. If you provide nullpointers to 
-///        all three array inputs it will set all the castle and passant stuff to false 
+///        all three array inputs it will set all the castle and passant stuff to false. dependent on addPiece, which is dependent on reversePieceLookup. throws errors if you give
+///        a bad Color to playerTurn, or if your picePosistions vector is bad (bad color for a piece, or trying to add a piece on top of another piece)
 /// @param piecePosistions vector of a struct that takes in a pos struct, a piece type, and a piece color.
 /// @param canCastleMapping 2 by 2 array of bools
 /// @param canEnPassantMapping 2 by 8 array of bools
-/// @param pawnPromoteMapping 2 by 8 array of piece types, from the mind of josh, hate it
+/// @param pawnPromoteMapping 2 by 8 array of piece types, from the mind of josh, hate it.
 /// @param playerTurn Color enum
     Board(const std::vector<pieceLocationInput>& piecePosistions, bool canCastleMapping[],bool canEnPassantMapping[], PieceType pawnPromoteMapping[], Color playerTurn);
 
@@ -75,10 +76,17 @@ private:
     PieceType pawnPromote[2][8];
 
 
+    /// @brief makes use of reversePieceLookup, goes through the whole board looking for id's that have already been taken, and finds an id that is not reserved yet if one exists.
+    ///        throws an error if none exists. also throws an error if you try to add a piece on top of an existing piece.
+    /// @param inputPiece const reference to a pieceLocationInput struct, to make one you need a Color, Pos, and PieceType.
     void addPiece(const pieceLocationInput& inputPiece);
-    /// @brief does the opposite of getPieceType, takes a PieceType enum and gives out a vector of possible id's
-    /// @param PieceInput PieceType input
-    /// @param PieceColor Color for the piece
+
+
+    /// @brief does the opposite of getPieceType, given a PieceType and color it fills a given array with possible id's. output size ranges from 1 to 8, given array has to be size 9
+    /// @param PieceInput type of the piece
+    /// @param PieceColor color of the piece
+    /// @param outputArray has to be a size 9 array of -1's
+    /// @return size of the list of numbers it adds to outputArray
     int reversePieceLookup(PieceType PieceInput, Color PieceColor, uint8_t outputArray[]); // does the opposite of getPieceType, takes a piece kind and gives possible id's  
     PieceType getPieceType(uint8_t piece);
 };
