@@ -298,7 +298,7 @@ void Board::removePiece(Position pos)
         throw invalid_argument("trying to add piece to a non empty square");
 
     // array that will contain a list of all possible ids for a specific pieceKind/Color combination. I am giving it a size of nine so that if we get to the end it spits out a -1
-    uint8_t idsArray[9] = {-1,-1,-1,-1,-1,-1,-1,-1,-1};
+    uint8_t idsArray[9] = {32,32,32,32,32,32,32,32,32};
     
     
     int size = reversePieceLookup(inputPiece.pieceKind, inputPiece.PieceColor,idsArray);
@@ -317,18 +317,18 @@ void Board::removePiece(Position pos)
         {
             if (board[row][col] == idsArray[loopCount])
             {
-                ++currentIDIndex;
+                idsArray[loopCount] = 32;
                 break;
             }
         }
     }
     }
 
-    if (idsArray[currentIDIndex] == -1)
+    if (idsArray[currentIDIndex] == 32)
         throw invalid_argument("no available id for added piece");
 
 
-    board[inputPiece.piecePos.row][inputPiece.piecePos.row] = idsArray[currentIDIndex];
+    board[inputPiece.piecePos.row][inputPiece.piecePos.col] = idsArray[currentIDIndex];
  }
 
 

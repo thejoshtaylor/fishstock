@@ -9,14 +9,24 @@ int main() {
     std::cout << "Hello, Fishstock!" << std::endl;
 
 
-    Board board = Board();
+    std::vector<Board::pieceLocationInput> pieceVector;
+
+    Board::pieceLocationInput tempPiece;
+
+    tempPiece.PieceColor = Board::Color::WHITE;
+    tempPiece.pieceKind = Board::PieceType::KNIGHT;
+    tempPiece.piecePos.row = 4;
+    tempPiece.piecePos.col = 6;
+
+    pieceVector.push_back(tempPiece);
+
+
+
+
+
+    Board board = Board(pieceVector,nullptr , nullptr, nullptr,Board::Color::WHITE);
+
     
-    Util::printBoard(&board);
-    board.move((Board::Position){1, 1}, (Board::Position){3, 1});
-    Util::printBoard(&board);
-    board.move((Board::Position){6, 2}, (Board::Position){4, 2});
-    Util::printBoard(&board);
-    board.move((Board::Position){3, 1}, (Board::Position){4, 2});
     Util::printBoard(&board);
 
     return 0;
