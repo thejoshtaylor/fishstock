@@ -11,14 +11,14 @@ int main() {
 
     std::vector<Board::pieceLocationInput> pieceVector;
 
-    Board::pieceLocationInput tempPiece;
+    //Board::pieceLocationInput tempPiece = {Board::Position{6,4},Board::PieceType::ROOK,Board::Color::BLACK};
 
-    tempPiece.PieceColor = Board::Color::WHITE;
-    tempPiece.pieceKind = Board::PieceType::KNIGHT;
-    tempPiece.piecePos.row = 4;
-    tempPiece.piecePos.col = 6;
+    
 
-    pieceVector.push_back(tempPiece);
+    pieceVector.push_back({Board::Position{6,4},Board::PieceType::ROOK,Board::Color::BLACK});
+    pieceVector.push_back({Board::Position{5,4},Board::PieceType::ROOK,Board::Color::BLACK});
+    pieceVector.push_back({Board::Position{3,4},Board::PieceType::KING,Board::Color::BLACK});
+    pieceVector.push_back({Board::Position{3,2},Board::PieceType::KING,Board::Color::WHITE});
 
 
 

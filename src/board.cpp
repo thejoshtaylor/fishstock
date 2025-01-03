@@ -324,6 +324,18 @@ void Board::removePiece(Position pos)
     }
     }
 
+
+    for (currentIDIndex; currentIDIndex < size; ++currentIDIndex)
+    {
+
+        if (idsArray[currentIDIndex] != 32)
+        {
+            break;
+        }
+
+
+    }
+
     if (idsArray[currentIDIndex] == 32)
         throw invalid_argument("no available id for added piece");
 
@@ -339,40 +351,40 @@ int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t ou
         throw invalid_argument ("bad piece color!");
     } 
     int index = 0;
-    bool isWhite = (PieceColor == Color::WHITE);
+    bool isBlack = (PieceColor == Color::BLACK);
 
     if (PieceInput == PieceType::PAWN)
     {
         for (int i = 0; i < 8; ++i)
         {
-            outputArray[index] = ( isWhite ? i : i + 16); // if it is a black piece just add 16 to the id you would add if it was a white piece
+            outputArray[index] = ( isBlack ? i : i + 16); // if it is a black piece just add 16 to the id you would add if it was a white piece
             ++index;
         }
     }
 
     if (PieceInput == PieceType::ROOK)
     {
-        outputArray[index] = (isWhite ? 0 : 16);
+        outputArray[index] = (isBlack ? 0 : 16);
         ++index;
-        outputArray[index] = (isWhite ? 7 : 23);
+        outputArray[index] = (isBlack ? 7 : 23);
         ++index;
 
     }
 
     if (PieceInput == PieceType::KNIGHT)
     {
-        outputArray[index] = (isWhite ? 1 : 17);
+        outputArray[index] = (isBlack ? 1 : 17);
         ++index;
-        outputArray[index] = (isWhite ? 6 : 22);
+        outputArray[index] = (isBlack ? 6 : 22);
         ++index;
 
     }
 
     if (PieceInput == PieceType::BISHOP)
     {
-        outputArray[index] = (isWhite ? 2 : 17);
+        outputArray[index] = (isBlack ? 2 : 17);
         ++index;
-        outputArray[index] = (isWhite ? 5 : 21);
+        outputArray[index] = (isBlack ? 5 : 21);
         ++index;
 
     }
@@ -380,7 +392,7 @@ int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t ou
 
     if (PieceInput == PieceType::QUEEN)
     {
-        outputArray[index] = (isWhite ? 3 : 19);
+        outputArray[index] = (isBlack ? 3 : 19);
         ++index;
 
     }
@@ -389,7 +401,7 @@ int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t ou
 
     if (PieceInput == PieceType::KING)
     {
-        outputArray[index] = (isWhite ? 4 : 20);
+        outputArray[index] = (isBlack ? 4 : 20);
         ++index;
 
     }
