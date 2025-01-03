@@ -10,9 +10,6 @@ int main() {
 
 
     std::vector<Board::pieceLocationInput> pieceVector;
-
-    //Board::pieceLocationInput tempPiece = {Board::Position{6,4},Board::PieceType::ROOK,Board::Color::BLACK};
-
     
 
     pieceVector.push_back({Board::Position{6,4},Board::PieceType::ROOK,Board::Color::BLACK});

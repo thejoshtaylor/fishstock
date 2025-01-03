@@ -23,6 +23,27 @@ TEST_F(BoardTest, ColorTest)
     EXPECT_EQ(board.getPieceColor((Board::Position){3, 3}), Board::Color::EMPTY);
 }
 
+
+TEST_F(BoardTest, customBoardTest)
+{
+
+    std::vector<Board::pieceLocationInput> pieceVector;
+
+    pieceVector.push_back({Board::Position{3,3},Board::PieceType::ROOK,Board::Color::WHITE});
+    Board meep = Board(pieceVector,nullptr,nullptr,nullptr,Board::Color::WHITE);
+
+    // making sure we can make one piece of the right color in the right square
+    EXPECT_TRUE(meep.getPieceLetter(Board::Position{3,3}) == 'R');
+    EXPECT_TRUE(meep.getPieceColor(Board::Position{3,3}) == Board::Color::BLACK);
+
+
+
+
+
+
+}
+
+
 TEST_F(BoardTest, InvalidMoveTest)
 {
     // Move to current position
