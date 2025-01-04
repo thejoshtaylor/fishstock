@@ -27,19 +27,60 @@ TEST_F(BoardTest, ColorTest)
 TEST_F(BoardTest, customBoardTest)
 {
 
+    // adding 8 black pawns to the list of pieces to make
     std::vector<Board::pieceLocationInput> pieceVector;
 
-    pieceVector.push_back({Board::Position{3,3},Board::PieceType::ROOK,Board::Color::WHITE});
-    Board meep = Board(pieceVector,nullptr,nullptr,nullptr,Board::Color::WHITE);
+    for (int loopCount = 0; loopCount < 8; ++loopCount)
+    {
+        pieceVector.push_back({Board::Position{(uint8_t)loopCount,0},Board::PieceType::PAWN,Board::Color::BLACK});
+    }
 
-    // making sure we can make one piece of the right color in the right square
-    EXPECT_TRUE(meep.getPieceLetter(Board::Position{3,3}) == 'R');
-    EXPECT_TRUE(meep.getPieceColor(Board::Position{3,3}) == Board::Color::BLACK);
+    // constructing a board
+    Board customBoard = Board(pieceVector,nullptr,nullptr,nullptr,Board::Color::WHITE);
 
+    for (int loopCount = 0; loopCount < 8; ++loopCount)
+    {
+    // checking that all eight pawns are of the right color and in the right place
+    EXPECT_TRUE(customBoard.getPieceLetter(Board::Position{(uint8_t)loopCount,0}) == 'P');
+    EXPECT_TRUE(customBoard.getPieceColor(Board::Position{(uint8_t)loopCount,0}) == Board::Color::BLACK);
+    }
+    
+    // adding 8 white pawns to the list of pieces to make
+    for (int loopCount = 0; loopCount < 8; ++loopCount)
+    {
+        pieceVector.push_back({Board::Position{(uint8_t)loopCount,1},Board::PieceType::PAWN,Board::Color::WHITE});
+    }
 
+    // constructing a board with eight white pawns and eight black pawns
+    customBoard = Board(pieceVector,nullptr,nullptr,nullptr,Board::Color::WHITE);
 
+    for (int loopCount = 0; loopCount < 8; ++loopCount)
+    {
+    // checking that all eight new pawns are of the right color and in the right place
+    EXPECT_TRUE(customBoard.getPieceLetter(Board::Position{(uint8_t)loopCount,1}) == 'P');
+    EXPECT_TRUE(customBoard.getPieceColor(Board::Position{(uint8_t)loopCount,1}) == Board::Color::WHITE);
+    }
 
+    //testing to make sure that if I try to add a piece on top of a different piece it throws an error
+    pieceVector.push_back({Board::Position{0,0},Board::PieceType::PAWN,Board::Color::WHITE}); 
+    //generating
+    EXPECT_ANY_THROW(customBoard = Board(pieceVector,nullptr,nullptr,nullptr,Board::Color::WHITE));
+    //removing the bad piece
+    pieceVector.pop_back();
 
+    //testing to make sure I can't give a color of EMPTY to a piece
+    pieceVector.push_back({Board::Position{0,2},Board::PieceType::PAWN,Board::Color::EMPTY}); 
+    //generating
+    EXPECT_ANY_THROW(customBoard = Board(pieceVector,nullptr,nullptr,nullptr,Board::Color::WHITE));
+    //removing the bad piece
+    pieceVector.pop_back();
+
+    //testing to make sure I can't add more than eight pawns
+    pieceVector.push_back({Board::Position{0,2},Board::PieceType::PAWN,Board::Color::WHITE}); 
+    //generating
+    EXPECT_ANY_THROW(customBoard = Board(pieceVector,nullptr,nullptr,nullptr,Board::Color::WHITE));
+    //removing the bad piece
+    pieceVector.pop_back();
 
 }
 

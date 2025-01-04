@@ -351,40 +351,40 @@ int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t ou
         throw invalid_argument ("bad piece color!");
     } 
     int index = 0;
-    bool isBlack = (PieceColor == Color::BLACK);
+    bool isWhite = (PieceColor == Color::WHITE);
 
     if (PieceInput == PieceType::PAWN)
     {
-        for (int i = 0; i < 8; ++i)
+        for (int i = 8; i < 16; ++i)
         {
-            outputArray[index] = ( isBlack ? i : i + 16); // if it is a black piece just add 16 to the id you would add if it was a white piece
+            outputArray[index] = ( isWhite ? i : i + 16); // if it is a black piece just add 16 to the id you would add if it was a white piece
             ++index;
         }
     }
 
     if (PieceInput == PieceType::ROOK)
     {
-        outputArray[index] = (isBlack ? 0 : 16);
+        outputArray[index] = (isWhite ? 0 : 16);
         ++index;
-        outputArray[index] = (isBlack ? 7 : 23);
+        outputArray[index] = (isWhite ? 7 : 23);
         ++index;
 
     }
 
     if (PieceInput == PieceType::KNIGHT)
     {
-        outputArray[index] = (isBlack ? 1 : 17);
+        outputArray[index] = (isWhite ? 1 : 17);
         ++index;
-        outputArray[index] = (isBlack ? 6 : 22);
+        outputArray[index] = (isWhite ? 6 : 22);
         ++index;
 
     }
 
     if (PieceInput == PieceType::BISHOP)
     {
-        outputArray[index] = (isBlack ? 2 : 17);
+        outputArray[index] = (isWhite ? 2 : 17);
         ++index;
-        outputArray[index] = (isBlack ? 5 : 21);
+        outputArray[index] = (isWhite ? 5 : 21);
         ++index;
 
     }
@@ -392,7 +392,7 @@ int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t ou
 
     if (PieceInput == PieceType::QUEEN)
     {
-        outputArray[index] = (isBlack ? 3 : 19);
+        outputArray[index] = (isWhite ? 3 : 19);
         ++index;
 
     }
@@ -401,7 +401,7 @@ int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t ou
 
     if (PieceInput == PieceType::KING)
     {
-        outputArray[index] = (isBlack ? 4 : 20);
+        outputArray[index] = (isWhite ? 4 : 20);
         ++index;
 
     }

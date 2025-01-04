@@ -12,12 +12,14 @@ int main() {
     std::vector<Board::pieceLocationInput> pieceVector;
     
 
-    pieceVector.push_back({Board::Position{6,4},Board::PieceType::ROOK,Board::Color::BLACK});
-    pieceVector.push_back({Board::Position{5,4},Board::PieceType::ROOK,Board::Color::BLACK});
-    pieceVector.push_back({Board::Position{3,4},Board::PieceType::KING,Board::Color::BLACK});
-    pieceVector.push_back({Board::Position{3,2},Board::PieceType::KING,Board::Color::WHITE});
-
-
+    for (int loopCount = 0; loopCount < 8; ++loopCount)
+    {
+        pieceVector.push_back({Board::Position{(uint8_t)loopCount,0},Board::PieceType::PAWN,Board::Color::BLACK});
+    }
+    pieceVector.push_back({Board::Position{0,1},Board::PieceType::PAWN,Board::Color::BLACK});
+    pieceVector.push_back({Board::Position{1,1},Board::PieceType::PAWN,Board::Color::BLACK});
+    pieceVector.push_back({Board::Position{2,1},Board::PieceType::PAWN,Board::Color::BLACK});
+    pieceVector.push_back({Board::Position{3,1},Board::PieceType::PAWN,Board::Color::BLACK});
 
 
 
