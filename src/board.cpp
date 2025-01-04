@@ -406,7 +406,7 @@ int Board::reversePieceLookup(PieceType PieceInput ,Color PieceColor, uint8_t ou
 
     }
 
-    return index + 1; //returning the size of the array we added
+    return index; //returning the size of the array we added
 
 } 
 
