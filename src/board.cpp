@@ -7,24 +7,16 @@ using namespace std;
 
 Board::Board()
 {
-    turn = Color::WHITE;
+    isWhiteTurn = true;
 
     canCastle[0][0] = true;
     canCastle[0][1] = true;
     canCastle[1][0] = true;
     canCastle[1][1] = true;
-    for (int i = 0; i < 8; i++)
-    {
-        canEnPassant[0][i] = false;
-        canEnPassant[1][i] = false;
-    }
-    for (int i = 0; i < 8; i++)
-    {
-        pawnPromote[0][i] = PieceType::PAWN;
-        pawnPromote[1][i] = PieceType::PAWN;
-    }
+    canEnPassant = ' ';
 
     // Board layout is from a1 to h8 and the value is the piece index
+    // NEEDS TO BE REDONE
     for (int i = 0; i < 8; i++)
     {
         // White pieces
@@ -51,6 +43,10 @@ char Board::getPieceLetter(Position pos)
         throw invalid_argument("Invalid pos.row or column");
     }
 
+
+
+    if (board[pos.row][pos.col])
+
     // Validate that it's not empty
     if (board[pos.row][pos.col] == 32)
     {
@@ -58,7 +54,7 @@ char Board::getPieceLetter(Position pos)
     }
 
     // Get the piece type
-    PieceType pt = getPieceType(board[pos.row][pos.col]);
+    PieceType pt = PieceType(board[pos.row][pos.col]);
 
     // Get the piece letter
     switch (pt)

@@ -11,22 +11,24 @@
 class Board
 {
 public:
-    enum class PieceType : uint8_t
+    enum class PieceType : char
     {
-        PAWN,
-        ROOK,
-        KNIGHT,
-        BISHOP,
-        QUEEN,
-        KING
+        EMPTY = ' ',
+        WHITE_PAWN = 'p',
+        WHITE_ROOK = 'r',
+        WHITE_KNIGHT = 'k',
+        WHITE_BISHOP = 'b',
+        WHITE_QUEEN = 'q',
+        WHITE_KING = 'k',
+        BLACK_PAWN = 'P',
+        BLACK_ROOK = 'R',
+        BLACK_KNIGHT = 'K',
+        BLACK_BISHOP = 'B',
+        BLACK_QUEEN = 'Q',
+        BLACK_KING = 'K'
     };
 
-    enum class Color
-    {
-        WHITE,
-        BLACK,
-        EMPTY
-    };
+    
 
     struct Position
     {
@@ -37,7 +39,6 @@ public:
     Board();
 
     char getPieceLetter(Position pos);
-    Color getPieceColor(Position pos);
     void setEnPassant(Position pos);
     bool checkEnPassant(Position pos);
     void promotePawn(Position pos, PieceType pieceType);
@@ -46,23 +47,20 @@ public:
     void move(Position from, Position to);
 
 private:
-    uint8_t board[8][8];
-    Color turn;
+    char board[8][8];
+    bool isWhiteTurn;
     bool canCastle[2][2];
-    bool canEnPassant[2][8];
-    PieceType pawnPromote[2][8];
-
-    PieceType getPieceType(uint8_t piece);
+    uint8_t canEnPassant;
 };
 
 // Base class for all pieces
 class Piece
 {
 protected:
-    Board::Color color;
+    Board::PieceType PieceType;
 
 public:
-    Piece(Board::Color color) : color(color) {}
+    Piece(Board::PieceType pieceType) : PieceType(pieceType) {}
 
     virtual bool isValidMove(Board *board, Board::Position from, Board::Position to) = 0;
     virtual std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from) = 0;
@@ -73,7 +71,7 @@ public:
 class Pawn : public Piece
 {
 public:
-    Pawn(Board::Color color) : Piece(color) {}
+    Pawn(Board::PieceType pieceType) : Piece(pieceType) {}
 
     bool isValidMove(Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
@@ -84,7 +82,7 @@ public:
 class Rook : public Piece
 {
 public:
-    Rook(Board::Color color) : Piece(color) {}
+    Rook(Board::PieceType pieceType) : Piece(pieceType) {}
 
     bool isValidMove(Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
