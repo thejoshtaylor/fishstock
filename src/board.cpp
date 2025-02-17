@@ -43,62 +43,11 @@ char Board::getPieceLetter(Position pos)
         throw invalid_argument("Invalid pos.row or column");
     }
 
+    return (char(board[pos.row][pos.col]) < 'a' ? char(board[pos.row][pos.col]) : char( uint8_t(board[pos.row][pos.col]) - 32));
 
-
-    if (board[pos.row][pos.col])
-
-    // Validate that it's not empty
-    if (board[pos.row][pos.col] == 32)
-    {
-        return ' ';
-    }
-
-    // Get the piece type
-    PieceType pt = PieceType(board[pos.row][pos.col]);
-
-    // Get the piece letter
-    switch (pt)
-    {
-    case PieceType::PAWN:
-        return 'P';
-    case PieceType::ROOK:
-        return 'R';
-    case PieceType::KNIGHT:
-        return 'N';
-    case PieceType::BISHOP:
-        return 'B';
-    case PieceType::QUEEN:
-        return 'Q';
-    case PieceType::KING:
-        return 'K';
-    default:
-        throw invalid_argument("Invalid piece type");
-    }
+   
 }
 
-// Get the type of a piece from its location
-Board::Color Board::getPieceColor(Position pos)
-{
-    // Validate the pos.row and column
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
-    {
-        throw invalid_argument("Invalid pos.row or column");
-    }
-
-    // Get the color of the piece
-    if (board[pos.row][pos.col] >= 32)
-    {
-        return Color::EMPTY;
-    }
-    else if (board[pos.row][pos.col] < 16)
-    {
-        return Color::WHITE;
-    }
-    else
-    {
-        return Color::BLACK;
-    }
-}
 
 // Set the en passant position
 void Board::setEnPassant(Position pos)
@@ -109,17 +58,9 @@ void Board::setEnPassant(Position pos)
         throw invalid_argument("Invalid pos.row or column");
     }
 
-    // Set the en passant position
-    if (pos.row == 1)
-    {
-        canEnPassant[0][pos.col] = true;
-    }
-    else
-    {
-        canEnPassant[1][pos.col] = true;
-    }
+    canEnPassant = pos.col;
 }
-
+// mabey stick this in the pawn class?
 // Private exposure of the en passant check
 bool Board::checkEnPassant(Position pos)
 {
@@ -155,15 +96,14 @@ void Board::promotePawn(Position pos, PieceType pieceType)
         throw invalid_argument("Invalid pos.row or column");
     }
 
-    // Get pawn id
-    uint8_t piece = board[pos.row][pos.col];
-    if (piece < 8 || piece > 15)
+    if (pieceType == PieceType::BLACK_PAWN || pieceType == PieceType::WHITE_PAWN || pieceType == PieceType::EMPTY)
     {
-        throw invalid_argument("Invalid piece ID");
+        throw invalid_argument("invalid promotion type");
     }
 
-    // Promote the pawn
-    pawnPromote[piece < 16][piece % 8] = pieceType;
+    board[pos.row][pos.col] = pieceType;
+
+
 }
 
 // Remove a piece from the board

@@ -47,7 +47,7 @@ public:
     void move(Position from, Position to);
 
 private:
-    char board[8][8];
+    PieceType board[8][8];
     bool isWhiteTurn;
     bool canCastle[2][2];
     uint8_t canEnPassant;
