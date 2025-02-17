@@ -130,7 +130,7 @@ bool Board::isValidMove(Position from, Position to)
     }
 
     // Check if the piece actually exists
-    if (board[from.row][from.col] == 32)
+    if (board[from.row][from.col] == PieceType::EMPTY)
     {
         return false;
     }
@@ -141,23 +141,25 @@ bool Board::isValidMove(Position from, Position to)
         return false;
     }
 
+
     // Check if the piece is moving to the same color
-    Color fromColor = getPieceColor(from);
-    Color toColor = getPieceColor(to);
-    if (fromColor == toColor)
+    bool fromPosIsWhite = (char(board[from.row][from.col]) < 'a');
+    bool ToPosIsWhite = (char(board[to.row][to.col]) < 'a');
+
+
+    if (fromPosIsWhite == ToPosIsWhite)
     {
         return false;
     }
 
     // Check if it's this pieces turn
-    if (fromColor != turn)
+    if (fromPosIsWhite != isWhiteTurn)
     {
         return false;
     }
 
     // Piece-specific move validation
-    uint8_t piece = board[from.row][from.col];
-    PieceType pieceType = getPieceType(piece);
+    PieceType pieceType = board[from.row][from.col];
 
     Piece *pieceObj;
     switch (pieceType)
