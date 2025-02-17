@@ -116,47 +116,9 @@ void Board::removePiece(Position pos)
     }
 
     // Remove the piece
-    board[pos.row][pos.col] = 32;
+    board[pos.row][pos.col] = PieceType::EMPTY;
 }
 
-// Get the type of a piece from its ID
-Board::PieceType Board::getPieceType(uint8_t pieceId)
-{
-    // Validate the piece ID
-    if (pieceId > 31)
-    {
-        throw invalid_argument("Invalid piece ID");
-    }
-
-    switch (pieceId % 16)
-    {
-    case 0:
-    case 7:
-        return PieceType::ROOK;
-    case 1:
-    case 6:
-        return PieceType::KNIGHT;
-    case 2:
-    case 5:
-        return PieceType::BISHOP;
-    case 3:
-        return PieceType::QUEEN;
-    case 4:
-        return PieceType::KING;
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-        // Check if we've promoted a pawn
-        return pawnPromote[pieceId < 16][pieceId % 16 - 8];
-    default:
-        throw invalid_argument("Invalid piece ID");
-    }
-}
 
 // Check if a proposed move is valid
 bool Board::isValidMove(Position from, Position to)
