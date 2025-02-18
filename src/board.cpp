@@ -143,8 +143,8 @@ bool Board::isValidMove(Position from, Position to)
 
 
     // Check if the piece is moving to the same color
-    bool fromPosIsWhite = (char(board[from.row][from.col]) < 'a');
-    bool ToPosIsWhite = (char(board[to.row][to.col]) < 'a');
+    bool fromPosIsWhite = (char(board[from.row][from.col]) >= 'a');
+    bool ToPosIsWhite = (char(board[to.row][to.col]) >= 'a');
 
 
     if (fromPosIsWhite == ToPosIsWhite)
@@ -160,12 +160,16 @@ bool Board::isValidMove(Position from, Position to)
 
     // Piece-specific move validation
     PieceType pieceType = board[from.row][from.col];
+    if (fromPosIsWhite)
+    {
+        pieceType = PieceType(char(pieceType) - 32);
+    }
 
     Piece *pieceObj;
     switch (pieceType)
     {
-    case PieceType::PAWN:
-        pieceObj = new Pawn(fromColor);
+    case PieceType::WHITE_PAWN:
+        pieceObj = new Pawn(board[from.row][from.col]);
         break;
 
     default:
@@ -191,8 +195,8 @@ void Board::move(Position from, Position to)
     }
 
     // Move the piece
-    uint8_t piece = board[from.row][from.col];
-    board[from.row][from.col] = 32;
+    PieceType piece = board[from.row][from.col];
+    board[from.row][from.col] = PieceType::EMPTY;
 
     // Tell the piece that we're moving
     PieceType pieceType = getPieceType(piece);
