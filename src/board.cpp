@@ -188,6 +188,9 @@ bool Board::isValidMove(Position from, Position to)
 // Execute a move on the board
 void Board::move(Position from, Position to)
 {
+    // setting EnPassant to an invalid column, will get reset by the piece specific do move function if it is the right pawn move
+    canEnPassant = 8;
+
     // Check if the move is valid
     if (!isValidMove(from, to))
     {
@@ -204,11 +207,8 @@ void Board::move(Position from, Position to)
     PieceType upperCase = (char(piece) >= 'a' ? PieceType(char(piece) - 32) : piece);
     switch (upperCase)
     {
-    case (upperCase == PieceType::WHITE_PAWN):
+    case PieceType::WHITE_PAWN:
         pieceObj = new Pawn(piece);
-
-
-
         break;
     
     default:
