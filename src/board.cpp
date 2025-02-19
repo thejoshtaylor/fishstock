@@ -199,7 +199,6 @@ void Board::move(Position from, Position to)
     board[from.row][from.col] = PieceType::EMPTY;
 
     // Tell the piece that we're moving
-    PieceType pieceType = getPieceType(piece);
     Piece *pieceObj;
     pieceObj = new Pawn(getPieceColor(from));
     pieceObj->doMove(this, from, to);
