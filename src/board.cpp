@@ -200,6 +200,22 @@ void Board::move(Position from, Position to)
 
     // Tell the piece that we're moving
     Piece *pieceObj;
+    //converting black to white for piece kind
+    PieceType upperCase = (char(piece) >= 'a' ? PieceType(char(piece) - 32) : piece);
+    switch (upperCase)
+    {
+    case (upperCase == PieceType::WHITE_PAWN):
+        pieceObj = new Pawn(piece);
+
+
+
+        break;
+    
+    default:
+        break;
+    }
+
+
     pieceObj = new Pawn(getPieceColor(from));
     pieceObj->doMove(this, from, to);
 
