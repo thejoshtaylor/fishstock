@@ -60,7 +60,6 @@ void Board::setEnPassant(Position pos)
 
     canEnPassant = pos.col;
 }
-// mabey stick this in the pawn class?
 // Private exposure of the en passant check
 bool Board::checkEnPassant(Position pos)
 {
@@ -169,7 +168,7 @@ bool Board::isValidMove(Position from, Position to)
     switch (pieceType)
     {
     case PieceType::WHITE_PAWN:
-        pieceObj = new Pawn(board[from.row][from.col]);
+        pieceObj = new Pawn(fromPosIsWhite);
         break;
 
     default:
@@ -205,30 +204,24 @@ void Board::move(Position from, Position to)
     Piece *pieceObj;
     //converting black to white for piece kind
     PieceType upperCase = (char(piece) >= 'a' ? PieceType(char(piece) - 32) : piece);
+    //geting piece color
+    bool isWhite = (char(piece) < 'a');
     switch (upperCase)
     {
     case PieceType::WHITE_PAWN:
-        pieceObj = new Pawn(piece);
+        pieceObj = new Pawn(isWhite);
         break;
     
     default:
+        throw invalid_argument("Invalid piece type");
         break;
     }
 
-
-    pieceObj = new Pawn(getPieceColor(from));
-    pieceObj->doMove(this, from, to);
+    pieceObj->doMove(this,from,to);
 
     // Finish the move
     board[to.row][to.col] = piece;
 
     // Update the turn
-    if (turn == Color::WHITE)
-    {
-        turn = Color::BLACK;
-    }
-    else
-    {
-        turn = Color::WHITE;
-    }
+    isWhiteTurn = !isWhiteTurn;
 }

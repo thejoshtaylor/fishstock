@@ -50,6 +50,7 @@ private:
     PieceType board[8][8];
     bool isWhiteTurn;
     bool canCastle[2][2];
+    // records the column of the last move if double pawn, cleared state is 8
     uint8_t canEnPassant;
 };
 
@@ -57,10 +58,10 @@ private:
 class Piece
 {
 protected:
-    Board::PieceType PieceType;
+    bool isWhite;
 
 public:
-    Piece(Board::PieceType pieceType) : PieceType(pieceType) {}
+    Piece(bool inputColor) : isWhite(inputColor) {}
 
     virtual bool isValidMove(Board *board, Board::Position from, Board::Position to) = 0;
     virtual std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from) = 0;
@@ -71,7 +72,7 @@ public:
 class Pawn : public Piece
 {
 public:
-    Pawn(Board::PieceType pieceType) : Piece(pieceType) {}
+    Pawn(bool inputColor) : Piece(inputColor) {}
 
     bool isValidMove(Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
@@ -82,7 +83,7 @@ public:
 class Rook : public Piece
 {
 public:
-    Rook(Board::PieceType pieceType) : Piece(pieceType) {}
+    Rook(bool inputColor) : Piece(inputColor) {}
 
     bool isValidMove(Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
