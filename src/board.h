@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
-
+#include <istream>
 class Board
 {
 public:
@@ -39,6 +39,7 @@ public:
     Board();
 
     char getPieceLetter(Position pos);
+    PieceType getPiece(Position pos);
     void setEnPassant(Position pos);
     bool checkEnPassant(Position pos);
     void promotePawn(Position pos, PieceType pieceType);
@@ -50,8 +51,8 @@ private:
     PieceType board[8][8];
     bool isWhiteTurn;
     bool canCastle[2][2];
-    // records the column of the last move if double pawn, cleared state is 8
-    uint8_t canEnPassant;
+    // records the column of the last move if double pawn move, cleared state is 8
+    uint8_t EnPassantCol;
 };
 
 // Base class for all pieces

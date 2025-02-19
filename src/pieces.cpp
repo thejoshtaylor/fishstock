@@ -12,7 +12,7 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
 {
     int8_t moveRows = 0;
     // White pieces move a certain direction
-    if (this->color == Board::Color::WHITE)
+    if (this->isWhite)
     {
         moveRows = to.row - from.row;
     }
@@ -37,23 +37,23 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
             return false;
         }
         // Check if there's a piece in the way
-        if (this->color == Board::Color::WHITE)
+        if (this->isWhite)
         {
-            if (board->getPieceColor((Board::Position){from.row + 1, from.col}) != Board::Color::EMPTY)
+            if (board->getPiece((Board::Position){from.row + 1, from.col}) != Board::PieceType::EMPTY)
             {
                 return false;
             }
         }
         else
         {
-            if (board->getPieceColor((Board::Position){from.row - 1, from.col}) != Board::Color::EMPTY)
+            if (board->getPiece((Board::Position){from.row - 1, from.col}) != Board::PieceType::EMPTY)
             {
                 return false;
             }
         }
 
         // White side
-        if (this->color == Board::Color::WHITE)
+        if (this->isWhite)
         {
             if (from.row != 1)
             {
@@ -70,13 +70,13 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
         }
     }
 
-    Board::Color toColor = board->getPieceColor(to);
+    bool isToColorWhite = (board->getPieceLetter(to) < 'a');
 
     // Check if we're moving straight
     if (from.col == to.col)
     {
         // Check if there's a piece in the way
-        if (toColor != Board::Color::EMPTY)
+        if (board->getPiece(to) != Board::PieceType::EMPTY)
         {
             return false;
         }
@@ -91,7 +91,7 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
         }
         
         // Check if we're moving to an empty space
-        if (toColor == Board::Color::EMPTY)
+        if (board->getPiece(to) != Board::PieceType::EMPTY)
         {
             // Check if we can en passant
             if (!board->checkEnPassant(to))
@@ -100,7 +100,7 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
             }
         }
         // Check if we're trying to take our own piece
-        if (this->color == toColor)
+        if (this->isWhite == isToColorWhite)
         {
             return false;
         }
@@ -114,46 +114,46 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
 std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position from)
 {
     // Check if we can move forward
-    if (this->color == Board::Color::WHITE)
+    if (this->isWhite)
     {
-        if (board->getPieceColor((Board::Position){from.row + 1, from.col}) == Board::Color::EMPTY)
+        if (board->getPiece((Board::Position){from.row + 1, from.col}) == Board::PieceType::EMPTY)
         {
             // Move forward
             board->isValidMove(from, (Board::Position){from.row + 1, from.col});
             // Move two forward
-            if (from.row == 1 && board->getPieceColor((Board::Position){from.row + 2, from.col}) == Board::Color::EMPTY)
+            if (from.row == 1 && board->getPiece((Board::Position){from.row + 2, from.col}) == Board::PieceType::EMPTY)
             {
                 board->isValidMove(from, (Board::Position){from.row + 2, from.col});
             }
         }
-        // Check if we can take
-        if (board->getPieceColor((Board::Position){from.row + 1, from.col + 1}) == Board::Color::BLACK)
+        // Check if we can take, checking if it is black
+        if (char(board->getPiece((Board::Position){from.row + 1, from.col + 1})) >= 'a')
         {
             board->isValidMove(from, (Board::Position){from.row + 1, from.col + 1});
         }
-        if (board->getPieceColor((Board::Position){from.row + 1, from.col - 1}) == Board::Color::BLACK)
+        if (char(board->getPiece((Board::Position){from.row + 1, from.col - 1})) >= 'a')
         {
             board->isValidMove(from, (Board::Position){from.row + 1, from.col - 1});
         }
     }
     else
     {
-        if (board->getPieceColor((Board::Position){from.row - 1, from.col}) == Board::Color::EMPTY)
+        if (board->getPiece((Board::Position){from.row - 1, from.col}) == Board::PieceType::EMPTY)
         {
             // Move forward
             board->isValidMove(from, (Board::Position){from.row - 1, from.col});
             // Move two forward
-            if (from.row == 6 && board->getPieceColor((Board::Position){from.row - 2, from.col}) == Board::Color::EMPTY)
+            if (from.row == 6 && board->getPiece((Board::Position){from.row - 2, from.col}) == Board::PieceType::EMPTY)
             {
                 board->isValidMove(from, (Board::Position){from.row - 2, from.col});
             }
         }
-        // Check if we can take
-        if (board->getPieceColor((Board::Position){from.row - 1, from.col + 1}) == Board::Color::WHITE)
+        // Check if we can take, we can take if it is white
+        if (char(board->getPiece((Board::Position){from.row - 1, from.col + 1})) < 'a')
         {
             board->isValidMove(from, (Board::Position){from.row - 1, from.col + 1});
         }
-        if (board->getPieceColor((Board::Position){from.row - 1, from.col - 1}) == Board::Color::WHITE)
+        if (char(board->getPiece((Board::Position){from.row - 1, from.col - 1})) < 'a')
         {
         }
     }
@@ -162,11 +162,21 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
 // Execute special moves for a pawn
 void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
 {
+
+    //BAD CODE: assumes pawn is alway white from what I can tell
     // Check if we are promoting
     if (to.row == 7)
     {
         // Promote the pawn
-        board->promotePawn(to, Board::PieceType::QUEEN);
+        if (isWhite)
+        {
+            board->promotePawn(to, Board::PieceType::WHITE_QUEEN);
+        }
+        else
+        {
+            board->promotePawn(to, Board::PieceType::BLACK_QUEEN);
+        }
+            
     }
 
     // Check if we're doing a double move
@@ -176,8 +186,9 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
         board->setEnPassant((Board::Position){from.row, to.col});
     }
 
+    //BAD CODE: if it is an enpassant but the space we need to move to is full it throws no errors and sielently fails (shut up)
     // Check if we are taking en passant
-    if (from.col != to.col && board->getPieceColor(to) == Board::Color::EMPTY)
+    if (from.col != to.col && board->getPiece(to) == Board::PieceType::EMPTY)
     {
         // Remove the piece
         board->removePiece((Board::Position){from.row, to.col});
@@ -201,14 +212,14 @@ bool Rook::isValidMove(Board *board, Board::Position from, Board::Position to)
         // Moving horizontally
         for (int i = from.col + 1; i < to.col; i++)
         {
-            if (board->getPieceColor((Board::Position){from.row, i}) != Board::Color::EMPTY)
+            if (board->getPiece((Board::Position){from.row, i}) != Board::PieceType::EMPTY)
             {
                 return false;
             }
         }
         for (int i = from.col - 1; i > to.col; i--)
         {
-            if (board->getPieceColor((Board::Position){from.row, i}) != Board::Color::EMPTY)
+            if (board->getPiece((Board::Position){from.row, i}) != Board::PieceType::EMPTY)
             {
                 return false;
             }
@@ -219,14 +230,14 @@ bool Rook::isValidMove(Board *board, Board::Position from, Board::Position to)
         // Moving vertically
         for (int i = from.row + 1; i < to.row; i++)
         {
-            if (board->getPieceColor((Board::Position){i, from.col}) != Board::Color::EMPTY)
+            if (board->getPiece((Board::Position){i, from.col}) != Board::PieceType::EMPTY)
             {
                 return false;
             }
         }
         for (int i = from.row - 1; i > to.row; i--)
         {
-            if (board->getPieceColor((Board::Position){i, from.col}) != Board::Color::EMPTY)
+            if (board->getPiece((Board::Position){i, from.col}) != Board::PieceType::EMPTY)
             {
                 return false;
             }

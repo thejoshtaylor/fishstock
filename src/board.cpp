@@ -3,6 +3,7 @@
 
 #include "board.h"
 
+
 using namespace std;
 
 Board::Board()
@@ -13,26 +14,26 @@ Board::Board()
     canCastle[0][1] = true;
     canCastle[1][0] = true;
     canCastle[1][1] = true;
-    canEnPassant = ' ';
+    EnPassantCol = 8;
+    std::cout << "meep!" << std::endl;
 
     // Board layout is from a1 to h8 and the value is the piece index
     // NEEDS TO BE REDONE
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < 8; ++i)
     {
-        // White pieces
-        board[0][i] = i;
-        board[1][i] = i + 8;
-
-        // Black pieces
-        board[7][i] = i + 16;
-        board[6][i] = i + 24;
-
-        // Empty spaces
-        for (int j = 2; j < 6; j++)
-        {
-            board[j][i] = 32;
-        }
+        for (int j = 0; j < 8; ++i)
+         {
+            board[i][j] = PieceType::EMPTY;
+         }
     }
+
+    for (int i = 0; i < 8; ++i)
+    {
+        board[1][i] = PieceType::WHITE_PAWN;
+    }
+
+
+
 }
 
 char Board::getPieceLetter(Position pos)
@@ -48,6 +49,16 @@ char Board::getPieceLetter(Position pos)
    
 }
 
+Board::PieceType Board::getPiece(Position pos)
+{
+    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    {
+        throw invalid_argument("Invalid pos.row or column");
+    }
+    return board[pos.row][pos.col];
+
+}
+
 
 // Set the en passant position
 void Board::setEnPassant(Position pos)
@@ -58,7 +69,7 @@ void Board::setEnPassant(Position pos)
         throw invalid_argument("Invalid pos.row or column");
     }
 
-    canEnPassant = pos.col;
+    EnPassantCol = pos.col;
 }
 // Private exposure of the en passant check
 bool Board::checkEnPassant(Position pos)
@@ -76,15 +87,9 @@ bool Board::checkEnPassant(Position pos)
     }
 
     // Check if the en passant is valid
-    if (pos.row == 2)
-    {
+    return (pos.col == EnPassantCol);
 
-        return canEnPassant[0][pos.col];
-    }
-    else
-    {
-        return canEnPassant[1][pos.col];
-    }
+
 }
 
 void Board::promotePawn(Position pos, PieceType pieceType)
@@ -188,7 +193,7 @@ bool Board::isValidMove(Position from, Position to)
 void Board::move(Position from, Position to)
 {
     // setting EnPassant to an invalid column, will get reset by the piece specific do move function if it is the right pawn move
-    canEnPassant = 8;
+    EnPassantCol = 8;
 
     // Check if the move is valid
     if (!isValidMove(from, to))
