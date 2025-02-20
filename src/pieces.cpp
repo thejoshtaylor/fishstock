@@ -71,7 +71,6 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
     }
 
     bool isToColorWhite = (board->getPieceLetter(to) < 'a');
-
     // Check if we're moving straight
     if (from.col == to.col)
     {
@@ -89,6 +88,8 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
         {
             return false;
         }
+        std::cout << "meep" << std::endl;
+
         
         // Check if we're moving to an empty space
         if (board->getPiece(to) != Board::PieceType::EMPTY)

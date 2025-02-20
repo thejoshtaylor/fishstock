@@ -163,7 +163,6 @@ bool Board::isValidMove(Position from, Position to)
     {
         return false;
     }
-
     // Piece-specific move validation
     PieceType pieceType = board[from.row][from.col];
     if (!fromPosIsWhite)
@@ -212,7 +211,6 @@ void Board::move(Position from, Position to)
     //converting black to white for piece kind
     PieceType upperCase = (char(piece) >= 'a' ? PieceType(char(piece) - 32) : piece);
     //geting piece color
-    std::cout << char(upperCase) << std::endl;
     bool isWhite = (char(piece) < 'a');
     switch (upperCase)
     {
