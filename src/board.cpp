@@ -87,7 +87,7 @@ bool Board::checkEnPassant(Position pos)
     {
         return false;
     }
-
+    std::cout << "this stuff is fine" << std::endl;
     // Check if the en passant is valid
     return (pos.col == EnPassantCol);
 

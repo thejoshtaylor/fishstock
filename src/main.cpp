@@ -16,5 +16,12 @@ int main() {
     Util::printBoard(&board);
     board.move((Board::Position){3, 1}, (Board::Position){4, 2});
     Util::printBoard(&board);
+    board.move((Board::Position){6, 3}, (Board::Position){4, 3});
+    Util::printBoard(&board);
+    board.move((Board::Position){4, 2}, (Board::Position){5, 3});
+    Util::printBoard(&board);
+
+
+
     return 0;
 }

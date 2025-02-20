@@ -70,7 +70,7 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
         }
     }
 
-    bool isToColorWhite = (board->getPieceLetter(to) < 'a');
+    bool isToColorWhite = (char(board->getPiece(to)) < 'a');
     // Check if we're moving straight
     if (from.col == to.col)
     {
@@ -88,18 +88,20 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
         {
             return false;
         }
-        std::cout << "meep" << std::endl;
 
         
         // Check if we're moving to an empty space
-        if (board->getPiece(to) != Board::PieceType::EMPTY)
+        if (board->getPiece(to) == Board::PieceType::EMPTY)
         {
             // Check if we can en passant
             if (!board->checkEnPassant(to))
             {
+                std::cout << "bad EnPassant" << std::endl;
                 return false;
             }
         }
+
+
         // Check if we're trying to take our own piece
         if (this->isWhite == isToColorWhite)
         {
@@ -183,6 +185,7 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
     // Check if we're doing a double move
     if (abs((int)from.row - (int)to.row) == 2)
     {
+        std::cout << "setting Passant col to" + char(to.col) << std::endl;
         // Set en passant
         board->setEnPassant((Board::Position){from.row, to.col});
     }
