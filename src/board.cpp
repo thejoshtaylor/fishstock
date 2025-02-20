@@ -23,15 +23,16 @@ Board::Board()
 
         for (int j = 0; j < 8; ++j)
          {
-            board[i][j] = PieceType::EMPTY;
+            board[i][j] = PieceType::EMPTY;  
          }
     }
 
     for (int i = 0; i < 8; ++i)
     {
         board[1][i] = PieceType::WHITE_PAWN;
-    }
+        board[6][i] = PieceType::BLACK_PAWN;
 
+    }
 
 
 }
@@ -152,7 +153,7 @@ bool Board::isValidMove(Position from, Position to)
     bool ToPosIsWhite = (char(board[to.row][to.col]) < 'a');
 
 
-    if (fromPosIsWhite == ToPosIsWhite)
+    if (fromPosIsWhite == ToPosIsWhite && (board[to.row][to.col]) != PieceType::EMPTY)
     {
         return false;
     }
