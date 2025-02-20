@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
-#include <istream>
+#include <iostream>
 class Board
 {
 public:

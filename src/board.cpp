@@ -15,13 +15,13 @@ Board::Board()
     canCastle[1][0] = true;
     canCastle[1][1] = true;
     EnPassantCol = 8;
-    std::cout << "meep!" << std::endl;
 
     // Board layout is from a1 to h8 and the value is the piece index
     // NEEDS TO BE REDONE
     for (int i = 0; i < 8; ++i)
     {
-        for (int j = 0; j < 8; ++i)
+
+        for (int j = 0; j < 8; ++j)
          {
             board[i][j] = PieceType::EMPTY;
          }
@@ -200,6 +200,7 @@ void Board::move(Position from, Position to)
     {
         throw invalid_argument("Invalid move");
     }
+    std::cout << "meep" << std::endl;
 
     // Move the piece
     PieceType piece = board[from.row][from.col];
@@ -210,6 +211,7 @@ void Board::move(Position from, Position to)
     //converting black to white for piece kind
     PieceType upperCase = (char(piece) >= 'a' ? PieceType(char(piece) - 32) : piece);
     //geting piece color
+    std::cout << char(upperCase) << std::endl;
     bool isWhite = (char(piece) < 'a');
     switch (upperCase)
     {

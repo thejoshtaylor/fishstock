@@ -10,6 +10,7 @@ int main() {
 
     Board board = Board();
     Util::printBoard(&board);
+    std::cout << "meep" << std::endl;
     board.move((Board::Position){1, 1}, (Board::Position){3, 1});
     Util::printBoard(&board);
     board.move((Board::Position){6, 2}, (Board::Position){4, 2});
