@@ -44,6 +44,7 @@ char Board::getPieceLetter(Position pos)
         throw invalid_argument("Invalid pos.row or column");
     }
 
+
     return (char(board[pos.row][pos.col]) < 'a' ? char(board[pos.row][pos.col]) : char( uint8_t(board[pos.row][pos.col]) - 32));
 
    
@@ -200,7 +201,6 @@ void Board::move(Position from, Position to)
     {
         throw invalid_argument("Invalid move");
     }
-    std::cout << "meep" << std::endl;
 
     // Move the piece
     PieceType piece = board[from.row][from.col];

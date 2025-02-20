@@ -14,18 +14,18 @@ public:
     enum class PieceType : char
     {
         EMPTY = ' ',
-        WHITE_PAWN = 'p',
-        WHITE_ROOK = 'r',
-        WHITE_KNIGHT = 'k',
-        WHITE_BISHOP = 'b',
-        WHITE_QUEEN = 'q',
-        WHITE_KING = 'k',
-        BLACK_PAWN = 'P',
-        BLACK_ROOK = 'R',
-        BLACK_KNIGHT = 'K',
-        BLACK_BISHOP = 'B',
-        BLACK_QUEEN = 'Q',
-        BLACK_KING = 'K'
+        WHITE_PAWN = 'P',
+        WHITE_ROOK = 'R',
+        WHITE_KNIGHT = 'K',
+        WHITE_BISHOP = 'B',
+        WHITE_QUEEN = 'Q',
+        WHITE_KING = 'K',
+        BLACK_PAWN = 'p',
+        BLACK_ROOK = 'r',
+        BLACK_KNIGHT = 'k',
+        BLACK_BISHOP = 'b',
+        BLACK_QUEEN = 'q',
+        BLACK_KING = 'k'
     };
 
     
