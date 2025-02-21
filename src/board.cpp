@@ -65,12 +65,6 @@ Board::PieceType Board::getPiece(Position pos)
 // Set the en passant position
 void Board::setEnPassant(Position pos)
 {
-    // Validate the pos.row and column
-    if ((pos.row != 1 && pos.row != 6) || pos.col < 0 || pos.col > 7)
-    {
-        throw invalid_argument("Invalid pos.row or column");
-    }
-
     EnPassantCol = pos.col;
 }
 

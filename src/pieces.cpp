@@ -198,6 +198,9 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
         // Remove the piece
         board->removePiece((Board::Position){from.row, to.col});
     }
+
+    board->setEnPassant((Board::Position){0,8});
+
 }
 
 //
