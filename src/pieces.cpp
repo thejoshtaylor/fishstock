@@ -158,6 +158,8 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
         }
         if (char(board->getPiece((Board::Position){from.row - 1, from.col - 1})) < 'a')
         {
+            board->isValidMove(from, (Board::Position){from.row - 1, from.col - 1});
+
         }
     }
 }
