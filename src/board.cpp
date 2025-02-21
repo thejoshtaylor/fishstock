@@ -84,9 +84,7 @@ bool Board::checkEnPassant(Position pos)
     }
     std::cout << "this stuff is fine" << std::endl;
     // Check if the en passant is valid
-    return (pos.col == EnPassantCol);
-
-
+    return (pos.col == currentEnPassant);
 }
 
 void Board::promotePawn(Position pos, PieceType pieceType)
@@ -188,13 +186,9 @@ bool Board::isValidMove(Position from, Position to)
 // Execute a move on the board
 void Board::move(Position from, Position to)
 {
-    // setting EnPassant to an invalid column, will get reset by the piece specific do move function if it is the right pawn move
-    if (board[from.row][from.col] != PieceType::BLACK_PAWN && board[from.row][from.col] != PieceType::WHITE_PAWN)
-    {
-         EnPassantCol = 8;
-    }
-   
-
+    currentEnPassant = EnPassantCol;
+    EnPassantCol = 8;
+    
     // Check if the move is valid
     if (!isValidMove(from, to))
     {

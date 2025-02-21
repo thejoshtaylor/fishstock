@@ -96,14 +96,14 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
             // Check if we can en passant
             if (!board->checkEnPassant(to))
             {
-                std::cout << "bad EnPassant" << int(to.col) << std::endl;
+                std::cout << "bad EnPassant " << (int)to.col << std::endl;
                 return false;
             }
         }
 
 
         // Check if we're trying to take our own piece
-        if (this->isWhite == isToColorWhite)
+        else if (this->isWhite == isToColorWhite)
         {
             return false;
         }
@@ -198,9 +198,6 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
         // Remove the piece
         board->removePiece((Board::Position){from.row, to.col});
     }
-
-    board->setEnPassant((Board::Position){0,8});
-
 }
 
 //
