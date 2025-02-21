@@ -96,7 +96,7 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
             // Check if we can en passant
             if (!board->checkEnPassant(to))
             {
-                std::cout << "bad EnPassant" << std::endl;
+                std::cout << "bad EnPassant" << int(to.col) << std::endl;
                 return false;
             }
         }
@@ -159,7 +159,6 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
         if (char(board->getPiece((Board::Position){from.row - 1, from.col - 1})) < 'a')
         {
             board->isValidMove(from, (Board::Position){from.row - 1, from.col - 1});
-
         }
     }
 }
@@ -182,12 +181,12 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
             board->promotePawn(to, Board::PieceType::BLACK_QUEEN);
         }
             
-    }
+    } 
 
     // Check if we're doing a double move
     if (abs((int)from.row - (int)to.row) == 2)
     {
-        std::cout << "setting Passant col to" + char(to.col) << std::endl;
+        std::cout << "setting Passant col to " <<  int(to.col) << std::endl;
         // Set en passant
         board->setEnPassant((Board::Position){from.row, to.col});
     }

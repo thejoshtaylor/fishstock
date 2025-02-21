@@ -40,6 +40,7 @@ public:
 
     char getPieceLetter(Position pos);
     PieceType getPiece(Position pos);
+    bool isWhitePiece(Position pos);
     void setEnPassant(Position pos);
     bool checkEnPassant(Position pos);
     void promotePawn(Position pos, PieceType pieceType);

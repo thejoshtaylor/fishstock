@@ -73,6 +73,7 @@ void Board::setEnPassant(Position pos)
 
     EnPassantCol = pos.col;
 }
+
 // Private exposure of the en passant check
 bool Board::checkEnPassant(Position pos)
 {
@@ -194,7 +195,11 @@ bool Board::isValidMove(Position from, Position to)
 void Board::move(Position from, Position to)
 {
     // setting EnPassant to an invalid column, will get reset by the piece specific do move function if it is the right pawn move
-    EnPassantCol = 8;
+    if (board[from.row][from.col] != PieceType::BLACK_PAWN && board[from.row][from.col] != PieceType::WHITE_PAWN)
+    {
+         EnPassantCol = 8;
+    }
+   
 
     // Check if the move is valid
     if (!isValidMove(from, to))
