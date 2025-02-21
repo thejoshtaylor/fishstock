@@ -186,6 +186,10 @@ bool Board::isValidMove(Position from, Position to)
 // Execute a move on the board
 void Board::move(Position from, Position to)
 {
+    if (board[from.row][from.col] != PieceType::WHITE_PAWN && board[from.row][from.col] != PieceType::BLACK_PAWN)
+    {
+        EnPassantCol = 8;
+    }
     // Check if the move is valid
     if (!isValidMove(from, to))
     {
