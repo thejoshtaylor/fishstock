@@ -84,7 +84,7 @@ bool Board::checkEnPassant(Position pos)
     }
     std::cout << "this stuff is fine" << std::endl;
     // Check if the en passant is valid
-    return (pos.col == currentEnPassant);
+    return (pos.col == EnPassantCol);
 }
 
 void Board::promotePawn(Position pos, PieceType pieceType)
@@ -186,9 +186,6 @@ bool Board::isValidMove(Position from, Position to)
 // Execute a move on the board
 void Board::move(Position from, Position to)
 {
-    currentEnPassant = EnPassantCol;
-    EnPassantCol = 8;
-    
     // Check if the move is valid
     if (!isValidMove(from, to))
     {

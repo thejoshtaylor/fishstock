@@ -183,20 +183,21 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
             
     } 
 
-    // Check if we're doing a double move
-    if (abs((int)from.row - (int)to.row) == 2)
-    {
-        std::cout << "setting Passant col to " <<  int(to.col) << std::endl;
-        // Set en passant
-        board->setEnPassant((Board::Position){from.row, to.col});
-    }
-
     //BAD CODE: if it is an enpassant but the space we need to move to is full it throws no errors and sielently fails (shut up)
     // Check if we are taking en passant
     if (from.col != to.col && board->getPiece(to) == Board::PieceType::EMPTY)
     {
         // Remove the piece
         board->removePiece((Board::Position){from.row, to.col});
+    }
+    board->setEnPassant((Board::Position){0, 8});
+
+    // Check if we're doing a double move
+    if (abs((int)from.row - (int)to.row) == 2)
+    {
+        std::cout << "setting Passant col to " <<  int(to.col) << std::endl;
+        // Set en passant
+        board->setEnPassant((Board::Position){from.row, to.col});
     }
 }
 

@@ -54,7 +54,6 @@ private:
     bool canCastle[2][2];
     // records the column of the last move if double pawn move, cleared state is 8
     uint8_t EnPassantCol;
-    uint8_t currentEnPassant;
 };
 
 // Base class for all pieces
