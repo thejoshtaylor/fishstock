@@ -8,7 +8,7 @@
 //
 
 // Check if a pawn can make this move
-bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
+bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position to)
 {
     int8_t moveRows = 0;
     // White pieces move a certain direction
@@ -96,7 +96,6 @@ bool Pawn::isValidMove(Board *board, Board::Position from, Board::Position to)
             // Check if we can en passant
             if (!board->checkEnPassant(to))
             {
-                std::cout << "bad EnPassant " << (int)to.col << std::endl;
                 return false;
             }
         }
@@ -195,7 +194,6 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
     // Check if we're doing a double move
     if (abs((int)from.row - (int)to.row) == 2)
     {
-        std::cout << "setting Passant col to " <<  int(to.col) << std::endl;
         // Set en passant
         board->setEnPassant((Board::Position){from.row, to.col});
     }
@@ -204,7 +202,7 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
 //
 // ROOK
 //
-bool Rook::isValidMove(Board *board, Board::Position from, Board::Position to)
+bool Rook::isValidMove(const Board *board, Board::Position from, Board::Position to)
 {
     // Check if we're moving in a straight line
     if (from.row != to.row && from.col != to.col)

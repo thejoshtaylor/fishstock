@@ -37,7 +37,7 @@ Board::Board()
 
 }
 
-char Board::getPieceLetter(Position pos)
+char Board::getPieceLetter(Position pos) const
 {
     // Validate the pos.row and column
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
@@ -51,7 +51,7 @@ char Board::getPieceLetter(Position pos)
    
 }
 
-Board::PieceType Board::getPiece(Position pos)
+Board::PieceType Board::getPiece(Position pos) const
 {
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
     {
@@ -62,6 +62,22 @@ Board::PieceType Board::getPiece(Position pos)
 }
 
 
+bool Board::isWhitePiece(Position pos) const
+{
+    char charVersion = char(board[pos.row][pos.col]);
+
+    // some checks to make sure we have valid data
+    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    {
+        throw invalid_argument("Invalid pos.row or column");
+    }
+    if (charVersion < 'A' || charVersion > 'z' )
+    throw invalid_argument("invalid symbol at pos given");
+    return (charVersion < 'a');
+
+
+}
+
 // Set the en passant position
 void Board::setEnPassant(Position pos)
 {
@@ -69,7 +85,7 @@ void Board::setEnPassant(Position pos)
 }
 
 // Private exposure of the en passant check
-bool Board::checkEnPassant(Position pos)
+bool Board::checkEnPassant(Position pos) const
 {
     // Validate the pos.row and column
     if (pos.col < 0 || pos.col > 7)
@@ -82,7 +98,6 @@ bool Board::checkEnPassant(Position pos)
     {
         return false;
     }
-    std::cout << "this stuff is fine" << std::endl;
     // Check if the en passant is valid
     return (pos.col == EnPassantCol);
 }
@@ -120,7 +135,7 @@ void Board::removePiece(Position pos)
 
 
 // Check if a proposed move is valid
-bool Board::isValidMove(Position from, Position to)
+bool Board::isValidMove(Position from, Position to) const
 {
     // Check if the move is within the board
     if (from.row < 0 || from.row > 7 || from.col < 0 || from.col > 7 || to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7)

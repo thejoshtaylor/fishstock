@@ -38,14 +38,18 @@ public:
 
     Board();
 
-    char getPieceLetter(Position pos);
-    PieceType getPiece(Position pos);
-    bool isWhitePiece(Position pos);
+    //returns a character, if the character is lowercase it makes it uppercase
+    char getPieceLetter(Position pos) const;
+    // returns a PieceType val from the pos given, used in pieces.cpp
+    PieceType getPiece(Position pos) const;
+    //returns true if the piece at pos is white, false otherwise. throws an error if the tile is empty.
+    bool isWhitePiece(Position pos) const;
     void setEnPassant(Position pos);
-    bool checkEnPassant(Position pos);
+    // sets the EnPassant flag, 8 is the cleared value. Only cares about the col value, pos.row can be set to whatever.
+    bool checkEnPassant(Position pos) const;
     void promotePawn(Position pos, PieceType pieceType);
     void removePiece(Position pos);
-    bool isValidMove(Position from, Position to);
+    bool isValidMove(Position from, Position to) const;
     void move(Position from, Position to);
 
 private:
@@ -65,7 +69,7 @@ protected:
 public:
     Piece(bool inputColor) : isWhite(inputColor) {}
 
-    virtual bool isValidMove(Board *board, Board::Position from, Board::Position to) = 0;
+    virtual bool isValidMove(const Board *board, Board::Position from, Board::Position to) = 0;
     virtual std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from) = 0;
     virtual void doMove(Board *board, Board::Position from, Board::Position to) = 0;
 };
@@ -75,8 +79,7 @@ class Pawn : public Piece
 {
 public:
     Pawn(bool inputColor) : Piece(inputColor) {}
-
-    bool isValidMove(Board *board, Board::Position from, Board::Position to);
+    bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
@@ -87,7 +90,7 @@ class Rook : public Piece
 public:
     Rook(bool inputColor) : Piece(inputColor) {}
 
-    bool isValidMove(Board *board, Board::Position from, Board::Position to);
+    bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
