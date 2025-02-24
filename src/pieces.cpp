@@ -70,7 +70,6 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
         }
     }
 
-    bool isToColorWhite = (board->isWhitePiece(to));
     // Check if we're moving straight
     if (from.col == to.col)
     {
@@ -102,7 +101,7 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
 
 
         // Check if we're trying to take our own piece
-        else if (this->isWhite == isToColorWhite)
+        else if (this->isWhite == board->isWhitePiece(to))
         {
             return false;
         }
@@ -129,11 +128,11 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
             }
         }
         // Check if we can take, checking if it is black
-        if (char(board->getPiece((Board::Position){from.row + 1, from.col + 1})) >= 'a')
+        if (!board->isWhitePiece((Board::Position){from.row + 1, from.col + 1}))
         {
             board->isValidMove(from, (Board::Position){from.row + 1, from.col + 1});
         }
-        if (char(board->getPiece((Board::Position){from.row + 1, from.col - 1})) >= 'a')
+        if (!board->isWhitePiece((Board::Position){from.row + 1, from.col - 1}))
         {
             board->isValidMove(from, (Board::Position){from.row + 1, from.col - 1});
         }
@@ -151,11 +150,11 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
             }
         }
         // Check if we can take, we can take if it is white
-        if (char(board->getPiece((Board::Position){from.row - 1, from.col + 1})) < 'a')
+        if (board->isWhitePiece((Board::Position){from.row - 1, from.col + 1}))
         {
             board->isValidMove(from, (Board::Position){from.row - 1, from.col + 1});
         }
-        if (char(board->getPiece((Board::Position){from.row - 1, from.col - 1})) < 'a')
+        if (board->isWhitePiece((Board::Position){from.row - 1, from.col - 1}))
         {
             board->isValidMove(from, (Board::Position){from.row - 1, from.col - 1});
         }
