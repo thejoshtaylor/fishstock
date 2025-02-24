@@ -70,7 +70,7 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
         }
     }
 
-    bool isToColorWhite = (char(board->getPiece(to)) < 'a');
+    bool isToColorWhite = (board->isWhitePiece(to));
     // Check if we're moving straight
     if (from.col == to.col)
     {
