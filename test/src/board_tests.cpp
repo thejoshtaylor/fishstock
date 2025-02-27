@@ -1,6 +1,6 @@
 // Test file for the board class of the fishstock project
 // (c) Fishstock 2024
-/*
+
 #include "board.h"
 #include "gtest/gtest.h"
 
@@ -18,9 +18,9 @@ public:
 
 TEST_F(BoardTest, ColorTest)
 {
-    EXPECT_EQ(board.getPieceColor((Board::Position){0, 0}), Board::Color::WHITE);
-    EXPECT_EQ(board.getPieceColor((Board::Position){7, 0}), Board::Color::BLACK);
-    EXPECT_EQ(board.getPieceColor((Board::Position){3, 3}), Board::Color::EMPTY);
+    EXPECT_EQ(board.isWhitePiece((Board::Position){0, 0}), true);
+    EXPECT_EQ(board.isWhitePiece((Board::Position){7, 0}), false);
+    EXPECT_EQ(board.getPiece((Board::Position){3, 3}), Board::PieceType::EMPTY);
 }
 
 TEST_F(BoardTest, InvalidMoveTest)
@@ -88,7 +88,7 @@ TEST_F(BoardTest, PawnMoveTest)
     EXPECT_TRUE(board.isValidMove((Board::Position){4, 5}, (Board::Position){5, 4}));
     // Check valid take
     ASSERT_NO_THROW(board.move((Board::Position){4, 5}, (Board::Position){5, 4}));
-    EXPECT_EQ(board.getPieceColor((Board::Position){4, 4}), Board::Color::EMPTY);
+    EXPECT_EQ(board.getPiece((Board::Position){4, 4}), Board::PieceType::EMPTY);
 
     // Develop board to test pawn can't move forward two
     ASSERT_NO_THROW(board.move((Board::Position){4, 1}, (Board::Position){3, 1}));
@@ -243,5 +243,3 @@ TEST_F(BoardTest, CheckTest)
 }
 
 
-
-*/

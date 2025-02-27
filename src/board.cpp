@@ -18,7 +18,7 @@ Board::Board()
 
     // Board layout is from a1 to h8 and the value is the piece index
     // NEEDS TO BE REDONE
-    for (int i = 0; i < 8; ++i)
+    for (int i = 2; i < 6; ++i)
     {
 
         for (int j = 0; j < 8; ++j)
@@ -31,8 +31,29 @@ Board::Board()
     {
         board[1][i] = PieceType::WHITE_PAWN;
         board[6][i] = PieceType::BLACK_PAWN;
-
     }
+
+    board[0][0] = PieceType::WHITE_ROOK;
+    board[0][7] = PieceType::WHITE_ROOK;
+    board[7][0] = PieceType::BLACK_ROOK;
+    board[7][7] = PieceType::BLACK_ROOK;
+
+    board[0][1] = PieceType::WHITE_BISHOP;
+    board[0][6] = PieceType::WHITE_BISHOP;
+    board[7][1] = PieceType::BLACK_BISHOP;
+    board[7][6] = PieceType::BLACK_BISHOP;
+
+    board[0][2] = PieceType::WHITE_KNIGHT;
+    board[0][5] = PieceType::WHITE_KNIGHT;
+    board[7][2] = PieceType::BLACK_KNIGHT;
+    board[7][5] = PieceType::BLACK_KNIGHT;
+
+    board[0][4] = PieceType::WHITE_KING;
+    board[0][3] = PieceType::WHITE_QUEEN;
+    board[7][3] = PieceType::BLACK_QUEEN;
+    board[7][4] = PieceType::BLACK_KING;
+
+
 
 
 }
