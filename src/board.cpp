@@ -38,24 +38,20 @@ Board::Board()
     board[7][0] = PieceType::BLACK_ROOK;
     board[7][7] = PieceType::BLACK_ROOK;
 
-    board[0][1] = PieceType::WHITE_BISHOP;
-    board[0][6] = PieceType::WHITE_BISHOP;
-    board[7][1] = PieceType::BLACK_BISHOP;
-    board[7][6] = PieceType::BLACK_BISHOP;
+    board[0][1] = PieceType::WHITE_KNIGHT;
+    board[0][6] = PieceType::WHITE_KNIGHT;
+    board[7][1] = PieceType::BLACK_KNIGHT;
+    board[7][6] = PieceType::BLACK_KNIGHT;
 
-    board[0][2] = PieceType::WHITE_KNIGHT;
-    board[0][5] = PieceType::WHITE_KNIGHT;
-    board[7][2] = PieceType::BLACK_KNIGHT;
-    board[7][5] = PieceType::BLACK_KNIGHT;
+    board[0][2] = PieceType::WHITE_BISHOP;
+    board[0][5] = PieceType::WHITE_BISHOP;
+    board[7][2] = PieceType::BLACK_BISHOP;
+    board[7][5] = PieceType::BLACK_BISHOP;
 
     board[0][4] = PieceType::WHITE_KING;
     board[0][3] = PieceType::WHITE_QUEEN;
     board[7][3] = PieceType::BLACK_QUEEN;
     board[7][4] = PieceType::BLACK_KING;
-
-
-
-
 }
 
 char Board::getPieceLetter(Position pos) const
