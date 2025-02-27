@@ -51,6 +51,14 @@ char Board::getPieceLetter(Position pos) const
    
 }
 
+
+char Board::getPieceLetter(PieceType piece) const
+{
+
+    return (char(piece) < 'a' ? char(piece) : char( int(piece) - 32));
+}
+
+
 Board::PieceType Board::getPiece(Position pos) const
 {
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
@@ -76,6 +84,15 @@ bool Board::isWhitePiece(Position pos) const
     return (charVersion < 'a');
 
 
+}
+
+
+bool Board::isWhitePiece(PieceType piece) const
+{
+    char charVersion = char(piece);
+    if (charVersion < 'A' || charVersion > 'z' )
+    throw invalid_argument("invalid symbol at pos given");
+    return charVersion < 'a';
 }
 
 // Set the en passant position
@@ -157,23 +174,25 @@ bool Board::isValidMove(Position from, Position to) const
 
 
     // Check if the piece is moving to the same color
-    bool fromPosIsWhite = (char(board[from.row][from.col]) < 'a');
-    bool ToPosIsWhite = (char(board[to.row][to.col]) < 'a');
-
-
-    if (fromPosIsWhite == ToPosIsWhite && (board[to.row][to.col]) != PieceType::EMPTY)
+    if (board[to.row][to.col] != PieceType::EMPTY)
     {
-        return false;
+        if (isWhitePiece(from) == isWhitePiece(to))
+        {
+            return false;
+        }
     }
 
+
+        
+
     // Check if it's this pieces turn
-    if (fromPosIsWhite != isWhiteTurn)
+    if (isWhitePiece(from) != isWhiteTurn)
     {
         return false;
     }
     // Piece-specific move validation
     PieceType pieceType = board[from.row][from.col];
-    if (!fromPosIsWhite)
+    if (!isWhitePiece(from))
     {
         pieceType = PieceType(char(pieceType) - 32);
     }
@@ -182,7 +201,7 @@ bool Board::isValidMove(Position from, Position to) const
     switch (pieceType)
     {
     case PieceType::WHITE_PAWN:
-        pieceObj = new Pawn(fromPosIsWhite);
+        pieceObj = new Pawn(isWhitePiece(from));
         break;
 
     default:
@@ -218,13 +237,12 @@ void Board::move(Position from, Position to)
     // Tell the piece that we're moving
     Piece *pieceObj;
     //converting black to white for piece kind
-    PieceType upperCase = (char(piece) >= 'a' ? PieceType(char(piece) - 32) : piece);
+    PieceType upperCase = (!isWhitePiece(piece) ? PieceType(char(piece) - 32) : piece);
     //geting piece color
-    bool isWhite = (char(piece) < 'a');
-    switch (upperCase)
+    switch (getPieceLetter(piece))
     {
-    case PieceType::WHITE_PAWN:
-        pieceObj = new Pawn(isWhite);
+    case 'P': // pawn case
+        pieceObj = new Pawn(isWhitePiece(piece));
         break;
     
     default:
