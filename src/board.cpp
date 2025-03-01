@@ -56,7 +56,7 @@ Board::Board()
 
 char Board::getPieceLetter(PieceType piece) const
 {
-
+    //changes a PieceType into a char, alwas the uppercase version which is why we subtract 32 from lowercase PieceTypes. Used in util for the print function
     return ((char)piece < 'a' ? (char)piece : (char)((int)piece - 32));
 }
 
