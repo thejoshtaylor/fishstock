@@ -57,7 +57,7 @@ Board::Board()
 char Board::getPieceLetter(PieceType piece) const
 {
 
-    return (char(piece) < 'a' ? char(piece) : char( int(piece) - 32));
+    return ((char)piece < 'a' ? (char)piece : (char)((int)piece - 32));
 }
 
 
@@ -73,10 +73,9 @@ Board::PieceType Board::getPiece(Position pos) const
 
 bool Board::isWhitePiece(PieceType piece) const
 {
-    char charVersion = char(piece);
-    if (charVersion < 'A' || charVersion > 'z' )
+    if ((char)piece < 'A' || (char)piece > 'z' )
     throw invalid_argument("invalid symbol at pos given");
-    return charVersion < 'a';
+    return (char)piece < 'a';
 }
 
 // Set the en passant position
