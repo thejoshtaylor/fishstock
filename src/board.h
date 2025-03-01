@@ -67,7 +67,7 @@ protected:
     bool isWhite;
 
 public:
-    Piece(bool inputColor) : isWhite(inputColor) {}
+    Piece(bool isWhite) : isWhite(isWhite) {}
 
     virtual bool isValidMove(const Board *board, Board::Position from, Board::Position to) = 0;
     virtual std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from) = 0;
@@ -78,7 +78,7 @@ public:
 class Pawn : public Piece
 {
 public:
-    Pawn(bool inputColor) : Piece(inputColor) {}
+    Pawn(bool isWhite) : Piece(isWhite) {}
     bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
@@ -88,7 +88,7 @@ public:
 class Rook : public Piece
 {
 public:
-    Rook(bool inputColor) : Piece(inputColor) {}
+    Rook(bool isWhite) : Piece(isWhite) {}
 
     bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
