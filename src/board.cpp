@@ -54,21 +54,6 @@ Board::Board()
     board[7][4] = PieceType::BLACK_KING;
 }
 
-char Board::getPieceLetter(Position pos) const
-{
-    // Validate the pos.row and column
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
-    {
-        throw invalid_argument("Invalid pos.row or column");
-    }
-
-
-    return (char(board[pos.row][pos.col]) < 'a' ? char(board[pos.row][pos.col]) : char( uint8_t(board[pos.row][pos.col]) - 32));
-
-   
-}
-
-
 char Board::getPieceLetter(PieceType piece) const
 {
 

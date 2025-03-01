@@ -39,7 +39,6 @@ public:
     Board();
 
     //returns a character, if the character is lowercase it makes it uppercase
-    char getPieceLetter(Position pos) const;
     char getPieceLetter(PieceType piece) const;
     // returns a PieceType val from the pos given, used in pieces.cpp
     PieceType getPiece(Position pos) const;
