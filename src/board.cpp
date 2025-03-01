@@ -211,17 +211,15 @@ void Board::move(Position from, Position to)
     }
 
     // Move the piece
-    PieceType piece = board[from.row][from.col];
+    PieceType piece = getPiece(from);
     board[from.row][from.col] = PieceType::EMPTY;
 
     // Tell the piece that we're moving
     Piece *pieceObj;
-    //converting black to white for piece kind
-    PieceType upperCase = (!isWhitePiece(piece) ? PieceType(char(piece) - 32) : piece);
-    //geting piece color
-    switch (getPieceLetter(piece))
+    switch (piece)
     {
-    case 'P': // pawn case
+    case PieceType::WHITE_PAWN:
+    case PieceType::BLACK_PAWN:
         pieceObj = new Pawn(isWhitePiece(piece));
         break;
     
