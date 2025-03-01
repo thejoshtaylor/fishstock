@@ -175,16 +175,12 @@ bool Board::isValidMove(Position from, Position to) const
         return false;
     }
     // Piece-specific move validation
-    PieceType pieceType = board[from.row][from.col];
-    if (!isWhitePiece(getPiece(from)))
-    {
-        pieceType = PieceType(char(pieceType) - 32);
-    }
-
+    PieceType pieceType = getPiece(from);
     Piece *pieceObj;
     switch (pieceType)
     {
     case PieceType::WHITE_PAWN:
+    case PieceType::BLACK_PAWN:
         pieceObj = new Pawn(isWhitePiece(getPiece(from)));
         break;
 
