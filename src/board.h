@@ -43,7 +43,6 @@ public:
     // returns a PieceType val from the pos given, used in pieces.cpp
     PieceType getPiece(Position pos) const;
     //returns true if the piece at pos is white, false otherwise. throws an error if the tile is empty.
-    bool isWhitePiece(Position pos) const;
     bool isWhitePiece(PieceType piece) const;
     void setEnPassant(Position pos);
     // sets the EnPassant flag, 8 is the cleared value. Only cares about the col value, pos.row can be set to whatever.

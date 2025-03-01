@@ -101,7 +101,7 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
 
 
         // Check if we're trying to take our own piece
-        else if (this->isWhite == board->isWhitePiece(to))
+        else if (this->isWhite == board->isWhitePiece(board->getPiece(to)))
         {
             return false;
         }
@@ -128,11 +128,11 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
             }
         }
         // Check if we can take, checking if it is black
-        if (!board->isWhitePiece((Board::Position){from.row + 1, from.col + 1}))
+        if (!board->isWhitePiece(board->getPiece((Board::Position){from.row + 1, from.col + 1})))
         {
             board->isValidMove(from, (Board::Position){from.row + 1, from.col + 1});
         }
-        if (!board->isWhitePiece((Board::Position){from.row + 1, from.col - 1}))
+        if (!board->isWhitePiece(board->getPiece((Board::Position){from.row + 1, from.col - 1})))
         {
             board->isValidMove(from, (Board::Position){from.row + 1, from.col - 1});
         }
@@ -150,11 +150,11 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
             }
         }
         // Check if we can take, we can take if it is white
-        if (board->isWhitePiece((Board::Position){from.row - 1, from.col + 1}))
+        if (board->isWhitePiece(board->getPiece((Board::Position){from.row - 1, from.col + 1})))
         {
             board->isValidMove(from, (Board::Position){from.row - 1, from.col + 1});
         }
-        if (board->isWhitePiece((Board::Position){from.row - 1, from.col - 1}))
+        if (board->isWhitePiece(board->getPiece((Board::Position){from.row - 1, from.col - 1})))
         {
             board->isValidMove(from, (Board::Position){from.row - 1, from.col - 1});
         }

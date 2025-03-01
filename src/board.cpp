@@ -71,24 +71,6 @@ Board::PieceType Board::getPiece(Position pos) const
 
 }
 
-
-bool Board::isWhitePiece(Position pos) const
-{
-    char charVersion = char(board[pos.row][pos.col]);
-
-    // some checks to make sure we have valid data
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
-    {
-        throw invalid_argument("Invalid pos.row or column");
-    }
-    if (charVersion < 'A' || charVersion > 'z' )
-    throw invalid_argument("invalid symbol at pos given");
-    return (charVersion < 'a');
-
-
-}
-
-
 bool Board::isWhitePiece(PieceType piece) const
 {
     char charVersion = char(piece);
@@ -178,7 +160,7 @@ bool Board::isValidMove(Position from, Position to) const
     // Check if the piece is moving to the same color
     if (board[to.row][to.col] != PieceType::EMPTY)
     {
-        if (isWhitePiece(from) == isWhitePiece(to))
+        if (isWhitePiece(getPiece(from)) == isWhitePiece(getPiece(to)))
         {
             return false;
         }
@@ -188,13 +170,13 @@ bool Board::isValidMove(Position from, Position to) const
         
 
     // Check if it's this pieces turn
-    if (isWhitePiece(from) != isWhiteTurn)
+    if (isWhitePiece(getPiece(from)) != isWhiteTurn)
     {
         return false;
     }
     // Piece-specific move validation
     PieceType pieceType = board[from.row][from.col];
-    if (!isWhitePiece(from))
+    if (!isWhitePiece(getPiece(from)))
     {
         pieceType = PieceType(char(pieceType) - 32);
     }
@@ -203,7 +185,7 @@ bool Board::isValidMove(Position from, Position to) const
     switch (pieceType)
     {
     case PieceType::WHITE_PAWN:
-        pieceObj = new Pawn(isWhitePiece(from));
+        pieceObj = new Pawn(isWhitePiece(getPiece(from)));
         break;
 
     default:

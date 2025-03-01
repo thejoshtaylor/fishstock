@@ -18,8 +18,8 @@ public:
 
 TEST_F(BoardTest, ColorTest)
 {
-    EXPECT_EQ(board.isWhitePiece((Board::Position){0, 0}), true);
-    EXPECT_EQ(board.isWhitePiece((Board::Position){7, 0}), false);
+    EXPECT_EQ(board.isWhitePiece(board.getPiece((Board::Position){0, 0})), true);
+    EXPECT_EQ(board.isWhitePiece(board.getPiece((Board::Position){7, 0})), false);
     EXPECT_EQ(board.getPiece((Board::Position){3, 3}), Board::PieceType::EMPTY);
 }
 
