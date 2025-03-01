@@ -165,9 +165,8 @@ std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position 
 void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
 {
 
-    //BAD CODE: assumes pawn is alway white from what I can tell
     // Check if we are promoting
-    if (to.row == 7)
+    if (to.row == 7 || to.row == 0)
     {
         // Promote the pawn
         if (isWhite)
@@ -181,13 +180,14 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
             
     } 
 
-    //BAD CODE: if it is an enpassant but the space we need to move to is full it throws no errors and sielently fails (shut up)
+    
     // Check if we are taking en passant
     if (from.col != to.col && board->getPiece(to) == Board::PieceType::EMPTY)
     {
         // Remove the piece
         board->removePiece((Board::Position){from.row, to.col});
     }
+    //clearing the enpassant column now, gets uncleared in the next segment if needed
     board->setEnPassant((Board::Position){0, 8});
 
     // Check if we're doing a double move
