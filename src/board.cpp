@@ -3,129 +3,89 @@
 
 #include "board.h"
 
+
 using namespace std;
 
 Board::Board()
 {
-    turn = Color::WHITE;
+    isWhiteTurn = true;
 
     canCastle[0][0] = true;
     canCastle[0][1] = true;
     canCastle[1][0] = true;
     canCastle[1][1] = true;
-    for (int i = 0; i < 8; i++)
-    {
-        canEnPassant[0][i] = false;
-        canEnPassant[1][i] = false;
-    }
-    for (int i = 0; i < 8; i++)
-    {
-        pawnPromote[0][i] = PieceType::PAWN;
-        pawnPromote[1][i] = PieceType::PAWN;
-    }
+    EnPassantCol = 8;
 
     // Board layout is from a1 to h8 and the value is the piece index
-    for (int i = 0; i < 8; i++)
+    // NEEDS TO BE REDONE
+    for (int i = 2; i < 6; ++i)
     {
-        // White pieces
-        board[0][i] = i;
-        board[1][i] = i + 8;
 
-        // Black pieces
-        board[7][i] = i + 16;
-        board[6][i] = i + 24;
-
-        // Empty spaces
-        for (int j = 2; j < 6; j++)
-        {
-            board[j][i] = 32;
-        }
+        for (int j = 0; j < 8; ++j)
+         {
+            board[i][j] = PieceType::EMPTY;  
+         }
     }
+
+    for (int i = 0; i < 8; ++i)
+    {
+        board[1][i] = PieceType::WHITE_PAWN;
+        board[6][i] = PieceType::BLACK_PAWN;
+    }
+
+    board[0][0] = PieceType::WHITE_ROOK;
+    board[0][7] = PieceType::WHITE_ROOK;
+    board[7][0] = PieceType::BLACK_ROOK;
+    board[7][7] = PieceType::BLACK_ROOK;
+
+    board[0][1] = PieceType::WHITE_KNIGHT;
+    board[0][6] = PieceType::WHITE_KNIGHT;
+    board[7][1] = PieceType::BLACK_KNIGHT;
+    board[7][6] = PieceType::BLACK_KNIGHT;
+
+    board[0][2] = PieceType::WHITE_BISHOP;
+    board[0][5] = PieceType::WHITE_BISHOP;
+    board[7][2] = PieceType::BLACK_BISHOP;
+    board[7][5] = PieceType::BLACK_BISHOP;
+
+    board[0][4] = PieceType::WHITE_KING;
+    board[0][3] = PieceType::WHITE_QUEEN;
+    board[7][3] = PieceType::BLACK_QUEEN;
+    board[7][4] = PieceType::BLACK_KING;
 }
 
-char Board::getPieceLetter(Position pos)
+char Board::getPieceLetter(PieceType piece) const
 {
-    // Validate the pos.row and column
+    //changes a PieceType into a char, alwas the uppercase version which is why we subtract 32 from lowercase PieceTypes. Used in util for the print function
+    return ((char)piece < 'a' ? (char)piece : (char)((int)piece - 32));
+}
+
+
+Board::PieceType Board::getPiece(Position pos) const
+{
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
     {
         throw invalid_argument("Invalid pos.row or column");
     }
+    return board[pos.row][pos.col];
 
-    // Validate that it's not empty
-    if (board[pos.row][pos.col] == 32)
-    {
-        return ' ';
-    }
-
-    // Get the piece type
-    PieceType pt = getPieceType(board[pos.row][pos.col]);
-
-    // Get the piece letter
-    switch (pt)
-    {
-    case PieceType::PAWN:
-        return 'P';
-    case PieceType::ROOK:
-        return 'R';
-    case PieceType::KNIGHT:
-        return 'N';
-    case PieceType::BISHOP:
-        return 'B';
-    case PieceType::QUEEN:
-        return 'Q';
-    case PieceType::KING:
-        return 'K';
-    default:
-        throw invalid_argument("Invalid piece type");
-    }
 }
 
-// Get the type of a piece from its location
-Board::Color Board::getPieceColor(Position pos)
+bool Board::isWhitePiece(PieceType piece) const
 {
-    // Validate the pos.row and column
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
-    {
-        throw invalid_argument("Invalid pos.row or column");
-    }
-
-    // Get the color of the piece
-    if (board[pos.row][pos.col] >= 32)
-    {
-        return Color::EMPTY;
-    }
-    else if (board[pos.row][pos.col] < 16)
-    {
-        return Color::WHITE;
-    }
-    else
-    {
-        return Color::BLACK;
-    }
+    if ((char)piece < 'A' || (char)piece > 'z' )
+    throw invalid_argument("invalid symbol at pos given");
+    return (char)piece < 'a';
 }
 
 // Set the en passant position
 void Board::setEnPassant(Position pos)
 {
-    // Validate the pos.row and column
-    if ((pos.row != 1 && pos.row != 6) || pos.col < 0 || pos.col > 7)
-    {
-        throw invalid_argument("Invalid pos.row or column");
-    }
-
-    // Set the en passant position
-    if (pos.row == 1)
-    {
-        canEnPassant[0][pos.col] = true;
-    }
-    else
-    {
-        canEnPassant[1][pos.col] = true;
-    }
+    EnPassantCol = pos.col;
 }
 
 // Private exposure of the en passant check
-bool Board::checkEnPassant(Position pos)
+bool Board::checkEnPassant(Position pos) const
 {
     // Validate the pos.row and column
     if (pos.col < 0 || pos.col > 7)
@@ -138,17 +98,8 @@ bool Board::checkEnPassant(Position pos)
     {
         return false;
     }
-
     // Check if the en passant is valid
-    if (pos.row == 2)
-    {
-
-        return canEnPassant[0][pos.col];
-    }
-    else
-    {
-        return canEnPassant[1][pos.col];
-    }
+    return (pos.col == EnPassantCol);
 }
 
 void Board::promotePawn(Position pos, PieceType pieceType)
@@ -159,15 +110,14 @@ void Board::promotePawn(Position pos, PieceType pieceType)
         throw invalid_argument("Invalid pos.row or column");
     }
 
-    // Get pawn id
-    uint8_t piece = board[pos.row][pos.col];
-    if (piece < 8 || piece > 15)
+    if (pieceType == PieceType::BLACK_PAWN || pieceType == PieceType::WHITE_PAWN || pieceType == PieceType::EMPTY)
     {
-        throw invalid_argument("Invalid piece ID");
+        throw invalid_argument("invalid promotion type");
     }
 
-    // Promote the pawn
-    pawnPromote[piece < 16][piece % 8] = pieceType;
+    board[pos.row][pos.col] = pieceType;
+
+
 }
 
 // Remove a piece from the board
@@ -180,51 +130,15 @@ void Board::removePiece(Position pos)
     }
 
     // Remove the piece
-    board[pos.row][pos.col] = 32;
+    board[pos.row][pos.col] = PieceType::EMPTY;
 }
 
-// Get the type of a piece from its ID
-Board::PieceType Board::getPieceType(uint8_t pieceId)
-{
-    // Validate the piece ID
-    if (pieceId > 31)
-    {
-        throw invalid_argument("Invalid piece ID");
-    }
-
-    switch (pieceId % 16)
-    {
-    case 0:
-    case 7:
-        return PieceType::ROOK;
-    case 1:
-    case 6:
-        return PieceType::KNIGHT;
-    case 2:
-    case 5:
-        return PieceType::BISHOP;
-    case 3:
-        return PieceType::QUEEN;
-    case 4:
-        return PieceType::KING;
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
-    case 14:
-    case 15:
-        // Check if we've promoted a pawn
-        return pawnPromote[pieceId < 16][pieceId % 16 - 8];
-    default:
-        throw invalid_argument("Invalid piece ID");
-    }
-}
 
 // Check if a proposed move is valid
-bool Board::isValidMove(Position from, Position to)
-{
+bool Board::isValidMove(Position from, Position to) const
+{   
+    PieceType fromPiece = getPiece(from);
+
     // Check if the move is within the board
     if (from.row < 0 || from.row > 7 || from.col < 0 || from.col > 7 || to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7)
     {
@@ -232,7 +146,7 @@ bool Board::isValidMove(Position from, Position to)
     }
 
     // Check if the piece actually exists
-    if (board[from.row][from.col] == 32)
+    if (board[from.row][from.col] == PieceType::EMPTY)
     {
         return false;
     }
@@ -243,29 +157,31 @@ bool Board::isValidMove(Position from, Position to)
         return false;
     }
 
+
     // Check if the piece is moving to the same color
-    Color fromColor = getPieceColor(from);
-    Color toColor = getPieceColor(to);
-    if (fromColor == toColor)
+    if (board[to.row][to.col] != PieceType::EMPTY)
     {
-        return false;
+        if (isWhitePiece(fromPiece) == isWhitePiece(getPiece(to)))
+        {
+            return false;
+        }
     }
+
+
+        
 
     // Check if it's this pieces turn
-    if (fromColor != turn)
+    if (isWhitePiece(fromPiece) != isWhiteTurn)
     {
         return false;
     }
-
     // Piece-specific move validation
-    uint8_t piece = board[from.row][from.col];
-    PieceType pieceType = getPieceType(piece);
-
     Piece *pieceObj;
-    switch (pieceType)
+    switch (fromPiece)
     {
-    case PieceType::PAWN:
-        pieceObj = new Pawn(fromColor);
+    case PieceType::WHITE_PAWN:
+    case PieceType::BLACK_PAWN:
+        pieceObj = new Pawn(isWhitePiece(fromPiece));
         break;
 
     default:
@@ -284,6 +200,10 @@ bool Board::isValidMove(Position from, Position to)
 // Execute a move on the board
 void Board::move(Position from, Position to)
 {
+    if (board[from.row][from.col] != PieceType::WHITE_PAWN && board[from.row][from.col] != PieceType::BLACK_PAWN)
+    {
+        EnPassantCol = 8;
+    }
     // Check if the move is valid
     if (!isValidMove(from, to))
     {
@@ -291,25 +211,28 @@ void Board::move(Position from, Position to)
     }
 
     // Move the piece
-    uint8_t piece = board[from.row][from.col];
-    board[from.row][from.col] = 32;
+    PieceType piece = getPiece(from);
+    board[from.row][from.col] = PieceType::EMPTY;
 
     // Tell the piece that we're moving
-    PieceType pieceType = getPieceType(piece);
     Piece *pieceObj;
-    pieceObj = new Pawn(getPieceColor(from));
-    pieceObj->doMove(this, from, to);
+    switch (piece)
+    {
+    case PieceType::WHITE_PAWN:
+    case PieceType::BLACK_PAWN:
+        pieceObj = new Pawn(isWhitePiece(piece));
+        break;
+    
+    default:
+        throw invalid_argument("Invalid piece type");
+        break;
+    }
+
+    pieceObj->doMove(this,from,to);
 
     // Finish the move
     board[to.row][to.col] = piece;
 
     // Update the turn
-    if (turn == Color::WHITE)
-    {
-        turn = Color::BLACK;
-    }
-    else
-    {
-        turn = Color::WHITE;
-    }
+    isWhiteTurn = !isWhiteTurn;
 }

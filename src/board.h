@@ -7,26 +7,28 @@
 #include <cstdint>
 #include <stdexcept>
 #include <vector>
-
+#include <iostream>
 class Board
 {
 public:
-    enum class PieceType : uint8_t
+    enum class PieceType : char
     {
-        PAWN,
-        ROOK,
-        KNIGHT,
-        BISHOP,
-        QUEEN,
-        KING
+        EMPTY = ' ',
+        WHITE_PAWN = 'P',
+        WHITE_ROOK = 'R',
+        WHITE_KNIGHT = 'N',
+        WHITE_BISHOP = 'B',
+        WHITE_QUEEN = 'Q',
+        WHITE_KING = 'K',
+        BLACK_PAWN = 'p',
+        BLACK_ROOK = 'r',
+        BLACK_KNIGHT = 'n',
+        BLACK_BISHOP = 'b',
+        BLACK_QUEEN = 'q',
+        BLACK_KING = 'k'
     };
 
-    enum class Color
-    {
-        WHITE,
-        BLACK,
-        EMPTY
-    };
+    
 
     struct Position
     {
@@ -36,35 +38,38 @@ public:
 
     Board();
 
-    char getPieceLetter(Position pos);
-    Color getPieceColor(Position pos);
+    //returns a character, if the character is lowercase it makes it uppercase
+    char getPieceLetter(PieceType piece) const;
+    // returns a PieceType val from the pos given, used in pieces.cpp
+    PieceType getPiece(Position pos) const;
+    //returns true if the piece at pos is white, false otherwise. throws an error if the tile is empty.
+    bool isWhitePiece(PieceType piece) const;
     void setEnPassant(Position pos);
-    bool checkEnPassant(Position pos);
+    // sets the EnPassant flag, 8 is the cleared value. Only cares about the col value, pos.row can be set to whatever.
+    bool checkEnPassant(Position pos) const;
     void promotePawn(Position pos, PieceType pieceType);
     void removePiece(Position pos);
-    bool isValidMove(Position from, Position to);
+    bool isValidMove(Position from, Position to) const;
     void move(Position from, Position to);
 
 private:
-    uint8_t board[8][8];
-    Color turn;
+    PieceType board[8][8];
+    bool isWhiteTurn;
     bool canCastle[2][2];
-    bool canEnPassant[2][8];
-    PieceType pawnPromote[2][8];
-
-    PieceType getPieceType(uint8_t piece);
+    // records the column of the last move if double pawn move, cleared state is 8
+    uint8_t EnPassantCol;
 };
 
 // Base class for all pieces
 class Piece
 {
 protected:
-    Board::Color color;
+    bool isWhite;
 
 public:
-    Piece(Board::Color color) : color(color) {}
+    Piece(bool isWhite) : isWhite(isWhite) {}
 
-    virtual bool isValidMove(Board *board, Board::Position from, Board::Position to) = 0;
+    virtual bool isValidMove(const Board *board, Board::Position from, Board::Position to) = 0;
     virtual std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from) = 0;
     virtual void doMove(Board *board, Board::Position from, Board::Position to) = 0;
 };
@@ -73,9 +78,8 @@ public:
 class Pawn : public Piece
 {
 public:
-    Pawn(Board::Color color) : Piece(color) {}
-
-    bool isValidMove(Board *board, Board::Position from, Board::Position to);
+    Pawn(bool isWhite) : Piece(isWhite) {}
+    bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
@@ -84,9 +88,9 @@ public:
 class Rook : public Piece
 {
 public:
-    Rook(Board::Color color) : Piece(color) {}
+    Rook(bool isWhite) : Piece(isWhite) {}
 
-    bool isValidMove(Board *board, Board::Position from, Board::Position to);
+    bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };

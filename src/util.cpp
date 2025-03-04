@@ -14,10 +14,15 @@ void Util::printBoard(Board *board)
                    "{} ", i + 1);
         for (int j = 0; j < 8; j++)
         {
-            char c = board->getPieceLetter((Board::Position){i, j});
-            Board::Color color = board->getPieceColor((Board::Position){i, j});
-            bool white = color == Board::Color::WHITE;
+            char c = board->getPieceLetter(board->getPiece((Board::Position){i, j}));
 
+            // doesnt matter what the white var is on a blank tile, but I can only call isWhitePiece on an occupied tile
+            bool white = false;
+            if (board->getPiece((Board::Position){i, j}) != Board::PieceType::EMPTY)
+            {
+                white = board->isWhitePiece(board->getPiece((Board::Position){i, j}));;
+            }
+            
             fmt::print(fg(white ? fmt::color::dark_red : fmt::color::black) | bg((i+j) % 2 == 1 ? fmt::color::light_gray : fmt::color::lime_green) | fmt::emphasis::bold,
                        " {} ", c);
         }
