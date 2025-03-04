@@ -136,7 +136,9 @@ void Board::removePiece(Position pos)
 
 // Check if a proposed move is valid
 bool Board::isValidMove(Position from, Position to) const
-{
+{   
+    PieceType fromPiece = getPiece(from);
+
     // Check if the move is within the board
     if (from.row < 0 || from.row > 7 || from.col < 0 || from.col > 7 || to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7)
     {
@@ -159,7 +161,7 @@ bool Board::isValidMove(Position from, Position to) const
     // Check if the piece is moving to the same color
     if (board[to.row][to.col] != PieceType::EMPTY)
     {
-        if (isWhitePiece(getPiece(from)) == isWhitePiece(getPiece(to)))
+        if (isWhitePiece(fromPiece) == isWhitePiece(getPiece(to)))
         {
             return false;
         }
@@ -169,18 +171,17 @@ bool Board::isValidMove(Position from, Position to) const
         
 
     // Check if it's this pieces turn
-    if (isWhitePiece(getPiece(from)) != isWhiteTurn)
+    if (isWhitePiece(fromPiece) != isWhiteTurn)
     {
         return false;
     }
     // Piece-specific move validation
-    PieceType pieceType = getPiece(from);
     Piece *pieceObj;
-    switch (pieceType)
+    switch (fromPiece)
     {
     case PieceType::WHITE_PAWN:
     case PieceType::BLACK_PAWN:
-        pieceObj = new Pawn(isWhitePiece(getPiece(from)));
+        pieceObj = new Pawn(isWhitePiece(fromPiece));
         break;
 
     default:
