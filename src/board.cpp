@@ -54,6 +54,17 @@ Board::Board()
     board[7][4] = PieceType::BLACK_KING;
 }
 
+
+bool Board::isWhiteTurnFunc() const
+{
+    return isWhiteTurn;
+}
+
+bool Board::isInBounds(Position pos)
+{
+    return !(pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7);
+}
+
 char Board::getPieceLetter(PieceType piece)
 {
     //changes a PieceType into a char, alwas the uppercase version which is why we subtract 32 from lowercase PieceTypes. Used in util for the print function

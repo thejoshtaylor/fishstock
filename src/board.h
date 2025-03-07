@@ -37,7 +37,10 @@ public:
     };
 
     Board();
-
+    // lets outside funciton access isWhiteTurn
+    bool isWhiteTurnFunc() const;
+    //checks if a position is is in bounds
+    static bool isInBounds(Position pos);
     //returns a character, if the character is lowercase it makes it uppercase
     static char getPieceLetter(PieceType piece);
     // returns a PieceType val from the pos given, used in pieces.cpp

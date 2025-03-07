@@ -135,33 +135,51 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
 std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position from)
 {
 
-    std::vector<Board::Position>* returnList = new std::vector<Board::Position>();
-    // direction will be negative if black, reduces if statments becauses you ust add direction to the from row if it is white or black
-    int direction = (board->isWhitePiece(board->getPiece(from))? 1 : -1);
-
-    //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
-    bool toPosIsWhite = false;
-    try 
-    { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col + 1}));} 
-    catch (std::invalid_argument &e) 
-    {}
-
-    // check if we can make a capture
-    // if diagonal is not empty and it is an enemy piece, or if we can enpassant that way
-    if ((board->getPiece((Board::Position){from.row +  direction, from.col + 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || board->checkEnPassant((Board::Position){from.row +  direction, from.col + 1}) )
+    if (board->isWhiteTurnFunc() != Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col })))
     {
-            returnList->push_back((Board::Position){from.row + direction, from.col + 1});
+        throw std::invalid_argument("invalid call of getValidMoves, it is not the right turn for this piece to move");
     }
-        
-    //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
-    try 
-    { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col - 1}));} 
-    catch (std::invalid_argument &e) 
-    {}
 
-    if ((board->getPiece((Board::Position){from.row +  direction, from.col - 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || board->checkEnPassant((Board::Position){from.row +  direction, from.col - 1}))
+    std::vector<Board::Position>* returnList = new std::vector<Board::Position>();
+    // direction will be negative if black, reduces if statments becauses you just add direction to the from row if it is white or black
+    int direction = (board->isWhitePiece(board->getPiece(from))? 1 : -1);
+    
+    bool toPosIsWhite = false;
+    if (Board::isInBounds((Board::Position){from.row + direction, from.col + 1}))
     {
+        //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
+        try 
+        { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col + 1}));} 
+        catch (std::invalid_argument &e) 
+        {}
+        // check if we can make a capture
+        // if diagonal is not empty and it is an enemy piece, or if we can enpassant that way
+         if ((board->getPiece((Board::Position){from.row +  direction, from.col + 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || 
+            board->checkEnPassant((Board::Position){from.row +  direction, from.col + 1}))
+         {
+            returnList->push_back((Board::Position){from.row + direction, from.col + 1});
+         }
+    }
+if (Board::isInBounds((Board::Position){from.row + direction, from.col - 1}))
+    {
+        //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
+        try 
+        { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col - 1}));} 
+        catch (std::invalid_argument &e) 
+        {}
+    
+        // if diagonal is not empty and it is an enemy piece, or if we can enpassant that way
+        if ((board->getPiece((Board::Position){from.row +  direction, from.col - 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || 
+             board->checkEnPassant((Board::Position){from.row +  direction, from.col - 1}))
+        {
             returnList->push_back((Board::Position){from.row + direction, from.col - 1});
+        }
+    }
+
+    // if one forwards is out of bounds than two forwards is also out of bounds and we are done
+    if (!Board::isInBounds((Board::Position){from.row +  direction, from.col}))
+    {
+        return returnList;
     }
 
     // check if we can move one forward
