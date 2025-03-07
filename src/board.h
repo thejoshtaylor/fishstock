@@ -39,11 +39,11 @@ public:
     Board();
 
     //returns a character, if the character is lowercase it makes it uppercase
-    char getPieceLetter(PieceType piece) const;
+    static char getPieceLetter(PieceType piece);
     // returns a PieceType val from the pos given, used in pieces.cpp
     PieceType getPiece(Position pos) const;
     //returns true if the piece at pos is white, false otherwise. throws an error if the tile is empty.
-    bool isWhitePiece(PieceType piece) const;
+    static bool isWhitePiece(PieceType piece);
     void setEnPassant(Position pos);
     // sets the EnPassant flag, 8 is the cleared value. Only cares about the col value, pos.row can be set to whatever.
     bool checkEnPassant(Position pos) const;
@@ -68,7 +68,7 @@ protected:
 
 public:
     Piece(bool isWhite) : isWhite(isWhite) {}
-
+    static Piece* pieceObjConstructor(Board::PieceType inputPiece);
     virtual bool isValidMove(const Board *board, Board::Position from, Board::Position to) = 0;
     virtual std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from) = 0;
     virtual void doMove(Board *board, Board::Position from, Board::Position to) = 0;
@@ -94,5 +94,6 @@ public:
     std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
+
 
 #endif

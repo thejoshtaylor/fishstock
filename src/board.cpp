@@ -54,7 +54,7 @@ Board::Board()
     board[7][4] = PieceType::BLACK_KING;
 }
 
-char Board::getPieceLetter(PieceType piece) const
+char Board::getPieceLetter(PieceType piece)
 {
     //changes a PieceType into a char, alwas the uppercase version which is why we subtract 32 from lowercase PieceTypes. Used in util for the print function
     return ((char)piece < 'a' ? (char)piece : (char)((int)piece - 32));
@@ -71,7 +71,7 @@ Board::PieceType Board::getPiece(Position pos) const
 
 }
 
-bool Board::isWhitePiece(PieceType piece) const
+bool Board::isWhitePiece(PieceType piece)
 {
     if ((char)piece < 'A' || (char)piece > 'z' )
     throw invalid_argument("invalid symbol at pos given");

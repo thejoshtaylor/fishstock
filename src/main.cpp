@@ -19,6 +19,7 @@ int main() {
     board.move((Board::Position){6, 3}, (Board::Position){4, 3});
     Util::printBoard(&board);
 
+    /*
     // Take en passant
     board.move((Board::Position){4, 2}, (Board::Position){5, 3});
     Util::printBoard(&board);
@@ -45,6 +46,33 @@ int main() {
     } catch (std::invalid_argument &e) {
         std::cout << "CORRECTLY Caught exception: " << e.what() << std::endl;
     }
+
+    */
+
+
+
+    //testing getValidMoves stuff
+    Board::Position pos;
+    pos.row = 1;
+    pos.col = 0;
+
+    // making the pointer to the output vector, danger of memory leak
+    std::vector<Board::Position>* getValidMovesOutput;
+    Board::PieceType piece = board.getPiece(pos);
+    std::cout << board.getPieceLetter(board.getPiece(pos)) << std::endl;
+    Piece *pieceObj = Piece::pieceObjConstructor(piece);
+    getValidMovesOutput = pieceObj->getValidMoves(&board,pos);
+
+    std::cout << "list of posible moves for piece at " << (int)pos.row << ", " << (int)pos.col << std::endl;
+
+    for (int i = 0; i < getValidMovesOutput->size(); ++i)
+    {
+        std::cout << (int)getValidMovesOutput->at(i).row << ", " << (int)getValidMovesOutput->at(i).col << std::endl;
+    }
+
+
+    delete getValidMovesOutput;
+    delete pieceObj;
 
     return 0;
 }

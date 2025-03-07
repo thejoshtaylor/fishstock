@@ -3,6 +3,26 @@
 
 #include "board.h"
 
+// Piece class util
+Piece* Piece::pieceObjConstructor(Board::PieceType inputPiece)
+{
+    switch (inputPiece)
+    {
+    case Board::PieceType::WHITE_PAWN:
+    case Board::PieceType::BLACK_PAWN:
+        return new Pawn(Board::isWhitePiece(inputPiece));
+        break;
+    
+    default:
+        throw std::invalid_argument("Invalid piece type");
+        break;
+    }
+
+}
+
+
+
+
 //
 // PAWN
 //
@@ -114,51 +134,51 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
 // Get all valid moves for a pawn
 std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position from)
 {
-    // Check if we can move forward
-    if (this->isWhite)
+
+    std::vector<Board::Position>* returnList = new std::vector<Board::Position>();
+    // direction will be negative if black, reduces if statments becauses you ust add direction to the from row if it is white or black
+    int direction = (board->isWhitePiece(board->getPiece(from))? 1 : -1);
+
+    //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
+    bool toPosIsWhite = false;
+    try 
+    { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col + 1}));} 
+    catch (std::invalid_argument &e) 
+    {}
+
+    // check if we can make a capture
+    // if diagonal is not empty and it is an enemy piece, or if we can enpassant that way
+    if ((board->getPiece((Board::Position){from.row +  direction, from.col + 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || board->checkEnPassant((Board::Position){from.row +  direction, from.col + 1}) )
     {
-        if (board->getPiece((Board::Position){from.row + 1, from.col}) == Board::PieceType::EMPTY)
-        {
-            // Move forward
-            board->isValidMove(from, (Board::Position){from.row + 1, from.col});
-            // Move two forward
-            if (from.row == 1 && board->getPiece((Board::Position){from.row + 2, from.col}) == Board::PieceType::EMPTY)
-            {
-                board->isValidMove(from, (Board::Position){from.row + 2, from.col});
-            }
-        }
-        // Check if we can take, checking if it is black
-        if (!board->isWhitePiece(board->getPiece((Board::Position){from.row + 1, from.col + 1})))
-        {
-            board->isValidMove(from, (Board::Position){from.row + 1, from.col + 1});
-        }
-        if (!board->isWhitePiece(board->getPiece((Board::Position){from.row + 1, from.col - 1})))
-        {
-            board->isValidMove(from, (Board::Position){from.row + 1, from.col - 1});
-        }
+            returnList->push_back((Board::Position){from.row + direction, from.col + 1});
     }
+        
+    //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
+    try 
+    { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col - 1}));} 
+    catch (std::invalid_argument &e) 
+    {}
+
+    if ((board->getPiece((Board::Position){from.row +  direction, from.col - 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || board->checkEnPassant((Board::Position){from.row +  direction, from.col - 1}))
+    {
+            returnList->push_back((Board::Position){from.row + direction, from.col - 1});
+    }
+
+    // check if we can move one forward
+    if (board->getPiece((Board::Position){from.row +  direction, from.col}) == Board::PieceType::EMPTY)
+        returnList->push_back((Board::Position){from.row + direction, from.col});
+
+    // if we cant move one forwards we cant move two forwards
     else
+        return returnList;
+
+    //check for double moves, uses 2 * direction which can either be 2 or -2
+    if ((from.row == 6 || from.row == 1)&&(board->getPiece((Board::Position){from.row +  2 * direction, from.col}) == Board::PieceType::EMPTY))
     {
-        if (board->getPiece((Board::Position){from.row - 1, from.col}) == Board::PieceType::EMPTY)
-        {
-            // Move forward
-            board->isValidMove(from, (Board::Position){from.row - 1, from.col});
-            // Move two forward
-            if (from.row == 6 && board->getPiece((Board::Position){from.row - 2, from.col}) == Board::PieceType::EMPTY)
-            {
-                board->isValidMove(from, (Board::Position){from.row - 2, from.col});
-            }
-        }
-        // Check if we can take, we can take if it is white
-        if (board->isWhitePiece(board->getPiece((Board::Position){from.row - 1, from.col + 1})))
-        {
-            board->isValidMove(from, (Board::Position){from.row - 1, from.col + 1});
-        }
-        if (board->isWhitePiece(board->getPiece((Board::Position){from.row - 1, from.col - 1})))
-        {
-            board->isValidMove(from, (Board::Position){from.row - 1, from.col - 1});
-        }
+        returnList->push_back((Board::Position){from.row +  2 * direction, from.col});
     }
+    
+    return returnList;
 }
 
 // Execute special moves for a pawn
