@@ -19,7 +19,6 @@ int main() {
     board.move((Board::Position){6, 3}, (Board::Position){4, 3});
     Util::printBoard(&board);
 
-    /*
     // Take en passant
     board.move((Board::Position){4, 2}, (Board::Position){5, 3});
     Util::printBoard(&board);
@@ -47,13 +46,12 @@ int main() {
         std::cout << "CORRECTLY Caught exception: " << e.what() << std::endl;
     }
 
-    */
 
 
 
     //testing getValidMoves stuff
     Board::Position pos;
-    pos.row = 1;
+    pos.row = 2;
     pos.col = 0;
 
     // making the pointer to the output vector, danger of memory leak

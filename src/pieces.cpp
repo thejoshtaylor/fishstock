@@ -21,12 +21,11 @@ Piece* Piece::pieceObjConstructor(Board::PieceType inputPiece)
 }
 
 
-
-
 //
 // PAWN
 //
 
+// possibly garbage now
 // Check if a pawn can make this move
 bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position to)
 {
@@ -132,7 +131,7 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
 }
 
 // Get all valid moves for a pawn
-std::vector<Board::Position>* Pawn::getValidMoves(Board *board, Board::Position from)
+std::vector<Board::Position>* Pawn::getValidMoves(const Board *board, Board::Position from)
 {
 
     if (board->isWhiteTurnFunc() != Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col })))
@@ -288,7 +287,7 @@ bool Rook::isValidMove(const Board *board, Board::Position from, Board::Position
     return true;
 }
 
-std::vector<Board::Position>* Rook::getValidMoves(Board *board, Board::Position from)
+std::vector<Board::Position>* Rook::getValidMoves(const Board *board, Board::Position from)
 {
 }
 

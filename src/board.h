@@ -34,6 +34,10 @@ public:
     {
         uint8_t row;
         uint8_t col;
+        bool operator==(const Position& other) const
+        {
+            return row == other.row && col == other.col;
+        }
     };
 
     Board();
@@ -73,7 +77,7 @@ public:
     Piece(bool isWhite) : isWhite(isWhite) {}
     static Piece* pieceObjConstructor(Board::PieceType inputPiece);
     virtual bool isValidMove(const Board *board, Board::Position from, Board::Position to) = 0;
-    virtual std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from) = 0;
+    virtual std::vector<Board::Position>* getValidMoves(const Board *board, Board::Position from) = 0;
     virtual void doMove(Board *board, Board::Position from, Board::Position to) = 0;
 };
 
@@ -83,7 +87,7 @@ class Pawn : public Piece
 public:
     Pawn(bool isWhite) : Piece(isWhite) {}
     bool isValidMove(const Board *board, Board::Position from, Board::Position to);
-    std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
+    std::vector<Board::Position>* getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
 
@@ -94,7 +98,7 @@ public:
     Rook(bool isWhite) : Piece(isWhite) {}
 
     bool isValidMove(const Board *board, Board::Position from, Board::Position to);
-    std::vector<Board::Position>* getValidMoves(Board *board, Board::Position from);
+    std::vector<Board::Position>* getValidMoves( const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
 

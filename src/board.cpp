@@ -179,33 +179,29 @@ bool Board::isValidMove(Position from, Position to) const
     }
 
 
-        
-
     // Check if it's this pieces turn
     if (isWhitePiece(fromPiece) != isWhiteTurn)
     {
         return false;
     }
+
     // Piece-specific move validation
-    Piece *pieceObj;
-    switch (fromPiece)
+    Piece *pieceObj = Piece::pieceObjConstructor(fromPiece);
+
+    std::vector<Position>* allValidMoves = pieceObj->getValidMoves(this,from);
+
+    bool isValid = false;
+    for (int i = 0; i < allValidMoves->size(); ++i)
     {
-    case PieceType::WHITE_PAWN:
-    case PieceType::BLACK_PAWN:
-        pieceObj = new Pawn(isWhitePiece(fromPiece));
-        break;
-
-    default:
-        throw invalid_argument("Invalid piece type");
-        break;
+        if (allValidMoves->at(i) == to)
+        {
+            isValid = true;
+            break;
+        }
     }
+    delete pieceObj;
+    return isValid;
 
-    if (!pieceObj->isValidMove(this, from, to))
-    {
-        return false;
-    }
-
-    return true;
 }
 
 // Execute a move on the board
@@ -226,19 +222,7 @@ void Board::move(Position from, Position to)
     board[from.row][from.col] = PieceType::EMPTY;
 
     // Tell the piece that we're moving
-    Piece *pieceObj;
-    switch (piece)
-    {
-    case PieceType::WHITE_PAWN:
-    case PieceType::BLACK_PAWN:
-        pieceObj = new Pawn(isWhitePiece(piece));
-        break;
-    
-    default:
-        throw invalid_argument("Invalid piece type");
-        break;
-    }
-
+    Piece *pieceObj = Piece::pieceObjConstructor(piece);
     pieceObj->doMove(this,from,to);
 
     // Finish the move
@@ -246,4 +230,5 @@ void Board::move(Position from, Position to)
 
     // Update the turn
     isWhiteTurn = !isWhiteTurn;
+    delete pieceObj;
 }
