@@ -20,10 +20,10 @@ void Util::printBoard(Board *board)
             bool white = false;
             if (board->getPiece((Board::Position){i, j}) != Board::PieceType::EMPTY)
             {
-                white = board->isWhitePiece(board->getPiece((Board::Position){i, j}));;
+                white = board->isWhitePiece(board->getPiece((Board::Position){i, j}));
             }
-            
-            fmt::print(fg(white ? fmt::color::dark_red : fmt::color::black) | bg((i+j) % 2 == 1 ? fmt::color::light_gray : fmt::color::lime_green) | fmt::emphasis::bold,
+
+            fmt::print(fg(white ? fmt::color::dark_red : fmt::color::black) | bg((i + j) % 2 == 1 ? fmt::color::light_gray : fmt::color::lime_green) | fmt::emphasis::bold,
                        " {} ", c);
         }
         fmt::print(fg(fmt::color::turquoise) | fmt::emphasis::bold,

@@ -3,7 +3,6 @@
 
 #include "board.h"
 
-
 using namespace std;
 
 Board::Board()
@@ -22,9 +21,9 @@ Board::Board()
     {
 
         for (int j = 0; j < 8; ++j)
-         {
-            board[i][j] = PieceType::EMPTY;  
-         }
+        {
+            board[i][j] = PieceType::EMPTY;
+        }
     }
 
     for (int i = 0; i < 8; ++i)
@@ -54,7 +53,6 @@ Board::Board()
     board[7][4] = PieceType::BLACK_KING;
 }
 
-
 bool Board::isWhiteTurnFunc() const
 {
     return isWhiteTurn;
@@ -67,10 +65,9 @@ bool Board::isInBounds(Position pos)
 
 char Board::getPieceLetter(PieceType piece)
 {
-    //changes a PieceType into a char, alwas the uppercase version which is why we subtract 32 from lowercase PieceTypes. Used in util for the print function
+    // changes a PieceType into a char, alwas the uppercase version which is why we subtract 32 from lowercase PieceTypes. Used in util for the print function
     return ((char)piece < 'a' ? (char)piece : (char)((int)piece - 32));
 }
-
 
 Board::PieceType Board::getPiece(Position pos) const
 {
@@ -79,13 +76,12 @@ Board::PieceType Board::getPiece(Position pos) const
         throw invalid_argument("Invalid pos.row or column");
     }
     return board[pos.row][pos.col];
-
 }
 
 bool Board::isWhitePiece(PieceType piece)
 {
-    if ((char)piece < 'A' || (char)piece > 'z' )
-    throw invalid_argument("invalid symbol at pos given");
+    if ((char)piece < 'A' || (char)piece > 'z')
+        throw invalid_argument("invalid symbol at pos given");
     return (char)piece < 'a';
 }
 
@@ -127,8 +123,6 @@ void Board::promotePawn(Position pos, PieceType pieceType)
     }
 
     board[pos.row][pos.col] = pieceType;
-
-
 }
 
 // Remove a piece from the board
@@ -144,10 +138,9 @@ void Board::removePiece(Position pos)
     board[pos.row][pos.col] = PieceType::EMPTY;
 }
 
-
 // Check if a proposed move is valid
 bool Board::isValidMove(Position from, Position to) const
-{   
+{
     PieceType fromPiece = getPiece(from);
 
     // Check if the move is within the board
@@ -168,7 +161,6 @@ bool Board::isValidMove(Position from, Position to) const
         return false;
     }
 
-
     // Check if the piece is moving to the same color
     if (board[to.row][to.col] != PieceType::EMPTY)
     {
@@ -177,7 +169,6 @@ bool Board::isValidMove(Position from, Position to) const
             return false;
         }
     }
-
 
     // Check if it's this pieces turn
     if (isWhitePiece(fromPiece) != isWhiteTurn)
@@ -188,7 +179,7 @@ bool Board::isValidMove(Position from, Position to) const
     // Piece-specific move validation
     Piece *pieceObj = Piece::pieceObjConstructor(fromPiece);
 
-    std::vector<Position>* allValidMoves = pieceObj->getValidMoves(this,from);
+    std::vector<Position> *allValidMoves = pieceObj->getValidMoves(this, from);
 
     bool isValid = false;
     for (int i = 0; i < allValidMoves->size(); ++i)
@@ -201,7 +192,6 @@ bool Board::isValidMove(Position from, Position to) const
     }
     delete pieceObj;
     return isValid;
-
 }
 
 // Execute a move on the board
@@ -223,7 +213,7 @@ void Board::move(Position from, Position to)
 
     // Tell the piece that we're moving
     Piece *pieceObj = Piece::pieceObjConstructor(piece);
-    pieceObj->doMove(this,from,to);
+    pieceObj->doMove(this, from, to);
 
     // Finish the move
     board[to.row][to.col] = piece;

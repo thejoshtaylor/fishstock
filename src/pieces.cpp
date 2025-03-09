@@ -4,7 +4,7 @@
 #include "board.h"
 
 // Piece class util
-Piece* Piece::pieceObjConstructor(Board::PieceType inputPiece)
+Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
 {
     switch (inputPiece)
     {
@@ -12,14 +12,12 @@ Piece* Piece::pieceObjConstructor(Board::PieceType inputPiece)
     case Board::PieceType::BLACK_PAWN:
         return new Pawn(Board::isWhitePiece(inputPiece));
         break;
-    
+
     default:
         throw std::invalid_argument("Invalid piece type");
         break;
     }
-
 }
-
 
 //
 // PAWN
@@ -107,7 +105,6 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
             return false;
         }
 
-        
         // Check if we're moving to an empty space
         if (board->getPiece(to) == Board::PieceType::EMPTY)
         {
@@ -117,7 +114,6 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
                 return false;
             }
         }
-
 
         // Check if we're trying to take our own piece
         else if (this->isWhite == board->isWhitePiece(board->getPiece(to)))
@@ -131,70 +127,76 @@ bool Pawn::isValidMove(const Board *board, Board::Position from, Board::Position
 }
 
 // Get all valid moves for a pawn
-std::vector<Board::Position>* Pawn::getValidMoves(const Board *board, Board::Position from)
+std::vector<Board::Position> *Pawn::getValidMoves(const Board *board, Board::Position from)
 {
 
-    if (board->isWhiteTurnFunc() != Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col })))
+    if (board->isWhiteTurnFunc() != Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col})))
     {
         throw std::invalid_argument("invalid call of getValidMoves, it is not the right turn for this piece to move");
     }
 
-    std::vector<Board::Position>* returnList = new std::vector<Board::Position>();
+    std::vector<Board::Position> *returnList = new std::vector<Board::Position>();
     // direction will be negative if black, reduces if statments becauses you just add direction to the from row if it is white or black
-    int direction = (board->isWhitePiece(board->getPiece(from))? 1 : -1);
-    
+    int direction = (board->isWhitePiece(board->getPiece(from)) ? 1 : -1);
+
     bool toPosIsWhite = false;
     if (Board::isInBounds((Board::Position){from.row + direction, from.col + 1}))
     {
-        //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
-        try 
-        { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col + 1}));} 
-        catch (std::invalid_argument &e) 
-        {}
+        // doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
+        try
+        {
+            toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row + direction, from.col + 1}));
+        }
+        catch (std::invalid_argument &e)
+        {
+        }
         // check if we can make a capture
         // if diagonal is not empty and it is an enemy piece, or if we can enpassant that way
-         if ((board->getPiece((Board::Position){from.row +  direction, from.col + 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || 
-            board->checkEnPassant((Board::Position){from.row +  direction, from.col + 1}))
-         {
+        if ((board->getPiece((Board::Position){from.row + direction, from.col + 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) ||
+            board->checkEnPassant((Board::Position){from.row + direction, from.col + 1}))
+        {
             returnList->push_back((Board::Position){from.row + direction, from.col + 1});
-         }
+        }
     }
-if (Board::isInBounds((Board::Position){from.row + direction, from.col - 1}))
+    if (Board::isInBounds((Board::Position){from.row + direction, from.col - 1}))
     {
-        //doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
-        try 
-        { toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row +  direction, from.col - 1}));} 
-        catch (std::invalid_argument &e) 
-        {}
-    
+        // doesnt matter if the tile is empty, but isWhitePiece cant be called on an empty tile
+        try
+        {
+            toPosIsWhite = Board::isWhitePiece(board->getPiece((Board::Position){from.row + direction, from.col - 1}));
+        }
+        catch (std::invalid_argument &e)
+        {
+        }
+
         // if diagonal is not empty and it is an enemy piece, or if we can enpassant that way
-        if ((board->getPiece((Board::Position){from.row +  direction, from.col - 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) || 
-             board->checkEnPassant((Board::Position){from.row +  direction, from.col - 1}))
+        if ((board->getPiece((Board::Position){from.row + direction, from.col - 1}) != Board::PieceType::EMPTY && isWhite != toPosIsWhite) ||
+            board->checkEnPassant((Board::Position){from.row + direction, from.col - 1}))
         {
             returnList->push_back((Board::Position){from.row + direction, from.col - 1});
         }
     }
 
     // if one forwards is out of bounds than two forwards is also out of bounds and we are done
-    if (!Board::isInBounds((Board::Position){from.row +  direction, from.col}))
+    if (!Board::isInBounds((Board::Position){from.row + direction, from.col}))
     {
         return returnList;
     }
 
     // check if we can move one forward
-    if (board->getPiece((Board::Position){from.row +  direction, from.col}) == Board::PieceType::EMPTY)
+    if (board->getPiece((Board::Position){from.row + direction, from.col}) == Board::PieceType::EMPTY)
         returnList->push_back((Board::Position){from.row + direction, from.col});
 
     // if we cant move one forwards we cant move two forwards
     else
         return returnList;
 
-    //check for double moves, uses 2 * direction which can either be 2 or -2
-    if ((from.row == 6 || from.row == 1)&&(board->getPiece((Board::Position){from.row +  2 * direction, from.col}) == Board::PieceType::EMPTY))
+    // check for double moves, uses 2 * direction which can either be 2 or -2
+    if ((from.row == 6 || from.row == 1) && (board->getPiece((Board::Position){from.row + 2 * direction, from.col}) == Board::PieceType::EMPTY))
     {
-        returnList->push_back((Board::Position){from.row +  2 * direction, from.col});
+        returnList->push_back((Board::Position){from.row + 2 * direction, from.col});
     }
-    
+
     return returnList;
 }
 
@@ -214,17 +216,15 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
         {
             board->promotePawn(to, Board::PieceType::BLACK_QUEEN);
         }
-            
-    } 
+    }
 
-    
     // Check if we are taking en passant
     if (from.col != to.col && board->getPiece(to) == Board::PieceType::EMPTY)
     {
         // Remove the piece
         board->removePiece((Board::Position){from.row, to.col});
     }
-    //clearing the enpassant column now, gets uncleared in the next segment if needed
+    // clearing the enpassant column now, gets uncleared in the next segment if needed
     board->setEnPassant((Board::Position){0, 8});
 
     // Check if we're doing a double move
@@ -287,7 +287,7 @@ bool Rook::isValidMove(const Board *board, Board::Position from, Board::Position
     return true;
 }
 
-std::vector<Board::Position>* Rook::getValidMoves(const Board *board, Board::Position from)
+std::vector<Board::Position> *Rook::getValidMoves(const Board *board, Board::Position from)
 {
 }
 

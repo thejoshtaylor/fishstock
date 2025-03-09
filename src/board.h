@@ -28,13 +28,11 @@ public:
         BLACK_KING = 'k'
     };
 
-    
-
     struct Position
     {
         uint8_t row;
         uint8_t col;
-        bool operator==(const Position& other) const
+        bool operator==(const Position &other) const
         {
             return row == other.row && col == other.col;
         }
@@ -43,16 +41,16 @@ public:
     Board();
     // lets outside funciton access isWhiteTurn
     bool isWhiteTurnFunc() const;
-    //checks if a position is is in bounds
+    // checks if a position is is in bounds
     static bool isInBounds(Position pos);
-    //returns a character, if the character is lowercase it makes it uppercase
+    // returns a character, if the character is lowercase it makes it uppercase
     static char getPieceLetter(PieceType piece);
     // returns a PieceType val from the pos given, used in pieces.cpp
     PieceType getPiece(Position pos) const;
-    //returns true if the piece at pos is white, false otherwise. throws an error if the tile is empty.
+    // returns true if the piece at pos is white, false otherwise. throws an error if the tile is empty.
     static bool isWhitePiece(PieceType piece);
-    void setEnPassant(Position pos);
     // sets the EnPassant flag, 8 is the cleared value. Only cares about the col value, pos.row can be set to whatever.
+    void setEnPassant(Position pos);
     bool checkEnPassant(Position pos) const;
     void promotePawn(Position pos, PieceType pieceType);
     void removePiece(Position pos);
@@ -75,9 +73,9 @@ protected:
 
 public:
     Piece(bool isWhite) : isWhite(isWhite) {}
-    static Piece* pieceObjConstructor(Board::PieceType inputPiece);
+    static Piece *pieceObjConstructor(Board::PieceType inputPiece);
     virtual bool isValidMove(const Board *board, Board::Position from, Board::Position to) = 0;
-    virtual std::vector<Board::Position>* getValidMoves(const Board *board, Board::Position from) = 0;
+    virtual std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from) = 0;
     virtual void doMove(Board *board, Board::Position from, Board::Position to) = 0;
 };
 
@@ -87,7 +85,7 @@ class Pawn : public Piece
 public:
     Pawn(bool isWhite) : Piece(isWhite) {}
     bool isValidMove(const Board *board, Board::Position from, Board::Position to);
-    std::vector<Board::Position>* getValidMoves(const Board *board, Board::Position from);
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
 
@@ -98,9 +96,8 @@ public:
     Rook(bool isWhite) : Piece(isWhite) {}
 
     bool isValidMove(const Board *board, Board::Position from, Board::Position to);
-    std::vector<Board::Position>* getValidMoves( const Board *board, Board::Position from);
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
-
 
 #endif
