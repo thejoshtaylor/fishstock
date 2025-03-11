@@ -7,11 +7,12 @@
 
 int main() {
 
+    /*
     Board board = Board(true);
     Util::printBoard(&board);
     board.addPiece((Board::Position){3,4},Board::PieceType::BLACK_QUEEN);
     Util::printBoard(&board);
-    /*
+    */
     std::cout << "Hello, Fishstock!" << std::endl;
 
     Board board = Board();
@@ -77,7 +78,6 @@ int main() {
 
     delete getValidMovesOutput;
     delete pieceObj;
-    */
 
 
 

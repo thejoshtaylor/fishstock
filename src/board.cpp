@@ -96,7 +96,7 @@ bool Board::isWhiteTurnFunc() const
 
 bool Board::isInBounds(Position pos)
 {
-    return !(pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7);
+    return !(pos.row < (uint8_t)0 || pos.row > (uint8_t)7 || pos.col < (uint8_t)0 || pos.col > (uint8_t)7);
 }
 
 char Board::getPieceLetter(PieceType piece)
@@ -107,7 +107,7 @@ char Board::getPieceLetter(PieceType piece)
 
 Board::PieceType Board::getPiece(Position pos) const
 {
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    if (!isInBounds(pos))
     {
         throw invalid_argument("Invalid pos.row or column in getPiece");
     }
@@ -148,7 +148,7 @@ bool Board::checkEnPassant(Position pos) const
 void Board::promotePawn(Position pos, PieceType pieceType)
 {
     // Validate the pos.row and column
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    if (!isInBounds(pos))
     {
         throw invalid_argument("Invalid pos.row or column in promotePawn");
     }
@@ -186,7 +186,7 @@ void Board::addPiece(Position pos, PieceType inputPiece)
 void Board::removePiece(Position pos)
 {
     // Validate the pos.row and column
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    if (!isInBounds(pos))
     {
         throw invalid_argument("Invalid pos.row or column in removePiece");
     }
@@ -201,7 +201,7 @@ bool Board::isValidMove(Position from, Position to) const
     PieceType fromPiece = getPiece(from);
 
     // Check if the move is within the board
-    if (from.row < 0 || from.row > 7 || from.col < 0 || from.col > 7 || to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7)
+    if (!isInBounds(from) || !isInBounds(to))
     {
         return false;
     }

@@ -24,6 +24,14 @@ TEST_F(BoardTest, ColorTest)
     EXPECT_ANY_THROW(board.isWhitePiece(board.getPiece((Board::Position){3, 3})));
 }
 
+TEST_F(BoardTest, isInBoundsTest)
+{
+    EXPECT_TRUE(Board::isInBounds((Board::Position){0,0}));
+    EXPECT_FALSE(Board::isInBounds((Board::Position){8,0}));
+    EXPECT_FALSE(Board::isInBounds((Board::Position){0,8}));
+    EXPECT_FALSE(Board::isInBounds((Board::Position){8,8}));
+}
+
 
 TEST_F(BoardTest, CustomBoardTest)
 {
