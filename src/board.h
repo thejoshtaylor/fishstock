@@ -38,7 +38,7 @@ public:
         }
     };
 
-    Board();
+    Board(bool isCustom = false, bool isWhiteTurnInput = true, uint8_t enPassantColInput = 8 , bool canCastleInput[] = nullptr);
     // lets outside funciton access isWhiteTurn
     bool isWhiteTurnFunc() const;
     // checks if a position is is in bounds
@@ -53,6 +53,8 @@ public:
     void setEnPassant(Position pos);
     bool checkEnPassant(Position pos) const;
     void promotePawn(Position pos, PieceType pieceType);
+    // adds a piece to the board, used for making custom boards
+    void addPiece(Position pos, PieceType inputPiece);
     void removePiece(Position pos);
     bool isValidMove(Position from, Position to) const;
     void move(Position from, Position to);

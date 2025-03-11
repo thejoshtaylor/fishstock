@@ -24,6 +24,33 @@ TEST_F(BoardTest, ColorTest)
     EXPECT_ANY_THROW(board.isWhitePiece(board.getPiece((Board::Position){3, 3})));
 }
 
+
+TEST_F(BoardTest, CustomBoardTest)
+{
+    Board customBoard = Board(true);
+
+    // make sure a default custom board starts out empty
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            EXPECT_EQ(customBoard.getPiece((Board::Position){(uint8_t)row,(uint8_t)col}), Board::PieceType::EMPTY);
+        }
+
+    }
+    // make sure a default custom board starts out on white's turn 
+    EXPECT_EQ(customBoard.isWhiteTurnFunc(),true);
+    // make sure a default custom board starts out with the castling flags and enpassant flag set to false
+    // make sure we can't add a piece out of bounds
+    // make sure we can't add an empty piece
+    // make sure we can add a piece of a specific type in the right place
+    // make sure we can't add a piece on top of another piece
+
+
+
+}
+
+
 TEST_F(BoardTest, InvalidMoveTest)
 {
     // Move to current position

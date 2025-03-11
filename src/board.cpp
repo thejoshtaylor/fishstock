@@ -5,52 +5,88 @@
 
 using namespace std;
 
-Board::Board()
+Board::Board(bool isCustom, bool isWhiteTurnInput, uint8_t enPassantColInput, bool canCastleInput[])
 {
-    isWhiteTurn = true;
+    if (!isCustom)
+    {
+        isWhiteTurn = true;
 
-    canCastle[0][0] = true;
-    canCastle[0][1] = true;
-    canCastle[1][0] = true;
-    canCastle[1][1] = true;
-    EnPassantCol = 8;
+        canCastle[0][0] = true;
+        canCastle[0][1] = true;
+        canCastle[1][0] = true;
+        canCastle[1][1] = true;
+        EnPassantCol = 8;
 
-    // Board layout is from a1 to h8 and the value is the piece index
-    // NEEDS TO BE REDONE
-    for (int i = 2; i < 6; ++i)
+        // Board layout is from a1 to h8 and the value is the piece index
+        for (int i = 2; i < 6; ++i)
+        {
+
+            for (int j = 0; j < 8; ++j)
+            {
+                board[i][j] = PieceType::EMPTY;
+            }
+        }
+
+        for (int i = 0; i < 8; ++i)
+        {
+            board[1][i] = PieceType::WHITE_PAWN;
+            board[6][i] = PieceType::BLACK_PAWN;
+        }
+
+        board[0][0] = PieceType::WHITE_ROOK;
+        board[0][7] = PieceType::WHITE_ROOK;
+        board[7][0] = PieceType::BLACK_ROOK;
+        board[7][7] = PieceType::BLACK_ROOK;
+
+        board[0][1] = PieceType::WHITE_KNIGHT;
+        board[0][6] = PieceType::WHITE_KNIGHT;
+        board[7][1] = PieceType::BLACK_KNIGHT;
+        board[7][6] = PieceType::BLACK_KNIGHT;
+
+        board[0][2] = PieceType::WHITE_BISHOP;
+        board[0][5] = PieceType::WHITE_BISHOP;
+        board[7][2] = PieceType::BLACK_BISHOP;
+        board[7][5] = PieceType::BLACK_BISHOP;
+
+        board[0][4] = PieceType::WHITE_KING;
+        board[0][3] = PieceType::WHITE_QUEEN;
+        board[7][3] = PieceType::BLACK_QUEEN;
+        board[7][4] = PieceType::BLACK_KING;
+    }
+    else
     {
 
-        for (int j = 0; j < 8; ++j)
+        isWhiteTurn = isWhiteTurnInput;
+        EnPassantCol = enPassantColInput;
+        int castleInputIter = 0;
+        if (canCastleInput == nullptr)
         {
-            board[i][j] = PieceType::EMPTY;
+            canCastle[0][0] = false;
+            canCastle[0][1] = false;
+            canCastle[1][0] = false;
+            canCastle[1][1] = false;
+        }
+        else
+        {
+            for (int i = 0; i < 2; ++i)
+            {
+                for (int j = 0; j < 2; ++j)
+                {
+                    canCastle[i][j] = canCastleInput[castleInputIter];
+                    ++castleInputIter;
+                }
+            }
+        }
+
+        for (int i = 0; i < 8; ++i)
+        {
+
+            for (int j = 0; j < 8; ++j)
+            {
+                board[i][j] = PieceType::EMPTY;
+            }
         }
     }
-
-    for (int i = 0; i < 8; ++i)
-    {
-        board[1][i] = PieceType::WHITE_PAWN;
-        board[6][i] = PieceType::BLACK_PAWN;
-    }
-
-    board[0][0] = PieceType::WHITE_ROOK;
-    board[0][7] = PieceType::WHITE_ROOK;
-    board[7][0] = PieceType::BLACK_ROOK;
-    board[7][7] = PieceType::BLACK_ROOK;
-
-    board[0][1] = PieceType::WHITE_KNIGHT;
-    board[0][6] = PieceType::WHITE_KNIGHT;
-    board[7][1] = PieceType::BLACK_KNIGHT;
-    board[7][6] = PieceType::BLACK_KNIGHT;
-
-    board[0][2] = PieceType::WHITE_BISHOP;
-    board[0][5] = PieceType::WHITE_BISHOP;
-    board[7][2] = PieceType::BLACK_BISHOP;
-    board[7][5] = PieceType::BLACK_BISHOP;
-
-    board[0][4] = PieceType::WHITE_KING;
-    board[0][3] = PieceType::WHITE_QUEEN;
-    board[7][3] = PieceType::BLACK_QUEEN;
-    board[7][4] = PieceType::BLACK_KING;
 }
 
 bool Board::isWhiteTurnFunc() const
@@ -73,7 +109,7 @@ Board::PieceType Board::getPiece(Position pos) const
 {
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
     {
-        throw invalid_argument("Invalid pos.row or column");
+        throw invalid_argument("Invalid pos.row or column in getPiece");
     }
     return board[pos.row][pos.col];
 }
@@ -81,7 +117,7 @@ Board::PieceType Board::getPiece(Position pos) const
 bool Board::isWhitePiece(PieceType piece)
 {
     if ((char)piece < 'A' || (char)piece > 'z')
-        throw invalid_argument("invalid symbol at pos given");
+        throw invalid_argument("invalid symbol at pos given in isWhitePiece");
     return (char)piece < 'a';
 }
 
@@ -97,7 +133,7 @@ bool Board::checkEnPassant(Position pos) const
     // Validate the pos.row and column
     if (pos.col < 0 || pos.col > 7)
     {
-        throw invalid_argument("Invalid column");
+        throw invalid_argument("Invalid column in checkEnPassant");
     }
 
     // Check if this is a valid en passant pos.row
@@ -114,16 +150,37 @@ void Board::promotePawn(Position pos, PieceType pieceType)
     // Validate the pos.row and column
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
     {
-        throw invalid_argument("Invalid pos.row or column");
+        throw invalid_argument("Invalid pos.row or column in promotePawn");
     }
 
     if (pieceType == PieceType::BLACK_PAWN || pieceType == PieceType::WHITE_PAWN || pieceType == PieceType::EMPTY)
     {
-        throw invalid_argument("invalid promotion type");
+        throw invalid_argument("invalid promotion type in promotePawn");
     }
 
     board[pos.row][pos.col] = pieceType;
 }
+
+
+void Board::addPiece(Position pos, PieceType inputPiece)
+{
+    if (!isInBounds(pos))
+    {
+        throw invalid_argument("Invalid pos.row or column in addPiece");
+    }
+    if (board[pos.row][pos.col] != PieceType::EMPTY)
+    {
+        throw invalid_argument("piece occupied in addPiece");
+    }
+    if (inputPiece == PieceType::EMPTY)
+    {
+        throw invalid_argument("invalid piece to add in addPiece");
+    }
+    board[pos.row][pos.col] = inputPiece;
+
+
+}
+
 
 // Remove a piece from the board
 void Board::removePiece(Position pos)
@@ -131,7 +188,7 @@ void Board::removePiece(Position pos)
     // Validate the pos.row and column
     if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
     {
-        throw invalid_argument("Invalid pos.row or column");
+        throw invalid_argument("Invalid pos.row or column in removePiece");
     }
 
     // Remove the piece
