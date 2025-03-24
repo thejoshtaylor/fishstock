@@ -36,13 +36,15 @@ TEST_F(BoardTest, CustomBoardTest)
     {
         for (int col = 0; col < 8; ++col)
         {
-            EXPECT_EQ(customBoard.getPiece((Board::Position){(uint8_t)row,(uint8_t)col}), Board::PieceType::EMPTY);
+            EXPECT_EQ(customBoard.getPiece((Board::Position){row,col}), Board::PieceType::EMPTY);
         }
 
     }
     // make sure a default custom board starts out on white's turn 
     EXPECT_EQ(customBoard.isWhiteTurnFunc(),true);
     // make sure a default custom board starts out with the castling flags and enpassant flag set to false
+
+
     // make sure we can't add a piece out of bounds
     // make sure we can't add an empty piece
     // make sure we can add a piece of a specific type in the right place

@@ -59,12 +59,15 @@ public:
     bool isValidMove(Position from, Position to) const;
     void move(Position from, Position to);
 
+protected:
+    bool canCastle[2][2];
+    uint8_t EnPassantCol;
+
 private:
     PieceType board[8][8];
     bool isWhiteTurn;
-    bool canCastle[2][2];
+    
     // records the column of the last move if double pawn move, cleared state is 8
-    uint8_t EnPassantCol;
 };
 
 // Base class for all pieces
