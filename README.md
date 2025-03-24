@@ -1,5 +1,5 @@
 # fishstock
-The anti-stockfish
+The anti-stockfish I AM A SUPER NERD
 
 ## Running from Docker Hub
 ```bash
