@@ -27,6 +27,7 @@ public:
         BLACK_QUEEN = 'q',
         BLACK_KING = 'k'
     };
+    
 
     struct Position
     {
@@ -38,7 +39,10 @@ public:
         }
     };
 
-    Board(bool isCustom = false, bool isWhiteTurnInput = true, uint8_t enPassantColInput = 8 , bool canCastleInput[] = nullptr);
+    Board();
+    Board(bool isWhiteTurnInput, uint8_t enPassantColInput = 8, bool canCastleInput[] = nullptr);
+
+    
     // lets outside funciton access isWhiteTurn
     bool isWhiteTurnFunc() const;
     // checks if a position is is in bounds

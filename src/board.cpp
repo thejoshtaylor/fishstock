@@ -5,86 +5,85 @@
 
 using namespace std;
 
-Board::Board(bool isCustom, bool isWhiteTurnInput, uint8_t enPassantColInput, bool canCastleInput[])
+Board::Board()
 {
-    if (!isCustom)
+    
+    isWhiteTurn = true;
+
+    canCastle[0][0] = true;
+    canCastle[0][1] = true;
+    canCastle[1][0] = true;
+    canCastle[1][1] = true;
+    EnPassantCol = 8;
+
+    // Board layout is from a1 to h8 and the value is the piece index
+    for (int i = 2; i < 6; ++i)
     {
-        isWhiteTurn = true;
 
-        canCastle[0][0] = true;
-        canCastle[0][1] = true;
-        canCastle[1][0] = true;
-        canCastle[1][1] = true;
-        EnPassantCol = 8;
-
-        // Board layout is from a1 to h8 and the value is the piece index
-        for (int i = 2; i < 6; ++i)
+        for (int j = 0; j < 8; ++j)
         {
-
-            for (int j = 0; j < 8; ++j)
-            {
-                board[i][j] = PieceType::EMPTY;
-            }
+            board[i][j] = PieceType::EMPTY;
         }
+    }
 
-        for (int i = 0; i < 8; ++i)
-        {
-            board[1][i] = PieceType::WHITE_PAWN;
-            board[6][i] = PieceType::BLACK_PAWN;
-        }
+    for (int i = 0; i < 8; ++i)
+    {
+        board[1][i] = PieceType::WHITE_PAWN;
+        board[6][i] = PieceType::BLACK_PAWN;
+    }
 
-        board[0][0] = PieceType::WHITE_ROOK;
-        board[0][7] = PieceType::WHITE_ROOK;
-        board[7][0] = PieceType::BLACK_ROOK;
-        board[7][7] = PieceType::BLACK_ROOK;
+    board[0][0] = PieceType::WHITE_ROOK;
+    board[0][7] = PieceType::WHITE_ROOK;
+    board[7][0] = PieceType::BLACK_ROOK;
+    board[7][7] = PieceType::BLACK_ROOK;
 
-        board[0][1] = PieceType::WHITE_KNIGHT;
-        board[0][6] = PieceType::WHITE_KNIGHT;
-        board[7][1] = PieceType::BLACK_KNIGHT;
-        board[7][6] = PieceType::BLACK_KNIGHT;
+    board[0][1] = PieceType::WHITE_KNIGHT;
+    board[0][6] = PieceType::WHITE_KNIGHT;
+    board[7][1] = PieceType::BLACK_KNIGHT;
+    board[7][6] = PieceType::BLACK_KNIGHT;
 
-        board[0][2] = PieceType::WHITE_BISHOP;
-        board[0][5] = PieceType::WHITE_BISHOP;
-        board[7][2] = PieceType::BLACK_BISHOP;
-        board[7][5] = PieceType::BLACK_BISHOP;
+    board[0][2] = PieceType::WHITE_BISHOP;
+    board[0][5] = PieceType::WHITE_BISHOP;
+    board[7][2] = PieceType::BLACK_BISHOP;
+    board[7][5] = PieceType::BLACK_BISHOP;
 
-        board[0][4] = PieceType::WHITE_KING;
-        board[0][3] = PieceType::WHITE_QUEEN;
-        board[7][3] = PieceType::BLACK_QUEEN;
-        board[7][4] = PieceType::BLACK_KING;
+    board[0][4] = PieceType::WHITE_KING;
+    board[0][3] = PieceType::WHITE_QUEEN;
+    board[7][3] = PieceType::BLACK_QUEEN;
+    board[7][4] = PieceType::BLACK_KING;
+}
+
+Board::Board( bool isWhiteTurnInput, uint8_t enPassantColInput, bool canCastleInput[])
+{
+
+    isWhiteTurn = isWhiteTurnInput;
+    EnPassantCol = enPassantColInput;
+    int castleInputIter = 0;
+    if (canCastleInput == nullptr)
+    {
+        canCastle[0][0] = false;
+        canCastle[0][1] = false;
+        canCastle[1][0] = false;
+        canCastle[1][1] = false;
     }
     else
     {
-
-        isWhiteTurn = isWhiteTurnInput;
-        EnPassantCol = enPassantColInput;
-        int castleInputIter = 0;
-        if (canCastleInput == nullptr)
+        for (int i = 0; i < 2; ++i)
         {
-            canCastle[0][0] = false;
-            canCastle[0][1] = false;
-            canCastle[1][0] = false;
-            canCastle[1][1] = false;
-        }
-        else
-        {
-            for (int i = 0; i < 2; ++i)
+            for (int j = 0; j < 2; ++j)
             {
-                for (int j = 0; j < 2; ++j)
-                {
-                    canCastle[i][j] = canCastleInput[castleInputIter];
-                    ++castleInputIter;
-                }
+                canCastle[i][j] = canCastleInput[castleInputIter];
+                ++castleInputIter;
             }
         }
+    }
 
-        for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < 8; ++i)
+    {
+
+        for (int j = 0; j < 8; ++j)
         {
-
-            for (int j = 0; j < 8; ++j)
-            {
-                board[i][j] = PieceType::EMPTY;
-            }
+            board[i][j] = PieceType::EMPTY;
         }
     }
 }

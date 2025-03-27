@@ -10,6 +10,13 @@ protected:
     BoardTest() {}
 };
 
+class CustomBoardTest : public ::testing::Test, public Board::Board
+{
+protected:
+CustomBoardTest():Board(true)
+{}
+};
+
 TEST_F(BoardTest, ColorTest)
 {
     EXPECT_EQ(isWhitePiece(getPiece((Board::Position){0, 0})), true);
@@ -27,30 +34,44 @@ TEST_F(BoardTest, isInBoundsTest)
 }
 
 
-TEST_F(BoardTest, CustomBoardTest)
+TEST_F(CustomBoardTest, CustomBoardTestUnit)
 {
-    Board customBoard = Board(true);
-
     // make sure a default custom board starts out empty
     for (int row = 0; row < 8; ++row)
     {
         for (int col = 0; col < 8; ++col)
         {
-            EXPECT_EQ(customBoard.getPiece((Board::Position){row,col}), Board::PieceType::EMPTY);
+            EXPECT_EQ(getPiece((Board::Position){row,col}), Board::PieceType::EMPTY);
         }
 
     }
     // make sure a default custom board starts out on white's turn 
-    EXPECT_EQ(customBoard.isWhiteTurnFunc(),true);
-    // make sure a default custom board starts out with the castling flags and enpassant flag set to false
+    EXPECT_EQ(isWhiteTurnFunc(),true);
 
+    // make sure a default custom board starts out with the enpassant flag set to false
+    EXPECT_EQ(EnPassantCol,8);
 
+    // make sure a default custom board starts out with the castling flags set to false
+    for (int row = 0; row < 2; ++row)
+    {
+        for (int col = 0; col < 2; ++col)
+        {
+            EXPECT_EQ(canCastle[row][col],false);
+        }
+
+    }
     // make sure we can't add a piece out of bounds
+    EXPECT_ANY_THROW(addPiece(Board::Position{8,8},Board::PieceType::WHITE_PAWN));
+
     // make sure we can't add an empty piece
+    EXPECT_ANY_THROW(addPiece(Board::Position{0,0},Board::PieceType::EMPTY));
+
     // make sure we can add a piece of a specific type in the right place
+    EXPECT_NO_THROW(addPiece(Board::Position{0,0},Board::PieceType::WHITE_PAWN));
+    EXPECT_EQ(getPiece(Board::Position{0,0}),Board::PieceType::WHITE_PAWN);
+
     // make sure we can't add a piece on top of another piece
-
-
+    EXPECT_ANY_THROW(addPiece(Board::Position{0,0},Board::PieceType::WHITE_PAWN));
 
 }
 
