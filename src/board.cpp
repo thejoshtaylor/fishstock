@@ -7,6 +7,7 @@ using namespace std;
 
 Board::Board()
 {
+    
     isWhiteTurn = true;
 
     canCastle[0][0] = true;
@@ -16,7 +17,6 @@ Board::Board()
     EnPassantCol = 8;
 
     // Board layout is from a1 to h8 and the value is the piece index
-    // NEEDS TO BE REDONE
     for (int i = 2; i < 6; ++i)
     {
 
@@ -53,6 +53,41 @@ Board::Board()
     board[7][4] = PieceType::BLACK_KING;
 }
 
+Board::Board( bool isWhiteTurnInput, uint8_t enPassantColInput, bool canCastleInput[])
+{
+
+    isWhiteTurn = isWhiteTurnInput;
+    EnPassantCol = enPassantColInput;
+    int castleInputIter = 0;
+    if (canCastleInput == nullptr)
+    {
+        canCastle[0][0] = false;
+        canCastle[0][1] = false;
+        canCastle[1][0] = false;
+        canCastle[1][1] = false;
+    }
+    else
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            for (int j = 0; j < 2; ++j)
+            {
+                canCastle[i][j] = canCastleInput[castleInputIter];
+                ++castleInputIter;
+            }
+        }
+    }
+
+    for (int i = 0; i < 8; ++i)
+    {
+
+        for (int j = 0; j < 8; ++j)
+        {
+            board[i][j] = PieceType::EMPTY;
+        }
+    }
+}
+
 bool Board::isWhiteTurnFunc() const
 {
     return isWhiteTurn;
@@ -60,7 +95,7 @@ bool Board::isWhiteTurnFunc() const
 
 bool Board::isInBounds(Position pos)
 {
-    return !(pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7);
+    return !(pos.row < (uint8_t)0 || pos.row > (uint8_t)7 || pos.col < (uint8_t)0 || pos.col > (uint8_t)7);
 }
 
 char Board::getPieceLetter(PieceType piece)
@@ -71,9 +106,9 @@ char Board::getPieceLetter(PieceType piece)
 
 Board::PieceType Board::getPiece(Position pos) const
 {
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    if (!isInBounds(pos))
     {
-        throw invalid_argument("Invalid pos.row or column");
+        throw invalid_argument("Invalid pos.row or column in getPiece");
     }
     return board[pos.row][pos.col];
 }
@@ -81,7 +116,7 @@ Board::PieceType Board::getPiece(Position pos) const
 bool Board::isWhitePiece(PieceType piece)
 {
     if ((char)piece < 'A' || (char)piece > 'z')
-        throw invalid_argument("invalid symbol at pos given");
+        throw invalid_argument("invalid symbol at pos given in isWhitePiece");
     return (char)piece < 'a';
 }
 
@@ -97,7 +132,7 @@ bool Board::checkEnPassant(Position pos) const
     // Validate the pos.row and column
     if (pos.col < 0 || pos.col > 7)
     {
-        throw invalid_argument("Invalid column");
+        throw invalid_argument("Invalid column in checkEnPassant");
     }
 
     // Check if this is a valid en passant pos.row
@@ -112,26 +147,47 @@ bool Board::checkEnPassant(Position pos) const
 void Board::promotePawn(Position pos, PieceType pieceType)
 {
     // Validate the pos.row and column
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    if (!isInBounds(pos))
     {
-        throw invalid_argument("Invalid pos.row or column");
+        throw invalid_argument("Invalid pos.row or column in promotePawn");
     }
 
     if (pieceType == PieceType::BLACK_PAWN || pieceType == PieceType::WHITE_PAWN || pieceType == PieceType::EMPTY)
     {
-        throw invalid_argument("invalid promotion type");
+        throw invalid_argument("invalid promotion type in promotePawn");
     }
 
     board[pos.row][pos.col] = pieceType;
 }
 
+
+void Board::addPiece(Position pos, PieceType inputPiece)
+{
+    if (!isInBounds(pos))
+    {
+        throw invalid_argument("Invalid pos.row or column in addPiece");
+    }
+    if (board[pos.row][pos.col] != PieceType::EMPTY)
+    {
+        throw invalid_argument("piece occupied in addPiece");
+    }
+    if (inputPiece == PieceType::EMPTY)
+    {
+        throw invalid_argument("invalid piece to add in addPiece");
+    }
+    board[pos.row][pos.col] = inputPiece;
+
+
+}
+
+
 // Remove a piece from the board
 void Board::removePiece(Position pos)
 {
     // Validate the pos.row and column
-    if (pos.row < 0 || pos.row > 7 || pos.col < 0 || pos.col > 7)
+    if (!isInBounds(pos))
     {
-        throw invalid_argument("Invalid pos.row or column");
+        throw invalid_argument("Invalid pos.row or column in removePiece");
     }
 
     // Remove the piece
@@ -144,7 +200,7 @@ bool Board::isValidMove(Position from, Position to) const
     PieceType fromPiece = getPiece(from);
 
     // Check if the move is within the board
-    if (from.row < 0 || from.row > 7 || from.col < 0 || from.col > 7 || to.row < 0 || to.row > 7 || to.col < 0 || to.col > 7)
+    if (!isInBounds(from) || !isInBounds(to))
     {
         return false;
     }
