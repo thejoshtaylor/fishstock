@@ -91,6 +91,11 @@ void Board::setEnPassant(Position pos)
     EnPassantCol = pos.col;
 }
 
+void Board::setCanCastleToFalse(uint8_t row, uint8_t col)
+{
+    canCastle[row][col] = false;
+}
+
 // Private exposure of the en passant check
 bool Board::checkEnPassant(Position pos) const
 {
