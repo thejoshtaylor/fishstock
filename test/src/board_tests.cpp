@@ -168,18 +168,49 @@ TEST_F(BoardTest, PawnMoveTest)
 //
 // ROOK
 //
-TEST_F(BoardTest, RookMoveTest)
+TEST_F(CustomBoardTest, RookMoveTest)
 {
+
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
+
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_ROOK));
+
     // Move forward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+
     // Move backward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){1,3}));
+
     // Move left
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,1}));
+
     // Move right
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,5}));
+
 
     // Can't move diagonal
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
+
     // Can't move over pieces
+    ASSERT_NO_THROW(addPiece((Board::Position){4,3},Board::PieceType::BLACK_PAWN));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+
+
     // Can't take own piece
+    ASSERT_NO_THROW(addPiece((Board::Position){2,3},Board::PieceType::WHITE_PAWN));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){2,3}));
+
 
     // Can take
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,3}));
+
+
 }
 
 //
