@@ -83,7 +83,6 @@ protected:
 public:
     Piece(bool isWhite) : isWhite(isWhite) {}
     static Piece *pieceObjConstructor(Board::PieceType inputPiece);
-    virtual bool isValidMove(const Board *board, Board::Position from, Board::Position to) = 0;
     virtual std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from) = 0;
     virtual void doMove(Board *board, Board::Position from, Board::Position to) = 0;
 };
@@ -93,7 +92,6 @@ class Pawn : public Piece
 {
 public:
     Pawn(bool isWhite) : Piece(isWhite) {}
-    bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
@@ -104,7 +102,6 @@ class Rook : public Piece
 public:
     Rook(bool isWhite) : Piece(isWhite) {}
 
-    bool isValidMove(const Board *board, Board::Position from, Board::Position to);
     std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
