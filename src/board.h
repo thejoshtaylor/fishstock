@@ -27,6 +27,7 @@ public:
         BLACK_QUEEN = 'q',
         BLACK_KING = 'k'
     };
+    
 
     struct Position
     {
@@ -39,6 +40,9 @@ public:
     };
 
     Board();
+    Board(bool isWhiteTurnInput, uint8_t enPassantColInput = 8, bool canCastleInput[] = nullptr);
+
+    
     // lets outside funciton access isWhiteTurn
     bool isWhiteTurnFunc() const;
     // checks if a position is is in bounds
@@ -54,16 +58,21 @@ public:
     void setCanCastleToFalse(uint8_t row, uint8_t col);
     bool checkEnPassant(Position pos) const;
     void promotePawn(Position pos, PieceType pieceType);
+    // adds a piece to the board, used for making custom boards
+    void addPiece(Position pos, PieceType inputPiece);
     void removePiece(Position pos);
     bool isValidMove(Position from, Position to) const;
     void move(Position from, Position to);
 
+protected:
+    bool canCastle[2][2];
+    uint8_t EnPassantCol;
+
 private:
     PieceType board[8][8];
     bool isWhiteTurn;
-    bool canCastle[2][2];
+    
     // records the column of the last move if double pawn move, cleared state is 8
-    uint8_t EnPassantCol;
 };
 
 // Base class for all pieces
