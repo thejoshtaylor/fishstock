@@ -30,18 +30,18 @@ int main() {
 
     std::cout << "list of posible moves for piece at " << (int)pos.row << ", " << (int)pos.col << std::endl;
 
-    for (int i = 0; i < getValidMovesOutput->size(); ++i)
+    for (auto output : *getValidMovesOutput)
     {
         //std::cout << (int)getValidMovesOutput->at(i).row << ", " << (int)getValidMovesOutput->at(i).col << std::endl;
-        if (board.getPiece((Board::Position){getValidMovesOutput->at(i).row,getValidMovesOutput->at(i).col}) == Board::PieceType::EMPTY)
+        if (board.getPiece(output) == Board::PieceType::EMPTY)
         {
-            board.addPiece((Board::Position){getValidMovesOutput->at(i).row,getValidMovesOutput->at(i).col},Board::PieceType::BLACK_PAWN);    
+            board.addPiece(output,Board::PieceType::BLACK_PAWN);    
         }
         else
         {
-            if (board.isWhitePiece(board.getPiece((Board::Position){getValidMovesOutput->at(i).row,getValidMovesOutput->at(i).col})) !=
+            if (board.isWhitePiece(board.getPiece(output)) !=
             board.isWhitePiece(board.getPiece((Board::Position){pos.row,pos.col})))
-            std::cout << (int)getValidMovesOutput->at(i).row << ", " << (int)getValidMovesOutput->at(i).col << std::endl;
+            std::cout << (int)output.row << ", " << (int)output.col << std::endl;
         }
     }
     Util::printBoard(&board);
