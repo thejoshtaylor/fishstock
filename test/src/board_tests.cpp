@@ -178,6 +178,13 @@ TEST_F(CustomBoardTest, RookMoveTest)
             this->removePiece((Board::Position){row,col});
         }
     }
+    for (int row = 0; row < 1; ++row)
+    {
+        for (int col = 0; col < 1; ++col)
+        {
+            canCastle[row][col] = false;
+        }
+    }
 
     //adding a rook piece in the middle
     ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_ROOK));
