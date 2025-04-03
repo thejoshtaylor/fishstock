@@ -268,6 +268,13 @@ void Board::move(Position from, Position to)
         throw invalid_argument("Invalid move");
     }
 
+    // Checking if there is a castleable rook at the place we are moving, setting the flag to false if so
+    if ((to.row + to.col) % 7 == 0 )
+    {
+        //setting castle flag for that corner to false, it is possible that it is already false but that does not matter
+        setCanCastleToFalse(to.row/7,to.col/7);
+    }
+
     // Move the piece
     PieceType piece = getPiece(from);
     board[from.row][from.col] = PieceType::EMPTY;
