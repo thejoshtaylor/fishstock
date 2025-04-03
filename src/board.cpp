@@ -269,7 +269,7 @@ void Board::move(Position from, Position to)
     }
 
     // Checking if there is a castleable rook at the place we are moving, setting the flag to false if so
-    if ((to.row + to.col) % 7 == 0 )
+    if (!((bool)from.row%7 && (bool)from.col%7))
     {
         //setting castle flag for that corner to false, it is possible that it is already false but that does not matter
         setCanCastleToFalse(to.row/7,to.col/7);

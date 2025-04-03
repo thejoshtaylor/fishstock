@@ -230,7 +230,7 @@ std::vector<Board::Position> *Rook::getValidMoves(const Board *board, Board::Pos
 void Rook::doMove(Board *board, Board::Position from, Board::Position to)
 {
     // checking if we are on one of the corners
-    if ((from.row + from.col) % 7 == 0 )
+    if (!((bool)from.row%7 && (bool)from.col%7))
     {
         //setting castle flag for that corner to false, it is possible that it is already false but that does not matter
         board->setCanCastleToFalse(from.row/7,from.col/7);
