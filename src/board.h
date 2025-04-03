@@ -106,4 +106,13 @@ public:
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
 
+class King : public Piece
+{
+public:
+    King(bool isWhite) : Piece(isWhite) {}
+
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
+    void doMove(Board *board, Board::Position from, Board::Position to);
+};
+
 #endif
