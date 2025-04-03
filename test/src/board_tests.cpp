@@ -242,18 +242,44 @@ TEST_F(BoardTest, QueenMoveTest)
 //
 TEST_F(BoardTest, KingMoveTest)
 {
-    // Move forward
-    // Move backward
-    // Move left
-    // Move right
-    // Move NE
-    // Move NW
-    // Move SE
-    // Move SW
+    //clearing the board
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
 
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_KING));
+
+    // Move forward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,3}));
+    // Move backward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){2,3}));
+    // Move left
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,2}));
+    // Move right
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,4}));
+    // Move NE
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
+    // Move NW
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,2}));
+    // Move SE
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){2,4}));
+    // Move SW
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){2,2}));
     // Can't move more than 1 space
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+
+    ASSERT_NO_THROW(addPiece((Board::Position){4,3},Board::PieceType::WHITE_PAWN));
     // Can't take own piece
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){4,3}));
+
+    ASSERT_NO_THROW(addPiece((Board::Position){3,2},Board::PieceType::BLACK_PAWN));
     // Can take
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,2}));
+
 }
 
 //
@@ -261,6 +287,18 @@ TEST_F(BoardTest, KingMoveTest)
 //
 TEST_F(BoardTest, CastlingTest)
 {
+    //clearing the board
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
+
+    
+
+
     // Can't castle if king has moved
     // Can't castle left if left rook has moved
     // Can't castle right if right rook has moved
