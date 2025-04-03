@@ -170,7 +170,7 @@ TEST_F(BoardTest, PawnMoveTest)
 //
 TEST_F(CustomBoardTest, RookMoveTest)
 {
-
+    // clearing the board
     for (int row = 0; row < 8; ++row)
     {
         for (int col = 0; col < 8; ++col)
@@ -179,6 +179,7 @@ TEST_F(CustomBoardTest, RookMoveTest)
         }
     }
 
+    //adding a rook piece in the middle
     ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_ROOK));
 
     // Move forward
@@ -195,7 +196,7 @@ TEST_F(CustomBoardTest, RookMoveTest)
 
 
     // Can't move diagonal
-    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
 
     // Can't move over pieces
     ASSERT_NO_THROW(addPiece((Board::Position){4,3},Board::PieceType::BLACK_PAWN));
@@ -209,6 +210,21 @@ TEST_F(CustomBoardTest, RookMoveTest)
 
     // Can take
     EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,3}));
+
+    //clearing the board to test castling flags
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
+
+    // if I move the rook from a corner it updates the flags
+    ASSERT_NO_THROW(addPiece((Board::Position){0,0},Board::PieceType::WHITE_ROOK));
+    canCastle[0][0] = true;
+    ASSERT_NO_THROW(move((Board::Position){0,0},(Board::Position){5,0}));
+    EXPECT_FALSE(canCastle[0][0]);
 
 
 }

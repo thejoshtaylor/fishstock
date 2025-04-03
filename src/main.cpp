@@ -7,14 +7,16 @@
 
 int main() {
 
+    Board board = Board(true);
+
+
+    board.addPiece((Board::Position){3,1},Board::PieceType::WHITE_PAWN);
 
 
     //testing getValidMoves stuff
     Board::Position pos;
     pos.row = 3;
     pos.col = 3;
-
-    Board board = Board(true);
     Util::printBoard(&board);
     board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_ROOK);
     Util::printBoard(&board);
@@ -37,7 +39,9 @@ int main() {
         }
         else
         {
-            //std::cout << 
+            if (board.isWhitePiece(board.getPiece((Board::Position){getValidMovesOutput->at(i).row,getValidMovesOutput->at(i).col})) !=
+            board.isWhitePiece(board.getPiece((Board::Position){pos.row,pos.col})))
+            std::cout << (int)getValidMovesOutput->at(i).row << ", " << (int)getValidMovesOutput->at(i).col << std::endl;
         }
     }
     Util::printBoard(&board);
