@@ -289,8 +289,27 @@ bool Rook::isValidMove(const Board *board, Board::Position from, Board::Position
 
 std::vector<Board::Position> *Rook::getValidMoves(const Board *board, Board::Position from)
 {
+    std::vector<Board::Position> returnVector;
+    int varyingIndex = 1;
 
+    while (from.col + varyingIndex >= 0 && from.col + varyingIndex < 8 && board->getPiece((Board::Position){from.col + varyingIndex,from.row}) == Board::PieceType::EMPTY)
+    {
+        returnVector.push_back((Board::Position){from.col + varyingIndex,from.row});
+        varyingIndex++;
+    }
+
+    if (from.col + varyingIndex >= 0 && from.col + varyingIndex < 8)
+    {
+        if (board->getPiece((Board::Position){from.col + varyingIndex,from.row}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.col + varyingIndex,from.row})) != isWhite)
+            {
+                returnVector.push_back((Board::Position){from.col + varyingIndex,from.row});
+            }
+        }
+    }
     
+
 
 
 
