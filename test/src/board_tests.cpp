@@ -297,11 +297,36 @@ TEST_F(BoardTest, CastlingTest)
     }
 
     
+    ASSERT_NO_THROW(addPiece((Board::Position){0,4},Board::PieceType::WHITE_KING));
+    ASSERT_NO_THROW(addPiece((Board::Position){0,0},Board::PieceType::WHITE_ROOK));
+    ASSERT_NO_THROW(addPiece((Board::Position){0,7},Board::PieceType::WHITE_ROOK));
 
+    canCastle[0][0] = true;
+    canCastle[0][1] = true;
 
     // Can't castle if king has moved
+    ASSERT_NO_THROW(move((Board::Position){0,4},(Board::Position){1,4}));
+    EXPECT_FALSE(canCastle[0][0]);
+    EXPECT_FALSE(canCastle[0][1]);
+
+    // resetting the board state
+    ASSERT_NO_THROW(removePiece((Board::Position){1,4}));
+    ASSERT_NO_THROW(addPiece((Board::Position){0,4},Board::PieceType::WHITE_KING));
+    isWhiteTurn = true;
+
     // Can't castle left if left rook has moved
+    ASSERT_NO_THROW(move((Board::Position){0,0},(Board::Position){4,0}));
+    EXPECT_FALSE(canCastle[0][0]);
+    EXPECT_TRUE(canCastle[0][1]);
+
+    isWhiteTurn = true;
+
     // Can't castle right if right rook has moved
+    ASSERT_NO_THROW(move((Board::Position){0,7},(Board::Position){4,7}));
+    EXPECT_FALSE(canCastle[0][0]);
+    EXPECT_TRUE(canCastle[0][1]);
+
+
     // Can't castle if pieces in the way
     // Can't castle if in check
     // Can't castle if through check

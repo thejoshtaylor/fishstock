@@ -66,10 +66,10 @@ public:
 protected:
     bool canCastle[2][2];
     uint8_t EnPassantCol;
+    bool isWhiteTurn;
 
 private:
     PieceType board[8][8];
-    bool isWhiteTurn;
     
     // records the column of the last move if double pawn move, cleared state is 8
 };
