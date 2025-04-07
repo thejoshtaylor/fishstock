@@ -126,9 +126,9 @@ void Board::setEnPassant(Position pos)
     EnPassantCol = pos.col;
 }
 
-void Board::setCanCastleToFalse(uint8_t row, uint8_t col)
+void Board::setCanCastleToFalse(uint8_t blackOrWhiteRook, uint8_t leftOrRightRook)
 {
-    canCastle[row][col] = false;
+    canCastle[blackOrWhiteRook][leftOrRightRook] = false;
 }
 
 // Private exposure of the en passant check
