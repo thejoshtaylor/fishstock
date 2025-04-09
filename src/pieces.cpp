@@ -32,12 +32,6 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
 // Get all valid moves for a pawn
 std::vector<Board::Position> *Pawn::getValidMoves(const Board *board, Board::Position from)
 {
-
-    if (board->isWhiteTurnFunc() != Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col})))
-    {
-        throw std::invalid_argument("invalid call of getValidMoves, it is not the right turn for this piece to move");
-    }
-
     std::vector<Board::Position> *returnList = new std::vector<Board::Position>();
     // direction will be negative if black, reduces if statments becauses you just add direction to the from row if it is white or black
     int direction = (board->isWhitePiece(board->getPiece(from)) ? 1 : -1);

@@ -201,6 +201,17 @@ TEST_F(CustomBoardTest, RookMoveTest)
     // Move right
     EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,5}));
 
+    // making sure we cant call getValidMoves on a piece if it's not that pieces turn
+    ASSERT_NO_THROW(removePiece((Board::Position){3,3}));
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::BLACK_ROOK));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){1,3}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){3,1}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){3,5}));
+
+    // putting the rook back
+    ASSERT_NO_THROW(removePiece((Board::Position){3,3}));
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_ROOK));
 
     // Can't move diagonal
     EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
