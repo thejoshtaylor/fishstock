@@ -159,5 +159,4 @@ std::vector<Board::Position> *Knight::getValidMoves(const Board *board, Board::P
 void Knight::doMove(Board *board, Board::Position from, Board::Position to)
 {
 
-    
 }
