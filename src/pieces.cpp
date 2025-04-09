@@ -146,3 +146,18 @@ std::vector<Board::Position> *Rook::getValidMoves(const Board *board, Board::Pos
 void Rook::doMove(Board *board, Board::Position from, Board::Position to)
 {
 }
+
+
+//
+// KNIGHT
+//
+
+std::vector<Board::Position> *Knight::getValidMoves(const Board *board, Board::Position from)
+{
+
+}
+void Knight::doMove(Board *board, Board::Position from, Board::Position to)
+{
+
+    
+}
