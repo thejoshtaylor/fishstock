@@ -154,9 +154,28 @@ void Rook::doMove(Board *board, Board::Position from, Board::Position to)
 
 std::vector<Board::Position> *Knight::getValidMoves(const Board *board, Board::Position from)
 {
+    std::vector<Board::Position> *returnList = new std::vector<Board::Position>();
+    Board::Position newPos = (Board::Position){from.row + 2,from.col + 1};
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col + 1;
+    newPos.row = newPos.row - 1;
+
 
 }
 void Knight::doMove(Board *board, Board::Position from, Board::Position to)
 {
+
+
+
 
 }
