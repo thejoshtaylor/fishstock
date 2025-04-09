@@ -55,6 +55,7 @@ public:
     static bool isWhitePiece(PieceType piece);
     // sets the EnPassant flag, 8 is the cleared value. Only cares about the col value, pos.row can be set to whatever.
     void setEnPassant(Position pos);
+    void setCanCastleToFalse(uint8_t blackOrWhiteRook, uint8_t leftOrRightRook);
     bool checkEnPassant(Position pos) const;
     void promotePawn(Position pos, PieceType pieceType);
     // adds a piece to the board, used for making custom boards
@@ -105,5 +106,7 @@ public:
     std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
+
+
 
 #endif

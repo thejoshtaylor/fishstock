@@ -12,7 +12,10 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
     case Board::PieceType::BLACK_PAWN:
         return new Pawn(Board::isWhitePiece(inputPiece));
         break;
-
+    case Board::PieceType::WHITE_ROOK:
+    case Board::PieceType::BLACK_ROOK:
+        return new Rook(Board::isWhitePiece(inputPiece));
+        break;
     default:
         throw std::invalid_argument("Invalid piece type");
         break;
@@ -29,12 +32,6 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
 // Get all valid moves for a pawn
 std::vector<Board::Position> *Pawn::getValidMoves(const Board *board, Board::Position from)
 {
-
-    if (board->isWhiteTurnFunc() != Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col})))
-    {
-        throw std::invalid_argument("invalid call of getValidMoves, it is not the right turn for this piece to move");
-    }
-
     std::vector<Board::Position> *returnList = new std::vector<Board::Position>();
     // direction will be negative if black, reduces if statments becauses you just add direction to the from row if it is white or black
     int direction = (board->isWhitePiece(board->getPiece(from)) ? 1 : -1);
@@ -141,8 +138,95 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
 
 std::vector<Board::Position> *Rook::getValidMoves(const Board *board, Board::Position from)
 {
+    std::vector<Board::Position> *returnVector = new std::vector<Board::Position>();
+    int varyingIndex = 1;
+
+    // moving right
+    while (from.col + varyingIndex < 8 && board->getPiece((Board::Position){from.row,from.col + varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row,from.col + varyingIndex});
+        varyingIndex++;
+    }
+
+    if (from.col + varyingIndex < 8)
+    {
+        if (board->getPiece((Board::Position){from.row,from.col + varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row,from.col + varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row,from.col + varyingIndex});
+            }
+        }
+    }
+    
+    // moving left
+    varyingIndex = -1;
+
+    while (from.col + varyingIndex >= 0 && board->getPiece((Board::Position){from.row,from.col + varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row,from.col + varyingIndex});
+        varyingIndex--;
+    }
+
+    if (from.col + varyingIndex >= 0)
+    {
+        if (board->getPiece((Board::Position){from.row,from.col + varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row,from.col + varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row,from.col + varyingIndex});
+            }
+        }
+    }
+
+    // moving up
+    varyingIndex = 1;
+    while (from.row + varyingIndex < 8 && board->getPiece((Board::Position){from.row + varyingIndex,from.col}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row + varyingIndex,from.col});
+        varyingIndex++;
+    }
+
+    if (from.row + varyingIndex < 8)
+    {
+        if (board->getPiece((Board::Position){from.row + varyingIndex,from.col}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row + varyingIndex,from.col})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row + varyingIndex,from.col});
+            }
+        }
+    }
+
+    // moving down
+    varyingIndex = -1;
+    while (from.row + varyingIndex >= 0 && board->getPiece((Board::Position){from.row + varyingIndex,from.col}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row + varyingIndex,from.col});
+        varyingIndex--;
+    }
+
+    if (from.row + varyingIndex >= 0)
+    {
+        if (board->getPiece((Board::Position){from.row + varyingIndex,from.col}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row + varyingIndex,from.col})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row + varyingIndex,from.col});
+            }
+        }
+    }
+
+    return returnVector;
+
 }
 
 void Rook::doMove(Board *board, Board::Position from, Board::Position to)
 {
+    // checking if we are on one of the corners
+    if (!(from.row%7 + from.col%7))
+    {
+        //setting castle flag for that corner to false, it is possible that it is already false but that does not matter
+        board->setCanCastleToFalse(from.row/7,from.col/7);
+    }
 }

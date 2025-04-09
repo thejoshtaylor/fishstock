@@ -126,6 +126,11 @@ void Board::setEnPassant(Position pos)
     EnPassantCol = pos.col;
 }
 
+void Board::setCanCastleToFalse(uint8_t blackOrWhiteRook, uint8_t leftOrRightRook)
+{
+    canCastle[blackOrWhiteRook][leftOrRightRook] = false;
+}
+
 // Private exposure of the en passant check
 bool Board::checkEnPassant(Position pos) const
 {
@@ -261,6 +266,13 @@ void Board::move(Position from, Position to)
     if (!isValidMove(from, to))
     {
         throw invalid_argument("Invalid move");
+    }
+
+    // Checking if there is a castleable rook at the place we are moving, setting the flag to false if so
+    if (!(to.row%7 + to.col%7))
+    {
+        //setting castle flag for that corner to false, it is possible that it is already false but that does not matter
+        setCanCastleToFalse(to.row/7,to.col/7);
     }
 
     // Move the piece
