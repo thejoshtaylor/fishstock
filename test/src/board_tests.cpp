@@ -168,18 +168,83 @@ TEST_F(BoardTest, PawnMoveTest)
 //
 // ROOK
 //
-TEST_F(BoardTest, RookMoveTest)
+TEST_F(CustomBoardTest, RookMoveTest)
 {
+    // clearing the board
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
+    for (int row = 0; row < 1; ++row)
+    {
+        for (int col = 0; col < 1; ++col)
+        {
+            canCastle[row][col] = false;
+        }
+    }
+
+    //adding a rook piece in the middle
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_ROOK));
+
     // Move forward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+
     // Move backward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){1,3}));
+
     // Move left
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,1}));
+
     // Move right
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,5}));
+
+    // making sure we cant call getValidMoves on a piece if it's not that pieces turn
+    ASSERT_NO_THROW(removePiece((Board::Position){3,3}));
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::BLACK_ROOK));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){1,3}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){3,1}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){3,5}));
+
+    // putting the rook back
+    ASSERT_NO_THROW(removePiece((Board::Position){3,3}));
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_ROOK));
 
     // Can't move diagonal
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
+
     // Can't move over pieces
+    ASSERT_NO_THROW(addPiece((Board::Position){4,3},Board::PieceType::BLACK_PAWN));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+
+
     // Can't take own piece
+    ASSERT_NO_THROW(addPiece((Board::Position){2,3},Board::PieceType::WHITE_PAWN));
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){2,3}));
+
 
     // Can take
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,3}));
+
+    //clearing the board to test castling flags
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
+
+    // if I move the rook from a corner it updates the flags
+    ASSERT_NO_THROW(addPiece((Board::Position){0,0},Board::PieceType::WHITE_ROOK));
+    canCastle[0][0] = true;
+    ASSERT_NO_THROW(move((Board::Position){0,0},(Board::Position){5,0}));
+    EXPECT_FALSE(canCastle[0][0]);
+
+
 }
 
 //
