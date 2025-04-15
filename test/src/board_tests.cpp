@@ -305,7 +305,7 @@ TEST_F(BoardTest, BishopMoveTest)
     EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){4,5}));
 
     // Can take
-    ASSERT_NO_THROW(addPiece((Board::Position){5,2},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){5,2},Board::PieceType::BLACK_PAWN));
     EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,2}));
 
 
