@@ -107,6 +107,7 @@ public:
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
 
+// Knight piece
 class Knight : public Piece
 {
 public:

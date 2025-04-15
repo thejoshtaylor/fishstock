@@ -16,6 +16,10 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
     case Board::PieceType::BLACK_ROOK:
         return new Rook(Board::isWhitePiece(inputPiece));
         break;
+    case Board::PieceType::WHITE_KNIGHT:
+    case Board::PieceType::BLACK_KNIGHT:
+        return new Knight(Board::isWhitePiece(inputPiece));
+        break;
     default:
         throw std::invalid_argument("Invalid piece type");
         break;
@@ -239,6 +243,8 @@ void Rook::doMove(Board *board, Board::Position from, Board::Position to)
 std::vector<Board::Position> *Knight::getValidMoves(const Board *board, Board::Position from)
 {
     std::vector<Board::Position> *returnList = new std::vector<Board::Position>();
+
+    // going through each coordinate that a knight could move through, I think it is technically effecient, but it is very ugly
     Board::Position newPos = (Board::Position){from.row + 2,from.col + 1};
     if (Board::isInBounds(newPos))
     {
@@ -253,7 +259,93 @@ std::vector<Board::Position> *Knight::getValidMoves(const Board *board, Board::P
     }
     newPos.col = newPos.col + 1;
     newPos.row = newPos.row - 1;
-
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.row = newPos.row - 2;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col - 1;
+    newPos.row = newPos.row - 1;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col - 2;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col - 1;
+    newPos.row = newPos.row + 1;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.row = newPos.row + 2;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    } 
+    newPos.col = newPos.col + 1;
+    newPos.row = newPos.row + 1;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    } 
+    return returnList;
 
 }
 void Knight::doMove(Board *board, Board::Position from, Board::Position to)

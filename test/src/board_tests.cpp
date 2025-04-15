@@ -290,6 +290,11 @@ TEST_F(BoardTest, KnightMoveTest)
     ASSERT_NO_THROW(addPiece((Board::Position){4,4},Board::PieceType::WHITE_PAWN));
     ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_PAWN));
     ASSERT_NO_THROW(addPiece((Board::Position){3,5},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){4,5},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){2,5},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){2,3},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){4,3},Board::PieceType::WHITE_PAWN));
+
 
     // Move up 2 left 1
     EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,3}));
