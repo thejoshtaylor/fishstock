@@ -272,15 +272,43 @@ TEST_F(BoardTest, KnightMoveTest)
 //
 TEST_F(BoardTest, BishopMoveTest)
 {
+    // clearing the board
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            removePiece((Board::Position){row,col});
+        }
+    }
+    ASSERT_NO_THROW(addPiece((Board::Position){3,4},Board::PieceType::WHITE_BISHOP));
+
     // Move NE
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,6}));
     // Move NW
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,2}));
     // Move SE
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,6}));
     // Move SW
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,2}));
 
     // Can't move straight
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){4,4}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){2,4}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){3,5}));
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){3,3}));
+
     // Can't move over pieces
+    ASSERT_NO_THROW(addPiece((Board::Position){4,5},Board::PieceType::WHITE_PAWN));
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){5,6}));
+
     // Can't take own piece
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){4,5}));
+
     // Can take
+    ASSERT_NO_THROW(addPiece((Board::Position){5,2},Board::PieceType::WHITE_PAWN));
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,2}));
+
+
 }
 
 //
