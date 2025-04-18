@@ -10,7 +10,6 @@ int main() {
     Board board = Board(true);
 
 
-    board.addPiece((Board::Position){3,1},Board::PieceType::WHITE_PAWN);
 
 
     //testing getValidMoves stuff
@@ -18,7 +17,7 @@ int main() {
     pos.row = 3;
     pos.col = 3;
     Util::printBoard(&board);
-    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_ROOK);
+    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_BISHOP);
     Util::printBoard(&board);
 
     // making the pointer to the output vector, danger of memory leak
