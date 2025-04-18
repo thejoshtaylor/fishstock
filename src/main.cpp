@@ -11,12 +11,13 @@ int main() {
 
 
 
+
     //testing getValidMoves stuff
     Board::Position pos;
     pos.row = 3;
     pos.col = 3;
     Util::printBoard(&board);
-    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_KNIGHT);
+    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_BISHOP);
     Util::printBoard(&board);
 
     // making the pointer to the output vector, danger of memory leak

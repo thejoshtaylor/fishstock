@@ -112,6 +112,15 @@ class Knight : public Piece
 {
 public:
     Knight(bool isWhite) : Piece(isWhite) {}
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
+    void doMove(Board *board, Board::Position from, Board::Position to);
+};
+
+// Bishop piece
+class Bishop : public Piece
+{
+public:
+    Bishop(bool isWhite) : Piece(isWhite) {}
 
     std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
