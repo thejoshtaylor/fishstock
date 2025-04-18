@@ -252,19 +252,75 @@ TEST_F(CustomBoardTest, RookMoveTest)
 //
 TEST_F(BoardTest, KnightMoveTest)
 {
+    // clearing the custom board
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            ASSERT_NO_THROW(removePiece((Board::Position){row,col}));
+        }
+    }
+
+    ASSERT_NO_THROW(addPiece((Board::Position){3,4},Board::PieceType::WHITE_KNIGHT));
+
+
+
     // Move up 2 left 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,3}));
     // Move up 2 right 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,5}));
     // Move down 2 left 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,3}));
     // Move down 2 right 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,5}));
     // Move left 2 up 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){4,2}));
     // Move left 2 down 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){2,2}));
     // Move right 2 up 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){4,6}));
     // Move right 2 down 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){2,6}));
 
     // Can't move in straight line
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){5,4}));
+
     // Can move over pieces
+    ASSERT_NO_THROW(addPiece((Board::Position){2,4},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){4,4},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){3,5},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){4,5},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){2,5},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){2,3},Board::PieceType::WHITE_PAWN));
+    ASSERT_NO_THROW(addPiece((Board::Position){4,3},Board::PieceType::WHITE_PAWN));
+
+
+    // Move up 2 left 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,3}));
+    // Move up 2 right 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,5}));
+    // Move down 2 left 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,3}));
+    // Move down 2 right 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,5}));
+    // Move left 2 up 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){4,2}));
+    // Move left 2 down 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){2,2}));
+    // Move right 2 up 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){4,6}));
+    // Move right 2 down 1
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){2,6}));
+
     // Can't take own piece
+    ASSERT_NO_THROW(addPiece((Board::Position){5,3},Board::PieceType::WHITE_PAWN));
+    EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){5,3}));
+
     // Can take
+    ASSERT_NO_THROW(addPiece((Board::Position){5,5},Board::PieceType::BLACK_PAWN));
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,5}));
+
 }
 
 //
