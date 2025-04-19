@@ -17,7 +17,8 @@ int main() {
     pos.row = 3;
     pos.col = 3;
     Util::printBoard(&board);
-    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_ROOK);
+    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::BLACK_ROOK);
+    board.addPiece((Board::Position){5,3},Board::PieceType::WHITE_PAWN);
     Util::printBoard(&board);
 
     // making the pointer to the output vector, danger of memory leak
@@ -27,7 +28,7 @@ int main() {
     Piece *pieceObj = Piece::pieceObjConstructor(piece);
     getValidMovesOutput = pieceObj->getValidMoves(&board,pos);
 
-    std::cout << "list of posible moves for piece at " << (int)pos.row << ", " << (int)pos.col << std::endl;
+    std::cout << "list of posible captures for piece at " << (int)pos.row << ", " << (int)pos.col << std::endl;
 
     for (auto output : *getValidMovesOutput)
     {
