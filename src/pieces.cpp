@@ -465,3 +465,16 @@ void Bishop::doMove(Board *board, Board::Position from, Board::Position to)
 {
 
 }
+
+std::vector<Board::Position> *Queen::getValidMoves(const Board *board, Board::Position from)
+{
+    std::vector<Board::Position>* returnVector = new std::vector<Board::Position>();
+    bishopGetValidMovesPattern(board,from,returnVector);
+    rookGetValidMovesPattern(board,from,returnVector);
+    return returnVector;
+}
+
+void Queen::doMove(Board *board, Board::Position from, Board::Position to)
+{
+
+}

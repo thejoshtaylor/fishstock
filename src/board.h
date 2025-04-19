@@ -128,4 +128,14 @@ public:
     void doMove(Board *board, Board::Position from, Board::Position to);
 };
 
+// Queen piece
+class Queen : public Piece
+{
+public:
+    Queen(bool isWhite) : Piece(isWhite) {}
+
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
+    void doMove(Board *board, Board::Position from, Board::Position to);
+};
+
 #endif
