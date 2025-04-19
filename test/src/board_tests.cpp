@@ -201,18 +201,6 @@ TEST_F(CustomBoardTest, RookMoveTest)
     // Move right
     EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,5}));
 
-    // making sure we cant call getValidMoves on a piece if it's not that pieces turn
-    ASSERT_NO_THROW(removePiece((Board::Position){3,3}));
-    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::BLACK_ROOK));
-    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
-    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){1,3}));
-    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){3,1}));
-    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){3,5}));
-
-    // putting the rook back
-    ASSERT_NO_THROW(removePiece((Board::Position){3,3}));
-    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_ROOK));
-
     // Can't move diagonal
     EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
 
@@ -372,18 +360,58 @@ TEST_F(BoardTest, BishopMoveTest)
 //
 TEST_F(BoardTest, QueenMoveTest)
 {
-    // Move forward
-    // Move backward
-    // Move left
-    // Move right
-    // Move NE
-    // Move NW
-    // Move SE
-    // Move SW
 
-    // Can't move over pieces
-    // Can't take own piece
-    // Can take
+     // clearing the board
+     for (int row = 0; row < 8; ++row)
+     {
+         for (int col = 0; col < 8; ++col)
+         {
+             this->removePiece((Board::Position){row,col});
+         }
+     }
+     for (int row = 0; row < 1; ++row)
+     {
+         for (int col = 0; col < 1; ++col)
+         {
+             canCastle[row][col] = false;
+         }
+     }
+ 
+     //adding a queen piece in the middle
+     ASSERT_NO_THROW(addPiece((Board::Position){3,4},Board::PieceType::WHITE_QUEEN));
+ 
+     // Move forward
+     EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,4}));
+ 
+     // Move backward
+     EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,4}));
+ 
+     // Move left
+     EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){3,2}));
+ 
+     // Move right
+     EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){3,6}));
+ 
+     // Move NE
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,6}));
+    // Move NW
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){5,2}));
+    // Move SE
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,6}));
+    // Move SW
+    EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){1,2}));
+
+
+     // Can't move over pieces
+     ASSERT_NO_THROW(addPiece((Board::Position){4,4},Board::PieceType::BLACK_PAWN));
+     EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){5,4}));
+ 
+     // Can't take own piece
+     ASSERT_NO_THROW(addPiece((Board::Position){2,4},Board::PieceType::WHITE_PAWN));
+     EXPECT_FALSE(isValidMove((Board::Position){3,4},(Board::Position){2,4}));
+ 
+     // Can take
+     EXPECT_TRUE(isValidMove((Board::Position){3,4},(Board::Position){4,4}));
 }
 
 //

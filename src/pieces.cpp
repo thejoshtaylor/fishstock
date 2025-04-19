@@ -24,6 +24,10 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
     case Board::PieceType::BLACK_BISHOP:
         return new Bishop(Board::isWhitePiece(inputPiece));
         break;
+    case Board::PieceType::WHITE_QUEEN:
+    case Board::PieceType::BLACK_QUEEN:
+        return new Queen(Board::isWhitePiece(inputPiece));
+        break;
     default:
         throw std::invalid_argument("Invalid piece type");
         break;
