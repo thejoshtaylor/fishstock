@@ -80,6 +80,8 @@ class Piece
 {
 protected:
     bool isWhite;
+    void rookGetValidMovesPattern(const Board *board, Board::Position from, std::vector<Board::Position>* returnVector);
+    void bishopGetValidMovesPattern(const Board *board, Board::Position from, std::vector<Board::Position>* returnVector);
 
 public:
     Piece(bool isWhite) : isWhite(isWhite) {}

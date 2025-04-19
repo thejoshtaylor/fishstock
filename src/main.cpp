@@ -17,7 +17,7 @@ int main() {
     pos.row = 3;
     pos.col = 3;
     Util::printBoard(&board);
-    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_BISHOP);
+    board.addPiece((Board::Position){pos.row,pos.col},Board::PieceType::WHITE_ROOK);
     Util::printBoard(&board);
 
     // making the pointer to the output vector, danger of memory leak
