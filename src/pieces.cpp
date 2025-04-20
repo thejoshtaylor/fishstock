@@ -24,6 +24,10 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
     case Board::PieceType::BLACK_BISHOP:
         return new Bishop(Board::isWhitePiece(inputPiece));
         break;
+    case Board::PieceType::WHITE_QUEEN:
+    case Board::PieceType::BLACK_QUEEN:
+        return new Queen(Board::isWhitePiece(inputPiece));
+        break;
     default:
         throw std::invalid_argument("Invalid piece type");
         break;
@@ -462,6 +466,19 @@ std::vector<Board::Position> *Bishop::getValidMoves(const Board *board, Board::P
 }
 
 void Bishop::doMove(Board *board, Board::Position from, Board::Position to)
+{
+
+}
+
+std::vector<Board::Position> *Queen::getValidMoves(const Board *board, Board::Position from)
+{
+    std::vector<Board::Position>* returnVector = new std::vector<Board::Position>();
+    bishopGetValidMovesPattern(board,from,returnVector);
+    rookGetValidMovesPattern(board,from,returnVector);
+    return returnVector;
+}
+
+void Queen::doMove(Board *board, Board::Position from, Board::Position to)
 {
 
 }
