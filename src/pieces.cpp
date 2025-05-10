@@ -12,12 +12,198 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
     case Board::PieceType::BLACK_PAWN:
         return new Pawn(Board::isWhitePiece(inputPiece));
         break;
-
+    case Board::PieceType::WHITE_ROOK:
+    case Board::PieceType::BLACK_ROOK:
+        return new Rook(Board::isWhitePiece(inputPiece));
+        break;
+    case Board::PieceType::WHITE_KNIGHT:
+    case Board::PieceType::BLACK_KNIGHT:
+        return new Knight(Board::isWhitePiece(inputPiece));
+        break;
+    case Board::PieceType::WHITE_BISHOP:
+    case Board::PieceType::BLACK_BISHOP:
+        return new Bishop(Board::isWhitePiece(inputPiece));
+        break;
+    case Board::PieceType::WHITE_QUEEN:
+    case Board::PieceType::BLACK_QUEEN:
+        return new Queen(Board::isWhitePiece(inputPiece));
+        break;
     default:
         throw std::invalid_argument("Invalid piece type");
         break;
     }
 }
+
+
+//
+// PRIVATE PIECE FUNC DEFINITIONS
+//
+
+void Piece::rookGetValidMovesPattern(const Board *board, Board::Position from, std::vector<Board::Position>* returnVector)
+{
+    int varyingIndex = 1;
+
+    // moving right
+    while (from.col + varyingIndex < 8 && board->getPiece((Board::Position){from.row, from.col + varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row, from.col + varyingIndex});
+        varyingIndex++;
+    }
+
+    if (from.col + varyingIndex < 8)
+    {
+        if (board->getPiece((Board::Position){from.row, from.col + varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col + varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row, from.col + varyingIndex});
+            }
+        }
+    }
+
+    // moving left
+    varyingIndex = -1;
+
+    while (from.col + varyingIndex >= 0 && board->getPiece((Board::Position){from.row, from.col + varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row, from.col + varyingIndex});
+        varyingIndex--;
+    }
+
+    if (from.col + varyingIndex >= 0)
+    {
+        if (board->getPiece((Board::Position){from.row, from.col + varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col + varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row, from.col + varyingIndex});
+            }
+        }
+    }
+
+    // moving up
+    varyingIndex = 1;
+    while (from.row + varyingIndex < 8 && board->getPiece((Board::Position){from.row + varyingIndex, from.col}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row + varyingIndex, from.col});
+        varyingIndex++;
+    }
+
+    if (from.row + varyingIndex < 8)
+    {
+        if (board->getPiece((Board::Position){from.row + varyingIndex, from.col}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row + varyingIndex, from.col})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row + varyingIndex, from.col});
+            }
+        }
+    }
+
+    // moving down
+    varyingIndex = -1;
+    while (from.row + varyingIndex >= 0 && board->getPiece((Board::Position){from.row + varyingIndex, from.col}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row + varyingIndex, from.col});
+        varyingIndex--;
+    }
+
+    if (from.row + varyingIndex >= 0)
+    {
+        if (board->getPiece((Board::Position){from.row + varyingIndex, from.col}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row + varyingIndex, from.col})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row + varyingIndex, from.col});
+            }
+        }
+    }
+
+
+}
+void Piece::bishopGetValidMovesPattern(const Board *board, Board::Position from, std::vector<Board::Position>* returnVector)
+{
+    int varyingIndex = 1;
+
+    // moving NE
+    while (Board::isInBounds((Board::Position){from.row + varyingIndex, from.col + varyingIndex}) && board->getPiece((Board::Position){from.row + varyingIndex, from.col + varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row + varyingIndex, from.col + varyingIndex});
+        varyingIndex++;
+    }
+
+    if (Board::isInBounds((Board::Position){from.row + varyingIndex, from.col + varyingIndex}))
+    {
+        if (board->getPiece((Board::Position){from.row + varyingIndex, from.col + varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row + varyingIndex, from.col + varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row + varyingIndex, from.col + varyingIndex});
+            }
+        }
+    }
+    varyingIndex = 1;
+
+    // moving NW
+    while (Board::isInBounds((Board::Position){from.row + varyingIndex, from.col - varyingIndex}) && board->getPiece((Board::Position){from.row + varyingIndex, from.col - varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row + varyingIndex, from.col - varyingIndex});
+        varyingIndex++;
+    }
+
+    if (Board::isInBounds((Board::Position){from.row + varyingIndex, from.col - varyingIndex}))
+    {
+        if (board->getPiece((Board::Position){from.row + varyingIndex, from.col - varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row + varyingIndex, from.col - varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row + varyingIndex, from.col - varyingIndex});
+            }
+        }
+    }
+    varyingIndex = 1;
+
+    // moving SE
+    while (Board::isInBounds((Board::Position){from.row - varyingIndex, from.col + varyingIndex}) && board->getPiece((Board::Position){from.row - varyingIndex, from.col + varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row - varyingIndex, from.col + varyingIndex});
+        varyingIndex++;
+    }
+
+    if (Board::isInBounds((Board::Position){from.row - varyingIndex, from.col + varyingIndex}))
+    {
+        if (board->getPiece((Board::Position){from.row - varyingIndex, from.col + varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row - varyingIndex, from.col + varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row - varyingIndex, from.col + varyingIndex});
+            }
+        }
+    }
+    varyingIndex = 1;
+
+    // moving SW
+    while (Board::isInBounds((Board::Position){from.row - varyingIndex, from.col - varyingIndex}) && board->getPiece((Board::Position){from.row - varyingIndex, from.col - varyingIndex}) == Board::PieceType::EMPTY)
+    {
+        returnVector->push_back((Board::Position){from.row - varyingIndex, from.col - varyingIndex});
+        varyingIndex++;
+    }
+
+    if (Board::isInBounds((Board::Position){from.row - varyingIndex, from.col - varyingIndex}))
+    {
+        if (board->getPiece((Board::Position){from.row - varyingIndex, from.col - varyingIndex}) != Board::PieceType::EMPTY)
+        {
+            if (Board::isWhitePiece(board->getPiece((Board::Position){from.row - varyingIndex, from.col - varyingIndex})) != isWhite)
+            {
+                returnVector->push_back((Board::Position){from.row - varyingIndex, from.col - varyingIndex});
+            }
+        }
+    }
+}
+
+
+
+
 
 //
 // PAWN
@@ -29,12 +215,6 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
 // Get all valid moves for a pawn
 std::vector<Board::Position> *Pawn::getValidMoves(const Board *board, Board::Position from)
 {
-
-    if (board->isWhiteTurnFunc() != Board::isWhitePiece(board->getPiece((Board::Position){from.row, from.col})))
-    {
-        throw std::invalid_argument("invalid call of getValidMoves, it is not the right turn for this piece to move");
-    }
-
     std::vector<Board::Position> *returnList = new std::vector<Board::Position>();
     // direction will be negative if black, reduces if statments becauses you just add direction to the from row if it is white or black
     int direction = (board->isWhitePiece(board->getPiece(from)) ? 1 : -1);
@@ -141,8 +321,164 @@ void Pawn::doMove(Board *board, Board::Position from, Board::Position to)
 
 std::vector<Board::Position> *Rook::getValidMoves(const Board *board, Board::Position from)
 {
+    std::vector<Board::Position> *returnVector = new std::vector<Board::Position>();
+    rookGetValidMovesPattern(board,from,returnVector);
+    return returnVector;
 }
 
 void Rook::doMove(Board *board, Board::Position from, Board::Position to)
 {
+    // checking if we are on one of the corners
+    if (!(from.row % 7 + from.col % 7))
+    {
+        // setting castle flag for that corner to false, it is possible that it is already false but that does not matter
+        board->setCanCastleToFalse(from.row / 7, from.col / 7);
+    }
+}
+
+
+//
+// KNIGHT
+//
+
+std::vector<Board::Position> *Knight::getValidMoves(const Board *board, Board::Position from)
+{
+    std::vector<Board::Position> *returnList = new std::vector<Board::Position>();
+
+    // going through each coordinate that a knight could move through, I think it is technically effecient, but it is very ugly
+    Board::Position newPos = (Board::Position){from.row + 2,from.col + 1};
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col + 1;
+    newPos.row = newPos.row - 1;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.row = newPos.row - 2;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col - 1;
+    newPos.row = newPos.row - 1;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col - 2;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.col = newPos.col - 1;
+    newPos.row = newPos.row + 1;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    }
+    newPos.row = newPos.row + 2;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    } 
+    newPos.col = newPos.col + 1;
+    newPos.row = newPos.row + 1;
+    if (Board::isInBounds(newPos))
+    {
+        if (board->getPiece(newPos) == Board::PieceType::EMPTY)
+        {
+            returnList->push_back(newPos);
+        }
+        else if (Board::isWhitePiece(board->getPiece(newPos)) != isWhite)
+        {
+            returnList->push_back(newPos);
+        }
+    } 
+    return returnList;
+
+}
+void Knight::doMove(Board *board, Board::Position from, Board::Position to)
+{
+}
+
+
+
+//
+// BISHOP
+//
+std::vector<Board::Position> *Bishop::getValidMoves(const Board *board, Board::Position from)
+{
+    std::vector<Board::Position>* returnVector = new std::vector<Board::Position>();
+    bishopGetValidMovesPattern(board,from,returnVector);
+    return returnVector;
+}
+
+void Bishop::doMove(Board *board, Board::Position from, Board::Position to)
+{
+
+}
+
+std::vector<Board::Position> *Queen::getValidMoves(const Board *board, Board::Position from)
+{
+    std::vector<Board::Position>* returnVector = new std::vector<Board::Position>();
+    bishopGetValidMovesPattern(board,from,returnVector);
+    rookGetValidMovesPattern(board,from,returnVector);
+    return returnVector;
+}
+
+void Queen::doMove(Board *board, Board::Position from, Board::Position to)
+{
+
 }

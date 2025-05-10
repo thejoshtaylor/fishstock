@@ -55,6 +55,7 @@ public:
     static bool isWhitePiece(PieceType piece);
     // sets the EnPassant flag, 8 is the cleared value. Only cares about the col value, pos.row can be set to whatever.
     void setEnPassant(Position pos);
+    void setCanCastleToFalse(uint8_t blackOrWhiteRook, uint8_t leftOrRightRook);
     bool checkEnPassant(Position pos) const;
     void promotePawn(Position pos, PieceType pieceType);
     // adds a piece to the board, used for making custom boards
@@ -79,6 +80,8 @@ class Piece
 {
 protected:
     bool isWhite;
+    void rookGetValidMovesPattern(const Board *board, Board::Position from, std::vector<Board::Position>* returnVector);
+    void bishopGetValidMovesPattern(const Board *board, Board::Position from, std::vector<Board::Position>* returnVector);
 
 public:
     Piece(bool isWhite) : isWhite(isWhite) {}
@@ -101,6 +104,35 @@ class Rook : public Piece
 {
 public:
     Rook(bool isWhite) : Piece(isWhite) {}
+
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
+    void doMove(Board *board, Board::Position from, Board::Position to);
+};
+
+// Knight piece
+class Knight : public Piece
+{
+public:
+    Knight(bool isWhite) : Piece(isWhite) {}
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
+    void doMove(Board *board, Board::Position from, Board::Position to);
+};
+
+// Bishop piece
+class Bishop : public Piece
+{
+public:
+    Bishop(bool isWhite) : Piece(isWhite) {}
+
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
+    void doMove(Board *board, Board::Position from, Board::Position to);
+};
+
+// Queen piece
+class Queen : public Piece
+{
+public:
+    Queen(bool isWhite) : Piece(isWhite) {}
 
     std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);
