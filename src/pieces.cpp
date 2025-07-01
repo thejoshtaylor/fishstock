@@ -28,6 +28,10 @@ Piece *Piece::pieceObjConstructor(Board::PieceType inputPiece)
     case Board::PieceType::BLACK_QUEEN:
         return new Queen(Board::isWhitePiece(inputPiece));
         break;
+    case Board::PieceType::WHITE_KING:
+    case Board::PieceType::BLACK_KING:
+        return new King(Board::isWhitePiece(inputPiece));
+        break;
     default:
         throw std::invalid_argument("Invalid piece type");
         break;
@@ -486,14 +490,14 @@ void Queen::doMove(Board *board, Board::Position from, Board::Position to)
 std::vector<Board::Position> *King::getValidMoves(const Board *board, Board::Position from)
 {
     std::vector<Board::Position>* returnVector = new std::vector<Board::Position>();
-    Board::Position newPosition = from;
+    Board::Position newPosition{from.col,from.row};
 
     for (int yDelta = -1; yDelta <= 1; ++yDelta )
     {
         for (int xDelta = -1; xDelta <= 1; ++xDelta)
         {
             newPosition.row += yDelta;
-            newPosition.row += xDelta;
+            newPosition.col += xDelta;
 
              if (Board::isInBounds(newPosition))
             {
@@ -506,6 +510,8 @@ std::vector<Board::Position> *King::getValidMoves(const Board *board, Board::Pos
                     returnVector->push_back(newPosition);
                 }
             }
+            newPosition = from;
+
         }
 
     }
@@ -517,4 +523,6 @@ std::vector<Board::Position> *King::getValidMoves(const Board *board, Board::Pos
 void King::doMove(Board *board, Board::Position from, Board::Position to)
 {
 
+    board->setCanCastleToFalse(int(!isWhite),0);
+    board->setCanCastleToFalse(int(!isWhite),0);
 }

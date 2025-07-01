@@ -489,6 +489,8 @@ TEST_F(BoardTest, CastlingTest)
     // resetting the board state
     ASSERT_NO_THROW(removePiece((Board::Position){1,4}));
     ASSERT_NO_THROW(addPiece((Board::Position){0,4},Board::PieceType::WHITE_KING));
+    canCastle[0][0] = true;
+    canCastle[0][1] = true;
     isWhiteTurn = true;
 
     // Can't castle left if left rook has moved
