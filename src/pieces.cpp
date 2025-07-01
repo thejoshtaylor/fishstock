@@ -482,3 +482,39 @@ void Queen::doMove(Board *board, Board::Position from, Board::Position to)
 {
 
 }
+
+std::vector<Board::Position> *King::getValidMoves(const Board *board, Board::Position from)
+{
+    std::vector<Board::Position>* returnVector = new std::vector<Board::Position>();
+    Board::Position newPosition = from;
+
+    for (int yDelta = -1; yDelta <= 1; ++yDelta )
+    {
+        for (int xDelta = -1; xDelta <= 1; ++xDelta)
+        {
+            newPosition.row += yDelta;
+            newPosition.row += xDelta;
+
+             if (Board::isInBounds(newPosition))
+            {
+                if (board->getPiece(newPosition) == Board::PieceType::EMPTY)
+                {
+                    returnVector->push_back(newPosition);
+                }
+                else if (Board::isWhitePiece(board->getPiece(newPosition)) != isWhite)
+                {
+                    returnVector->push_back(newPosition);
+                }
+            }
+        }
+
+    }
+
+    
+    return returnVector;
+}
+
+void King::doMove(Board *board, Board::Position from, Board::Position to)
+{
+
+}
