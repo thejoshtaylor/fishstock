@@ -524,5 +524,5 @@ void King::doMove(Board *board, Board::Position from, Board::Position to)
 {
 
     board->setCanCastleToFalse(int(!isWhite),0);
-    board->setCanCastleToFalse(int(!isWhite),0);
+    board->setCanCastleToFalse(int(!isWhite),1);
 }

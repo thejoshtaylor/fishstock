@@ -23,11 +23,10 @@ int main() {
     // making the pointer to the output vector, danger of memory leak
     std::vector<Board::Position>* getValidMovesOutput;
     Board::PieceType piece = board.getPiece(pos);
-    std::cout << board.getPieceLetter(board.getPiece(pos)) << std::endl;
     Piece *pieceObj = Piece::pieceObjConstructor(piece);
     getValidMovesOutput = pieceObj->getValidMoves(&board,pos);
 
-    std::cout << "list of posible moves for piece at " << (int)pos.row << ", " << (int)pos.col << std::endl;
+    std::cout << "list of posible captures for " << board.getPieceLetter(board.getPiece(pos)) << " at " << (int)pos.row << ", " << (int)pos.col << std::endl;
 
     for (auto output : *getValidMovesOutput)
     {
