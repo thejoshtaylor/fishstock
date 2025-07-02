@@ -65,12 +65,16 @@ public:
     void move(Position from, Position to);
 
 protected:
+    // canCastle mapping is arraged so that 0,0 is white's left rook, 0,1 is white's right rook, 1,0 is black's right rook, and 1,1 is black's left rook.
+    // B,B
+    // W,W
+    
     bool canCastle[2][2];
     uint8_t EnPassantCol;
+    bool isWhiteTurn;
 
 private:
     PieceType board[8][8];
-    bool isWhiteTurn;
     
     // records the column of the last move if double pawn move, cleared state is 8
 };
@@ -133,6 +137,15 @@ class Queen : public Piece
 {
 public:
     Queen(bool isWhite) : Piece(isWhite) {}
+
+    std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
+    void doMove(Board *board, Board::Position from, Board::Position to);
+};
+
+class King : public Piece
+{
+public:
+    King(bool isWhite) : Piece(isWhite) {}
 
     std::vector<Board::Position> *getValidMoves(const Board *board, Board::Position from);
     void doMove(Board *board, Board::Position from, Board::Position to);

@@ -419,18 +419,44 @@ TEST_F(BoardTest, QueenMoveTest)
 //
 TEST_F(BoardTest, KingMoveTest)
 {
-    // Move forward
-    // Move backward
-    // Move left
-    // Move right
-    // Move NE
-    // Move NW
-    // Move SE
-    // Move SW
+    //clearing the board
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
 
+    ASSERT_NO_THROW(addPiece((Board::Position){3,3},Board::PieceType::WHITE_KING));
+
+    // Move forward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,3}));
+    // Move backward
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){2,3}));
+    // Move left
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,2}));
+    // Move right
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,4}));
+    // Move NE
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,4}));
+    // Move NW
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){4,2}));
+    // Move SE
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){2,4}));
+    // Move SW
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){2,2}));
     // Can't move more than 1 space
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){5,3}));
+
+    ASSERT_NO_THROW(addPiece((Board::Position){4,3},Board::PieceType::WHITE_PAWN));
     // Can't take own piece
+    EXPECT_FALSE(isValidMove((Board::Position){3,3},(Board::Position){4,3}));
+
+    ASSERT_NO_THROW(addPiece((Board::Position){3,2},Board::PieceType::BLACK_PAWN));
     // Can take
+    EXPECT_TRUE(isValidMove((Board::Position){3,3},(Board::Position){3,2}));
+
 }
 
 //
@@ -438,14 +464,51 @@ TEST_F(BoardTest, KingMoveTest)
 //
 TEST_F(BoardTest, CastlingTest)
 {
-    // Can't castle if king has moved
-    // Can't castle left if left rook has moved
-    // Can't castle right if right rook has moved
-    // Can't castle if pieces in the way
-    // Can't castle if in check
-    // Can't castle if through check
+    //clearing the board
+    for (int row = 0; row < 8; ++row)
+    {
+        for (int col = 0; col < 8; ++col)
+        {
+            this->removePiece((Board::Position){row,col});
+        }
+    }
 
-    // Can castle right or left if conditions are met
+    
+    ASSERT_NO_THROW(addPiece((Board::Position){0,4},Board::PieceType::WHITE_KING));
+    ASSERT_NO_THROW(addPiece((Board::Position){0,0},Board::PieceType::WHITE_ROOK));
+    ASSERT_NO_THROW(addPiece((Board::Position){0,7},Board::PieceType::WHITE_ROOK));
+
+    canCastle[0][0] = true;
+    canCastle[0][1] = true;
+
+    // Can't castle if king has moved
+    ASSERT_NO_THROW(move((Board::Position){0,4},(Board::Position){1,4}));
+    EXPECT_FALSE(canCastle[0][0]);
+    EXPECT_FALSE(canCastle[0][1]);
+
+    // resetting the board state
+    ASSERT_NO_THROW(removePiece((Board::Position){1,4}));
+    ASSERT_NO_THROW(addPiece((Board::Position){0,4},Board::PieceType::WHITE_KING));
+    canCastle[0][0] = true;
+    canCastle[0][1] = true;
+    isWhiteTurn = true;
+
+    // Can't castle left if left rook has moved
+    ASSERT_NO_THROW(move((Board::Position){0,0},(Board::Position){4,0}));
+    EXPECT_FALSE(canCastle[0][0]);
+    EXPECT_TRUE(canCastle[0][1]);
+
+    // resetting the board state
+    ASSERT_NO_THROW(removePiece((Board::Position){4,0}));
+    ASSERT_NO_THROW(addPiece((Board::Position){0,0},Board::PieceType::WHITE_ROOK));
+    canCastle[0][0] = true;
+    canCastle[0][1] = true;
+    isWhiteTurn = true;
+
+    // Can't castle right if right rook has moved
+    ASSERT_NO_THROW(move((Board::Position){0,7},(Board::Position){4,7}));
+    EXPECT_FALSE(canCastle[0][1]);
+    EXPECT_TRUE(canCastle[0][0]);
 }
 
 //
