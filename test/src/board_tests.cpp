@@ -509,13 +509,6 @@ TEST_F(BoardTest, CastlingTest)
     ASSERT_NO_THROW(move((Board::Position){0,7},(Board::Position){4,7}));
     EXPECT_FALSE(canCastle[0][1]);
     EXPECT_TRUE(canCastle[0][0]);
-
-
-    // Can't castle if pieces in the way
-    // Can't castle if in check
-    // Can't castle if through check
-
-    // Can castle right or left if conditions are met
 }
 
 //
