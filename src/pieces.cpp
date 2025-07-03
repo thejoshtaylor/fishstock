@@ -490,32 +490,39 @@ void Queen::doMove(Board *board, Board::Position from, Board::Position to)
 std::vector<Board::Position> *King::getValidMoves(const Board *board, Board::Position from)
 {
     std::vector<Board::Position>* returnVector = new std::vector<Board::Position>();
-    Board::Position newPosition{from.col,from.row};
+    Board::Position newPosition{from.row,from.col};
+    int listOfMovmentComponents[2][2] = {{-2,2},{-1,1}};
 
-    for (int yDelta = -1; yDelta <= 1; ++yDelta )
+    for (int sectorOfComponentsIndex = 0; sectorOfComponentsIndex < sizeof(listOfMovmentComponents); ++sectorOfComponentsIndex)
     {
-        for (int xDelta = -1; xDelta <= 1; ++xDelta)
+        for (int componentOne : listOfMovmentComponents[sectorOfComponentsIndex])
         {
-            newPosition.row += yDelta;
-            newPosition.col += xDelta;
-
-             if (Board::isInBounds(newPosition))
+            for (int componentTwo : listOfMovmentComponents[(sectorOfComponentsIndex + 1) % sizeof(listOfMovmentComponents)])
             {
-                if (board->getPiece(newPosition) == Board::PieceType::EMPTY)
-                {
-                    returnVector->push_back(newPosition);
-                }
-                else if (Board::isWhitePiece(board->getPiece(newPosition)) != isWhite)
-                {
-                    returnVector->push_back(newPosition);
-                }
-            }
-            newPosition = from;
 
+                newPosition.row += componentOne;
+                newPosition.col += componentTwo;
+                if (Board::isInBounds(newPosition))
+                {
+                    if (board->getPiece(newPosition) == Board::PieceType::EMPTY)
+                    {
+                        returnVector->push_back(newPosition);
+                    }
+                    else if (Board::isWhitePiece(board->getPiece(newPosition)) != isWhite)
+                    {
+                        returnVector->push_back(newPosition);
+                    }
+
+                }
+                newPosition = from;
+
+            }
         }
 
     }
 
+
+    
     
     return returnVector;
 }
